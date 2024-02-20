@@ -17,34 +17,35 @@
 }
 
 html {
-  font-size: 62.5%;
+  /* font-size: 62.5%; */
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: "nunito", sans-serif;
+  font-family: "nunito", sans-serif !important;
+  background-color: #e9f6ff;
 }
 
-@media (min-width: 1800px) {
+/* @media (min-width: 1800px) {
   html {
-    font-size: 70%;
+    font-size: 100%;
   }
 }
 
 @media (max-width: 1200px) {
   html {
-    font-size: 60%;
+    font-size: 90%;
   }
 }
 
 @media (max-width: 900px) {
   html {
-    font-size: 50%;
+    font-size: 80%;
   }
 }
 
 @media (max-width: 600px) {
   html {
-    font-size: 45%;
+    font-size: 70%;
   }
-}
+} */

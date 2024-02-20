@@ -1,7 +1,11 @@
+import Hero from "../ui/Hero";
+import { Nav } from "../ui/Nav";
+
 function LandingPage() {
   return (
     <div>
-      <h1 className="text-[5rem]">Landing page</h1>
+      <Nav />
+      <Hero />
     </div>
   );
 }
