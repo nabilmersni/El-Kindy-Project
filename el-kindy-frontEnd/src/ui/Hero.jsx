@@ -24,7 +24,9 @@ function Hero() {
                 competitions, often earning the recognized Arab music diploma
                 from the Tunisian Ministry of Culture.
               </p>
-              <ButtonPrimary>Join Us</ButtonPrimary>
+              <div className="flex justify-start items-center">
+                <ButtonPrimary size={"1.5rem"}>Join Us</ButtonPrimary>
+              </div>
             </div>
           </div>
 

@@ -1,3 +1,4 @@
+import About from "../ui/About";
 import Hero from "../ui/Hero";
 import { Nav } from "../ui/Nav";
 
@@ -6,6 +7,7 @@ function LandingPage() {
     <div>
       <Nav />
       <Hero />
+      <About />
     </div>
   );
 }
