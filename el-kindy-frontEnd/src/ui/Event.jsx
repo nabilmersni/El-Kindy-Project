@@ -156,7 +156,10 @@ function Event() {
           </div>
 
           <div className="max-w-[11rem] absolute top-[3rem] right-0">
-            <Lottie options={{ animationData: speakerAnimation }} />
+            <Lottie
+              isClickToPauseDisabled={true}
+              options={{ animationData: speakerAnimation }}
+            />
           </div>
         </div>
       </div>
