@@ -24,7 +24,7 @@ function About() {
             />
           </div>
           <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/3 w-full">
-            <p className=" font-semibold text-center lg:text-left">
+            <p className=" font-semibold text-center lg:text-left text-[.8rem] lg:text-[1rem] ">
               Since 1999, Conservatoire El Kindy has supported generations of
               musical artists thanks to rich and demanding teaching and the
               rigor of a team of specialists and experienced teachers who

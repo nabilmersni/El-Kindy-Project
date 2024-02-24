@@ -14,17 +14,17 @@ function Hero() {
       <div className="container mx-auto w-auto ">
         <div className="flex flex-col lg:flex-row items-center relative z-30">
           <div className="w-full flex justify-center">
-            <div className="flex flex-col justify-start">
-              <h1 className="text-[5rem] text-darkBlue font-extrabold">
+            <div className="flex flex-col justify-start items-center lg:items-start">
+              <h1 className="text-[3rem] md:text-[4rem] lg:text-[5rem] text-darkBlue font-extrabold">
                 EL Kindy
               </h1>
-              <p className="font-bold text-black max-w-[30rem]">
+              <p className="font-bold text-black max-w-[30rem] text-center lg:text-left">
                 Since 1999, Conservatoire El Kindy has been fostering musical
                 talent with rigorous education. Students excel in national
                 competitions, often earning the recognized Arab music diploma
                 from the Tunisian Ministry of Culture.
               </p>
-              <div className="flex justify-start items-center">
+              <div className="flex justify-center lg:justify-start items-center">
                 <ButtonPrimary size={"1.5rem"}>Join Us</ButtonPrimary>
               </div>
             </div>
