@@ -5,6 +5,7 @@ import Hero from "../ui/Hero";
 import Testimonials from "../ui/Testimonials";
 import { Nav } from "../ui/Nav";
 import ContactUs from "../ui/ContactUs";
+import Footer from "../ui/Footer";
 
 function LandingPage() {
   return (
@@ -16,6 +17,7 @@ function LandingPage() {
       <Event />
       <Testimonials />
       <ContactUs />
+      <Footer />
     </div>
   );
 }
