@@ -66,7 +66,7 @@ export const AdminDashSideBarMenuItems = [
     ),
   },
   {
-    path: "/",
+    path: "/dash-admin-courses",
     name: "Courses",
     icon: (
       <svg
