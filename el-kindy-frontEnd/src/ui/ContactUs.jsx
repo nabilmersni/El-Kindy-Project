@@ -6,7 +6,7 @@ import ContactUsForm from "./ContactUsForm";
 
 function ContactUs() {
   return (
-    <div className="container mx-auto w-auto mt-[8rem] px-8 ">
+    <div id="contact" className="container mx-auto w-auto mt-[8rem] px-8 ">
       <div className="flex flex-col justify-center items-center">
         <Title1>Contact us</Title1>
         <div className="flex justify-center items-center mt-5 mb-8">

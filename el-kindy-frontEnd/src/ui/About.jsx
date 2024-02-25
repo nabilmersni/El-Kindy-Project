@@ -7,7 +7,10 @@ import Title2 from "./Title2";
 
 function About() {
   return (
-    <div className="container mx-auto w-auto lg:mt-[16rem] mt-[8rem] px-8">
+    <div
+      id="about"
+      className="container mx-auto w-auto lg:mt-[16rem] mt-[8rem] px-8"
+    >
       <div>
         <Title1>About us</Title1>
         <div className="flex lg:flex-row flex-col justify-evenly items-center mt-[4rem] mb-[4rem] relative">

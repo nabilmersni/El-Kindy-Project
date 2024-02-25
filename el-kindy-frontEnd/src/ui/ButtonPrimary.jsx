@@ -5,7 +5,7 @@ function ButtonPrimary({ children, size }) {
     <Button
       variant="text"
       size="md"
-      className={`bg-lightBlue text-nav text-[${size}] font-extrabold font-nunito rounded-full hover:bg-secondaryLight capitalize my-[2rem]`}
+      className={`bg-lightBlue text-nav text-[${size}] font-extrabold font-nunito rounded-[.8rem] hover:bg-secondaryLight capitalize my-[2rem]`}
     >
       {children}
     </Button>

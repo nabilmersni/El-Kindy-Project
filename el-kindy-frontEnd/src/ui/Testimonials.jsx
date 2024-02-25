@@ -6,7 +6,7 @@ import Title2 from "./Title2";
 
 function Testimonials() {
   return (
-    <div className="container mx-auto w-auto mt-[8rem] px-8 ">
+    <div id="testimonials" className="container mx-auto w-auto mt-[8rem] px-8 ">
       <div className="relative">
         <div className="relative flex justify-center items-center">
           <img

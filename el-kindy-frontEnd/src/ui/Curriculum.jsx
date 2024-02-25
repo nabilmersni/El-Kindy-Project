@@ -9,7 +9,7 @@ import InstrumentsSwipper from "./InstrumentsSwipper";
 
 function Curriculum() {
   return (
-    <div className="container mx-auto w-auto mt-[8rem] px-8">
+    <div id="curriculum" className="container mx-auto w-auto mt-[8rem] px-8">
       <div className="relative mb-[3rem] ">
         <Title1>Curriculums</Title1>
         <div className="flex justify-center items-center mt-5 mb-8">

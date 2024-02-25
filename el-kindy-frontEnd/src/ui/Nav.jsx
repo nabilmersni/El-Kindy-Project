@@ -9,6 +9,7 @@ import {
   ListItem,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 function NavList() {
   return (
@@ -25,7 +26,7 @@ function NavList() {
       </Typography>
       <Typography
         as="a"
-        href="#"
+        href="#about"
         variant="h6"
         className="font-nunito font-bold"
       >
@@ -35,7 +36,7 @@ function NavList() {
       </Typography>
       <Typography
         as="a"
-        href="#"
+        href="#curriculum"
         variant="h6"
         className="font-nunito font-bold"
       >
@@ -45,7 +46,7 @@ function NavList() {
       </Typography>
       <Typography
         as="a"
-        href="#"
+        href="#testimonials"
         variant="h6"
         className="font-nunito font-bold"
       >
@@ -55,7 +56,7 @@ function NavList() {
       </Typography>
       <Typography
         as="a"
-        href="#"
+        href="#contact"
         variant="h6"
         className="font-nunito font-bold"
       >
@@ -82,30 +83,36 @@ export function Nav() {
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
-          href="#"
           variant="h6"
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
-          <img src="logo.svg" alt="el kindy logo" className="w-[1.6rem]" />
+          <Link to={"/"}>
+            <img src="logo.svg" alt="el kindy logo" className="w-[1.6rem]" />
+          </Link>
         </Typography>
         <div className="hidden lg:block">
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Button
-            variant="text"
-            size="sm"
-            className="text-nav text-[0.9rem] capitalize"
-          >
-            Log In
-          </Button>
-          <Button
-            variant="text"
-            size="sm"
-            className="bg-lightBlue text-nav text-[0.9rem] rounded-full hover:bg-secondaryLight capitalize"
-          >
-            Sign In
-          </Button>
+          <Link to={"/"}>
+            <Button
+              variant="text"
+              size="sm"
+              className="text-nav text-[0.9rem] capitalize"
+            >
+              Log In
+            </Button>
+          </Link>
+
+          <Link to={"/signup"}>
+            <Button
+              variant="text"
+              size="sm"
+              className="bg-lightBlue text-nav text-[0.9rem] rounded-[.5rem] hover:bg-secondaryLight capitalize"
+            >
+              Sign In
+            </Button>
+          </Link>
         </div>
         <IconButton
           variant="text"
@@ -123,23 +130,28 @@ export function Nav() {
       <Collapse open={openNav}>
         <NavList />
         <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Button
-            variant="outlined"
-            size="sm"
-            color="blue-gray"
-            fullWidth
-            className="text-nav text-[0.9rem] capitalize"
-          >
-            Log In
-          </Button>
-          <Button
-            variant="text"
-            size="sm"
-            fullWidth
-            className="bg-lightBlue text-nav text-[0.9rem]  hover:bg-secondaryLight capitalize"
-          >
-            Sign In
-          </Button>
+          <Link to={"/"}>
+            <Button
+              variant="outlined"
+              size="sm"
+              color="blue-gray"
+              fullWidth
+              className="text-nav text-[0.9rem] capitalize"
+            >
+              Log In
+            </Button>
+          </Link>
+
+          <Link to={"/signup"}>
+            <Button
+              variant="text"
+              size="sm"
+              fullWidth
+              className="bg-lightBlue text-nav text-[0.9rem]  hover:bg-secondaryLight capitalize"
+            >
+              Sign In
+            </Button>
+          </Link>
         </div>
       </Collapse>
     </Navbar>
