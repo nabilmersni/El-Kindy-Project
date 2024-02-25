@@ -1,6 +1,7 @@
 import "../../../../public/assets/css/style.css";
 
-const CourseCard = () => {
+const CourseCard = ({ data }) => {
+  // console.log(data);
   return (
     <div className="dash__courses__list__card">
       <div className="dash__courses__list__card-img-container">
@@ -12,18 +13,20 @@ const CourseCard = () => {
       </div>
       <div className="dash__courses__list__card-content">
         <div className="dash__courses__list__card-content-title">
-          Introduction to Sketching and Shading
+          {data.title}
         </div>
         <div className="dash__courses__list__card-content-type-price">
           <div className="dash__courses__list__card-content-type">
             Course type:
-            <p>In Group</p>
+            <p>{data.type}</p>
           </div>
-          <div className="dash__courses__list__card-content-price">60 TND</div>
+          <div className="dash__courses__list__card-content-price">
+            {data.price} TND
+          </div>
         </div>
         <div className="dash__courses__list__card-content-btns">
           <div className="dash__courses__list__card-content-btns-category">
-            Drawing
+            {data.category}
           </div>
           <div className="dash__courses__list__card-content-btns-list">
             <a

@@ -304,6 +304,7 @@ html {
   height: 88.3vh;
   padding-left: 3rem;
   padding-top: 5rem;
+  padding-right: 5rem;
 }
 
 .dash__content__container__firstRow {
@@ -435,7 +436,7 @@ html {
 
 .dash__content__container__courses-list {
   overflow-y: auto;
-  width: 97%;
+  width: 100%;
   height: 82%;
 }
 
@@ -864,10 +865,11 @@ html {
   width: 100%;
   height: 100%;
   border-radius: 0.8rem;
+  /* display: none; */
 }
 
 .add-new-course__submit-btn {
-  background-color: #003366;
+  background-color: #003366 !important;
   border: none;
   font-size: 2rem;
   color: #fff;
@@ -882,9 +884,13 @@ html {
 }
 
 .add-new-course__submit-btn:hover {
-  background-color: #022a53;
-  box-shadow: 0 0.2rem 1.2rem rgb(0 0 0 / 9%);
+  background-color: #022547 !important;
+  box-shadow: 0 0.2rem 2rem rgb(0 0 0 / 9%);
 }
+
+/* .course-add-form-image__file-btn{
+  display: none;
+} */
 
 .add-new-course__submit-btn.quiz {
   background-color: rgba(0, 108, 190, 0.041);
