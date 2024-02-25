@@ -21,11 +21,11 @@ html {
   scroll-behavior: smooth;
 }
 
-@media (min-width: 1280px) {
+/* @media (min-width: 1280px) {
   html {
-    font-size: 1.1235vw;
+    font-size: 1.05vw;
   }
-}
+} */
 
 body {
   font-family: "nunito", sans-serif !important;

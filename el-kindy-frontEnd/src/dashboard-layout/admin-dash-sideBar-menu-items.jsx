@@ -1,6 +1,6 @@
 export const AdminDashSideBarMenuItems = [
   {
-    path: "/",
+    path: "/admin-dash",
     name: "Dashboard",
     icon: (
       <svg

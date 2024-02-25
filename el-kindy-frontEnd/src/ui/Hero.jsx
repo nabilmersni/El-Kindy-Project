@@ -31,7 +31,7 @@ function Hero() {
           </div>
 
           <div className="w-full flex justify-center lg:justify-end">
-            <div className="max-w-[40rem]">
+            <div className="max-w-[40rem] lg:h-[70vh]">
               <Lottie
                 isClickToPauseDisabled={true}
                 options={{ animationData: headerAnimation }}

@@ -3,18 +3,12 @@ import SideBarLogo from "./sideBar-logo";
 import SideBarItem from "./sideBar-item";
 import DashAnimation from "./dash-animation";
 import { AdminDashSideBarMenuItems } from "./admin-dash-sideBar-menu-items";
-import React, { useState } from "react";
 
-const DashSideBar = () => {
-  const [isSidebarSmall, setIsSidebarSmall] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarSmall((prev) => !prev);
-  };
+const DashSideBar = ({ isSidebarSmall }) => {
   return (
     <div className={`dash__sidebar ${isSidebarSmall ? "small" : ""}`}>
       <SideBarLogo isSmall={isSidebarSmall} />
-      <div onClick={toggleSidebar}>test</div>
+      {/* <div onClick={toggleSidebar}>test</div> */}
 
       <div className={`dash__sidebar__items ${isSidebarSmall ? "small" : ""}`}>
         {AdminDashSideBarMenuItems.map((item, index) => (

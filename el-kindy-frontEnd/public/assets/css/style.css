@@ -201,6 +201,7 @@ html {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  cursor: pointer;
 }
 
 .dash__content__nav__left-side__icon {

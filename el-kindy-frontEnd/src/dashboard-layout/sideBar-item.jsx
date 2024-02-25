@@ -2,19 +2,16 @@ import "../../public/assets/css/style.css";
 import { Link } from "react-router-dom";
 
 const SideBarItem = ({ data, isSmall }) => {
-  const customStyle = `
-  html {
-    font-size: 0.5235vw;
-  }
-`;
+  const isActive = data.path === window.location.pathname;
+  // console.log(data.path);
 
-  console.log(isSmall);
   return (
     <Link
       to={data.path}
-      className={`dash__sidebar__item ${isSmall ? "small" : ""}`}
+      className={`dash__sidebar__item ${isSmall ? "small" : ""} ${
+        isActive ? "active" : ""
+      }`}
     >
-      <style dangerouslySetInnerHTML={{ __html: customStyle }} />
       <div className={`dash__sidebar__item-icon ${isSmall ? "small" : ""}`}>
         {data.icon}
       </div>
