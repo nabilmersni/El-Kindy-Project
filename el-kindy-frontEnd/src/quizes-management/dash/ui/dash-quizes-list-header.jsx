@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import "../../../../public/assets/css/style.css";
 import DashAnimation from "../../../dashboard-layout/dash-animation";
 
-const DashAdminCoursesHeader = () => {
+const DashQuizesListHeader = () => {
   return (
-    <div className="dash__content__container__firstRow">
+    <div className="dash__content__container__firstRow quiz">
       <div className="dash__content__container__firstRow__leftSide">
-        <h1 className="dash__content__container__title">Courses List</h1>
+        <h1 className="dash__content__container__title quiz">Quizes List</h1>
         <div className="dash__content__container__input">
           <input className="dash__content__container__search" type="search" />
           <div className="dash__content__container__search-icon">
@@ -35,27 +35,7 @@ const DashAdminCoursesHeader = () => {
         </div>
         <p className="dash__content__container__filterBy">Filter by:</p>
         <div className="dash__content__container__category">
-          Category
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            x="0"
-            y="0"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-            className="filter-arrow-icon"
-          >
-            <g>
-              <path
-                d="M385.1 219.9 199.2 34c-20-20-52.3-20-72.3 0s-20 52.3 0 72.3L276.7 256 126.9 405.7c-20 20-20 52.3 0 72.3s52.3 20 72.3 0l185.9-185.9c19.9-19.9 19.9-52.3 0-72.2z"
-                opacity="1"
-              ></path>
-            </g>
-          </svg>
-        </div>
-        <div className="dash__content__container__type">
-          Type
+          Level
           <svg
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
@@ -76,46 +56,9 @@ const DashAdminCoursesHeader = () => {
         </div>
       </div>
       <div className="dash__content__container__firstRow__RightSide">
-        <div className="dash__content__container__firstRow__RightSide__openCategoriesBtn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            x="0"
-            y="0"
-            viewBox="0 0 64 64"
-            xmlSpace="preserve"
-          >
-            <g transform="matrix(-1,0,0,1,64,0)">
-              <path
-                d="M29 11v14a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4V11a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4zm24-4H39a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h14a4 4 0 0 0 4-4V11a4 4 0 0 0-4-4zM25 35H11a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h14a4 4 0 0 0 4-4V39a4 4 0 0 0-4-4zm21 0a11 11 0 1 0 11 11 11 11 0 0 0-11-11z"
-                opacity="1"
-              ></path>
-            </g>
-          </svg>
-        </div>
-        <Link
-          to={"/dash-admin-add-new-course"}
-          className="dash__content__container__firstRow__RightSide__addNewCourseBtn"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            x="0"
-            y="0"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-            className=""
-          >
-            <g>
-              <path
-                d="M467 211H301V45c0-24.853-20.147-45-45-45s-45 20.147-45 45v166H45c-24.853 0-45 20.147-45 45s20.147 45 45 45h166v166c0 24.853 20.147 45 45 45s45-20.147 45-45V301h166c24.853 0 45-20.147 45-45s-20.147-45-45-45z"
-                opacity="1"
-              ></path>
-            </g>
-          </svg>
-        </Link>
+        <a href="./dash-admin__add-new-quiz.html" className="add-new-quiz--btn">
+          Add New Quiz
+        </a>
       </div>
       <div className="dash__content__container__firstRow__RightSide__dancingNote">
         <DashAnimation
@@ -127,4 +70,4 @@ const DashAdminCoursesHeader = () => {
   );
 };
 
-export default DashAdminCoursesHeader;
+export default DashQuizesListHeader;
