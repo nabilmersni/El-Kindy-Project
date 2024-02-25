@@ -118,7 +118,7 @@ export const AdminDashSideBarMenuItems = [
     ),
   },
   {
-    path: "/",
+    path: "/dash-admin-quizes",
     name: "Quizes",
     icon: (
       <svg

@@ -1014,9 +1014,10 @@ input:checked + .slider:before {
   height: 20rem;
   border-radius: 3.5rem;
   background-color: #fff;
-  box-shadow: 0 0.2rem 2rem rgb(0 0 0 / 7%);
+  box-shadow: 0 0.2rem 3rem rgb(0 0 0 / 11%);
   margin-left: 2rem;
   margin-top: 2rem;
+  margin-bottom: 3rem;
   padding: 2.2rem 3.4rem;
 }
 

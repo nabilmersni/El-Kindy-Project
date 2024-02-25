@@ -1,6 +1,7 @@
 import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
 import DashQuizesListHeader from "../ui/dash-quizes-list-header";
+import QuizCard from "../ui/quiz-card";
 
 const DashQuizesList = () => {
   const quizes = [
@@ -28,10 +29,10 @@ const DashQuizesList = () => {
   return (
     <DashLayout>
       <DashQuizesListHeader />
-      <div className="dash__content__container__courses-list">
-        {/* {quizes.map((item, index) => (
-          // <CourseCard key={index} data={item} />
-        ))} */}
+      <div className="dash__content__container__courses-list quiz">
+        {quizes.map((item, index) => (
+          <QuizCard key={index} data={item} />
+        ))}
       </div>
     </DashLayout>
   );
