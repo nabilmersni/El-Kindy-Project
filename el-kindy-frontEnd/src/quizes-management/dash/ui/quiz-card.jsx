@@ -4,8 +4,10 @@ import { useState } from "react";
 
 import "react-circular-progressbar/dist/styles.css";
 import ManageParticipantsModal from "./manage-participants-modal";
+import { Link } from "react-router-dom";
 
 const QuizCard = ({ data }) => {
+  console.log(data);
   const percentage = 66;
   const styles = buildStyles({
     // Customize the color of the path, trail, and text
@@ -115,9 +117,13 @@ const QuizCard = ({ data }) => {
                   </svg>
                 </a>
               </div>
-              <a href="" className="quiz-item__manageQuestions-btn">
+              <Link
+                // to={`/dash-admin-questions/${data.id}`}
+                to={"/dash-admin-questions"}
+                className="quiz-item__manageQuestions-btn"
+              >
                 Manage Questions
-              </a>
+              </Link>
             </div>
           </div>
           <div className="quiz-item-column__2">

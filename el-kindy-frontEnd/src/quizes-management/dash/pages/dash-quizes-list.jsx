@@ -2,8 +2,10 @@ import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
 import DashQuizesListHeader from "../ui/dash-quizes-list-header";
 import QuizCard from "../ui/quiz-card";
+// import { useParams } from "react-router-dom";
 
 const DashQuizesList = () => {
+  // const { id } = useParams();
   const quizes = [
     {
       id: 1,

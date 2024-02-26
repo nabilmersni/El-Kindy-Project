@@ -6,6 +6,7 @@ import DashAdminCourses from "./courses-management/dash-admin/pages/dash-admin-c
 import DashAdminAddNewCourse from "./courses-management/dash-admin/pages/dash-admin-add-new-course";
 import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
+import DashQuestionsList from "./quizes-management/dash/pages/dash-questions-list";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
           path="/dash-admin-add-new-quiz"
           element={<DashAdminAddNewQuiz />}
         />
+
+        <Route path="/dash-admin-questions" element={<DashQuestionsList />} />
 
         {/*----------------End admin dash Quizes  ---------------*/}
 
