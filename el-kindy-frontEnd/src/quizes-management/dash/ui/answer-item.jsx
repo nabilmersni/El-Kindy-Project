@@ -25,7 +25,7 @@ const AnswerItem = ({}) => {
               </g>
             </svg>
           </div>
-          <label for="radioOption1" className="radioLabelItem">
+          <label htmlFor="radioOption1" className="radioLabelItem">
             88 keys, 52 white and 36 black.
           </label>
         </div>

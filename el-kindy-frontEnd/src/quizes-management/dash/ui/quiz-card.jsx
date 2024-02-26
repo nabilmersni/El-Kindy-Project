@@ -118,8 +118,8 @@ const QuizCard = ({ data }) => {
                 </a>
               </div>
               <Link
-                // to={`/dash-admin-questions/${data.id}`}
-                to={"/dash-admin-questions"}
+                to={`/dash-admin-questions/${data.id}`}
+                // to={"/dash-admin-questions"}
                 className="quiz-item__manageQuestions-btn"
               >
                 Manage Questions

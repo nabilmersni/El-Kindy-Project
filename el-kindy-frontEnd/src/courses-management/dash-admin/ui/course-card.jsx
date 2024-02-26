@@ -7,7 +7,7 @@ const CourseCard = ({ data }) => {
       <div className="dash__courses__list__card-img-container">
         <img
           className="dash__courses__list__card-img"
-          src="./assets/img/photo1.jpg"
+          src="../../../../public/assets/img/photo1.jpg"
           alt=""
         />
       </div>

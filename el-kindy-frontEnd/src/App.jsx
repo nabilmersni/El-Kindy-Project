@@ -31,7 +31,10 @@ function App() {
           element={<DashAdminAddNewQuiz />}
         />
 
-        <Route path="/dash-admin-questions" element={<DashQuestionsList />} />
+        <Route
+          path="/dash-admin-questions/:id"
+          element={<DashQuestionsList />}
+        />
 
         {/*----------------End admin dash Quizes  ---------------*/}
 
