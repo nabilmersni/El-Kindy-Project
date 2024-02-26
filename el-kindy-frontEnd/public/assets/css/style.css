@@ -893,7 +893,7 @@ html {
 } */
 
 .add-new-course__submit-btn.quiz {
-  background-color: rgba(0, 108, 190, 0.041);
+  background-color: rgba(0, 108, 190, 0.041) !important;
   color: #006bbe;
   border: solid 1px #006bbe;
   padding: 1.7rem 2rem;
@@ -903,7 +903,7 @@ html {
 }
 
 .add-new-course__submit-btn.quiz:hover {
-  background-color: #006bbe;
+  background-color: #006bbe !important;
   color: #fff;
 }
 
@@ -1355,7 +1355,7 @@ input:checked + .slider:before {
   box-shadow: 0 0.2rem 2rem rgb(0 0 0 / 9%);
   display: flex;
   align-items: center;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 700;
   padding-left: 2rem;
   padding-right: 2rem;

@@ -56,9 +56,9 @@ const DashQuizesListHeader = () => {
         </div>
       </div>
       <div className="dash__content__container__firstRow__RightSide">
-        <a href="./dash-admin__add-new-quiz.html" className="add-new-quiz--btn">
+        <Link to={"/dash-admin-add-new-quiz"} className="add-new-quiz--btn">
           Add New Quiz
-        </a>
+        </Link>
       </div>
       <div className="dash__content__container__firstRow__RightSide__dancingNote">
         <DashAnimation
