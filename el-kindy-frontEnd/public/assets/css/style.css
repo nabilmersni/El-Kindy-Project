@@ -1002,6 +1002,7 @@ input:checked + .slider:before {
   font-weight: 700;
   padding: 1rem 2rem;
   border-radius: 4rem;
+  text-decoration: underline;
 }
 
 .add-new-quiz--btn:hover {
@@ -1059,6 +1060,7 @@ input:checked + .slider:before {
   cursor: pointer;
   padding: 1rem 2rem;
   border-radius: 4rem;
+  text-decoration: underline;
 }
 
 .quiz-item__manageQuestions-btn:hover {
@@ -1190,7 +1192,7 @@ input:checked + .slider:before {
 }
 
 .manage-participants-model {
-  --tw-bg-opacity: 0.8;
+  --tw-bg-opacity: 0.6;
   background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
   position: fixed;
   left: 0;
@@ -1309,7 +1311,7 @@ input:checked + .slider:before {
   font-weight: 700;
   border-top-left-radius: 5rem;
   border-top-right-radius: 5rem;
-  color: #722eca;
+  color: #2d0a4e;
   margin-top: 3rem;
   width: 96%;
 }
