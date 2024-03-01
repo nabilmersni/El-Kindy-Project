@@ -15,6 +15,19 @@ export default withMT({
         black: "#02241A",
         bodyBg: "#E9F6FF",
         nav: "#627BBC",
+
+        google: {
+          "text-gray": "#3c4043",
+          "button-blue": "#7586FF",
+          "button-blue-hover": "#5195ee",
+          "button-dark": "#202124",
+          "button-dark-hover": "#555658",
+          "button-border-light": "#dadce0",
+          "logo-blue": "#4285f4",
+          "logo-green": "#34a853",
+          "logo-yellow": "#fbbc05",
+          "logo-red": "#ea4335",
+        },
       },
       fontFamily: {
         nunito: ["nunito", "sans-serif"],

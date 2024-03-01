@@ -7,6 +7,8 @@ import DashAdminAddNewCourse from "./courses-management/dash-admin/pages/dash-ad
 import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
 import DashQuestionsList from "./quizes-management/dash/pages/dash-questions-list";
+import Login from "./pages/Login";
+import DashAdminUsers from "./users-management/dash-admin/pages/dash-admin-users";
 
 function App() {
   return (
@@ -14,7 +16,12 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin-dash" element={<AdminDashboard />} />
+
+        {/* ---------------admin dash users  -----------------*/}
+        <Route path="/dash-admin-users" element={<DashAdminUsers />} />
+        {/*----------------End admin dash users  ---------------*/}
 
         {/* ---------------admin dash courses  -----------------*/}
         <Route path="/dash-admin-courses" element={<DashAdminCourses />} />

@@ -94,7 +94,7 @@ export function Nav() {
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Link to={"/"}>
+          <Link to={"/login"}>
             <Button
               variant="text"
               size="sm"
@@ -110,7 +110,7 @@ export function Nav() {
               size="sm"
               className="bg-lightBlue text-nav text-[0.9rem] rounded-[.5rem] hover:bg-secondaryLight capitalize"
             >
-              Sign In
+              Sign Up
             </Button>
           </Link>
         </div>
@@ -130,7 +130,7 @@ export function Nav() {
       <Collapse open={openNav}>
         <NavList />
         <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Link to={"/"}>
+          <Link to={"/login"}>
             <Button
               variant="outlined"
               size="sm"
@@ -149,7 +149,7 @@ export function Nav() {
               fullWidth
               className="bg-lightBlue text-nav text-[0.9rem]  hover:bg-secondaryLight capitalize"
             >
-              Sign In
+              Sign Up
             </Button>
           </Link>
         </div>
