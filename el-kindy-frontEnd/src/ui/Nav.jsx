@@ -81,11 +81,7 @@ export function Nav() {
   return (
     <Navbar className="mx-auto fixed top-2 left-0 right-0 z-50 max-w-screen-xl px-4 py-2">
       <div className="flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          variant="h6"
-          className="mr-4 cursor-pointer py-1.5 lg:ml-2"
-        >
+        <Typography variant="h6" className="mr-4 cursor-pointer py-1.5 lg:ml-2">
           <Link to={"/"}>
             <img src="logo.svg" alt="el kindy logo" className="w-[1.6rem]" />
           </Link>

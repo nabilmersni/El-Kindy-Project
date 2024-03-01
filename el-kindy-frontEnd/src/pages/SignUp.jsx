@@ -1,7 +1,7 @@
-import { Nav } from "../ui/Nav";
 import Lottie from "react-lottie";
 
 import loginAnimation from "../../public/lottieAnimations/login.json";
+import { Nav } from "../ui/Nav";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,6 +14,7 @@ import FormLabel from "@mui/material/FormLabel";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { signUp } from "../services/userApi";
+import { Typography } from "@material-tailwind/react";
 
 function SignUp() {
   // const handleSubmit = (event) => {
@@ -36,16 +37,242 @@ function SignUp() {
     confirmPassword: "",
     role: "user",
   };
+
   const [signUpFormData, setsignUpFormData] = useState(initSignUpFormData);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await signUp(signUpFormData);
+
+    if (!hasErrors() && !isFormDataEmpty()) {
+      await signUp(signUpFormData);
+    }
+  };
+
+  const [errors, setErrors] = useState({
+    fullname: "",
+    dateOfBirth: "",
+    email: "",
+    phone: "",
+    phone2: "",
+    profession: "",
+    password: "",
+    confirmPassword: "",
+    role: "",
+  });
+
+  const hasErrors = () => {
+    return Object.values(errors).some((error) => error !== "");
+  };
+
+  const isFormDataEmpty = () => {
+    return Object.entries(signUpFormData).some(
+      ([key, value]) => key !== "phone2" && value === ""
+    );
   };
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
     setsignUpFormData({ ...signUpFormData, [name]: value });
+
+    // Validation for Fullname
+    if (name === "fullname") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Fullname is required",
+        }));
+      } else if (value.length < 3) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Fullname must be at least 3 characters long",
+        }));
+      } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Only letters are allowed",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+        }));
+      }
+    }
+
+    // Validation for Date of Birth
+    if (name === "dateOfBirth") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Date of birth is required",
+        }));
+      } else {
+        const currentDate = new Date();
+        const inputDate = new Date(value);
+        const minDate = new Date(
+          currentDate.getFullYear() - 5,
+          currentDate.getMonth(),
+          currentDate.getDate()
+        );
+
+        if (inputDate > currentDate || inputDate > minDate) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: "Invalid date of birth. Must be at least 5 years old.",
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: "",
+          }));
+        }
+      }
+    }
+
+    // Validation for Email
+    if (name === "email") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Email is required",
+        }));
+      } else if (!/\S+@\S+\.\S+/.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Invalid email format",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+        }));
+      }
+    }
+
+    // Validation for Phone Number 1
+    if (name === "phone") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Phone number is required",
+        }));
+      } else if (!/^\d{8}$/.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Invalid phone number format. Must be 8 digits",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+        }));
+      }
+    }
+
+    // Validation for Phone Number 2
+    if (name === "phone2") {
+      if (value && !/^\d{8}$/.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Invalid phone number format. Must be 8 digits",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+        }));
+      }
+    }
+
+    // Validation for Profession
+    if (name === "profession") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Profession is required",
+        }));
+      } else if (value.trim().length < 3) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Profession must be at least 3 characters",
+        }));
+      } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Only letters are allowed",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+        }));
+      }
+    }
+
+    // Validation for Password
+    if (name === "password") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Password is required",
+        }));
+      } else if (value.trim().length < 8) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Password must be at least 8 characters",
+        }));
+      } else if (
+        signUpFormData.confirmPassword &&
+        value !== signUpFormData.confirmPassword
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Passwords do not match",
+          [name]: "",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+          confirmPassword: "",
+        }));
+      }
+    }
+
+    // Validation for Confirm Password
+    if (name === "confirmPassword") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Confirm Password is required",
+        }));
+      } else if (value !== signUpFormData.password) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Passwords do not match",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+        }));
+      }
+    }
+
+    // Validation for Role
+    if (name === "role") {
+      if (!["user", "teacher"].includes(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          role: "Hello little hacker 👩‍💻",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          role: "",
+        }));
+      }
+    }
   };
 
   const customStyle = `
@@ -102,23 +329,24 @@ function SignUp() {
               label="Fullname"
               name="fullname"
               onChange={changeHandler}
+              onBlur={changeHandler}
+              error={Boolean(errors.fullname)}
+              helperText={errors.fullname}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor: "#DBDFEA", // Outline color when not focused
+                    borderColor: errors.fullname ? "red" : "#DBDFEA",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#7586FF", // Outline color on hover
+                    borderColor: errors.fullname ? "red" : "#7586FF",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#7586FF", // Outline color when focused
+                    borderColor: errors.fullname ? "red" : "#7586FF",
                   },
                 },
-
                 "& .MuiInputLabel-root": {
-                  // color: "#DBDFEA", // Label color when focused
                   "&.Mui-focused": {
-                    color: "#7586FF",
+                    color: errors.fullname ? "red" : "#7586FF",
                   },
                 },
               }}
@@ -129,30 +357,31 @@ function SignUp() {
               required
               fullWidth
               type="date"
-              id="date of birth"
-              label="date of birth"
+              id="dateOfBirth"
+              label="Date of Birth"
               name="dateOfBirth"
               onChange={changeHandler}
+              onBlur={changeHandler}
+              error={Boolean(errors.dateOfBirth)}
+              helperText={errors.dateOfBirth}
               InputLabelProps={{
-                shrink: true, // Show label as floating when focused
+                shrink: true,
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor: "#DBDFEA", // Outline color when not focused
+                    borderColor: errors.dateOfBirth ? "red" : "#DBDFEA",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#7586FF", // Outline color on hover
+                    borderColor: errors.dateOfBirth ? "red" : "#7586FF",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#7586FF", // Outline color when focused
+                    borderColor: errors.dateOfBirth ? "red" : "#7586FF",
                   },
                 },
-
                 "& .MuiInputLabel-root": {
-                  // color: "#DBDFEA", // Label color when focused
                   "&.Mui-focused": {
-                    color: "#7586FF",
+                    color: errors.dateOfBirth ? "red" : "#7586FF",
                   },
                 },
               }}
@@ -167,23 +396,24 @@ function SignUp() {
               label="Email Address"
               name="email"
               onChange={changeHandler}
+              onBlur={changeHandler}
+              error={Boolean(errors.email)}
+              helperText={errors.email}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor: "#DBDFEA", // Outline color when not focused
+                    borderColor: errors.email ? "red" : "#DBDFEA",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#7586FF", // Outline color on hover
+                    borderColor: errors.email ? "red" : "#7586FF",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#7586FF", // Outline color when focused
+                    borderColor: errors.email ? "red" : "#7586FF",
                   },
                 },
-
                 "& .MuiInputLabel-root": {
-                  // color: "#DBDFEA", // Label color when focused
                   "&.Mui-focused": {
-                    color: "#7586FF",
+                    color: errors.email ? "red" : "#7586FF",
                   },
                 },
               }}
@@ -199,23 +429,24 @@ function SignUp() {
                 label="Phone N°1"
                 name="phone"
                 onChange={changeHandler}
+                onBlur={changeHandler}
+                error={Boolean(errors.phone)}
+                helperText={errors.phone}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "#DBDFEA", // Outline color when not focused
+                      borderColor: errors.phone ? "red" : "#DBDFEA",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#7586FF", // Outline color on hover
+                      borderColor: errors.phone ? "red" : "#7586FF",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#7586FF", // Outline color when focused
+                      borderColor: errors.phone ? "red" : "#7586FF",
                     },
                   },
-
                   "& .MuiInputLabel-root": {
-                    // color: "#DBDFEA", // Label color when focused
                     "&.Mui-focused": {
-                      color: "#7586FF",
+                      color: errors.phone ? "red" : "#7586FF",
                     },
                   },
                 }}
@@ -229,23 +460,24 @@ function SignUp() {
                 label="Phone N°2"
                 name="phone2"
                 onChange={changeHandler}
+                onBlur={changeHandler}
+                error={Boolean(errors.phone2)}
+                helperText={errors.phone2}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "#DBDFEA", // Outline color when not focused
+                      borderColor: errors.phone2 ? "red" : "#DBDFEA",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#7586FF", // Outline color on hover
+                      borderColor: errors.phone2 ? "red" : "#7586FF",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#7586FF", // Outline color when focused
+                      borderColor: errors.phone2 ? "red" : "#7586FF",
                     },
                   },
-
                   "& .MuiInputLabel-root": {
-                    // color: "#DBDFEA", // Label color when focused
                     "&.Mui-focused": {
-                      color: "#7586FF",
+                      color: errors.phone2 ? "red" : "#7586FF",
                     },
                   },
                 }}
@@ -261,23 +493,24 @@ function SignUp() {
               label="Parents's Profession / Profession"
               name="profession"
               onChange={changeHandler}
+              onBlur={changeHandler}
+              error={Boolean(errors.profession)}
+              helperText={errors.profession}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor: "#DBDFEA", // Outline color when not focused
+                    borderColor: errors.profession ? "red" : "#DBDFEA",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#7586FF", // Outline color on hover
+                    borderColor: errors.profession ? "red" : "#7586FF",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#7586FF", // Outline color when focused
+                    borderColor: errors.profession ? "red" : "#7586FF",
                   },
                 },
-
                 "& .MuiInputLabel-root": {
-                  // color: "#DBDFEA", // Label color when focused
                   "&.Mui-focused": {
-                    color: "#7586FF",
+                    color: errors.profession ? "red" : "#7586FF",
                   },
                 },
               }}
@@ -293,23 +526,24 @@ function SignUp() {
                 type="password"
                 name="password"
                 onChange={changeHandler}
+                onBlur={changeHandler}
+                error={Boolean(errors.password)}
+                helperText={errors.password}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "#DBDFEA", // Outline color when not focused
+                      borderColor: errors.password ? "red" : "#DBDFEA",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#7586FF", // Outline color on hover
+                      borderColor: errors.password ? "red" : "#7586FF",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#7586FF", // Outline color when focused
+                      borderColor: errors.password ? "red" : "#7586FF",
                     },
                   },
-
                   "& .MuiInputLabel-root": {
-                    // color: "#DBDFEA", // Label color when focused
                     "&.Mui-focused": {
-                      color: "#7586FF",
+                      color: errors.password ? "red" : "#7586FF",
                     },
                   },
                 }}
@@ -324,23 +558,24 @@ function SignUp() {
                 label="Confirm Password"
                 name="confirmPassword"
                 onChange={changeHandler}
+                onBlur={changeHandler}
+                error={Boolean(errors.confirmPassword)}
+                helperText={errors.confirmPassword}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "#DBDFEA", // Outline color when not focused
+                      borderColor: errors.confirmPassword ? "red" : "#DBDFEA",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#7586FF", // Outline color on hover
+                      borderColor: errors.confirmPassword ? "red" : "#7586FF",
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#7586FF", // Outline color when focused
+                      borderColor: errors.confirmPassword ? "red" : "#7586FF",
                     },
                   },
-
                   "& .MuiInputLabel-root": {
-                    // color: "#DBDFEA", // Label color when focused
                     "&.Mui-focused": {
-                      color: "#7586FF",
+                      color: errors.confirmPassword ? "red" : "#7586FF",
                     },
                   },
                 }}
@@ -391,6 +626,11 @@ function SignUp() {
                   label="Teacher"
                 />
               </RadioGroup>
+              {errors.role && (
+                <Typography variant="paragraph" color="red">
+                  {errors.role}
+                </Typography>
+              )}
             </FormControl>
 
             {/* <FormControlLabel
@@ -403,6 +643,7 @@ function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={hasErrors() || isFormDataEmpty()}
               sx={{
                 mt: 3,
                 mb: 2,
