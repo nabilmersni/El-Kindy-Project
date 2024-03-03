@@ -19,7 +19,8 @@ export default withMT({
         google: {
           "text-gray": "#3c4043",
           "button-blue": "#7586FF",
-          "button-blue-hover": "#5195ee",
+          // "button-blue-hover": "#5195ee",
+          "button-blue-hover": "#556CD6",
           "button-dark": "#202124",
           "button-dark-hover": "#555658",
           "button-border-light": "#dadce0",

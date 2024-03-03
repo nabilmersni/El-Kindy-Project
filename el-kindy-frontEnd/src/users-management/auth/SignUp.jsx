@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Lottie from "react-lottie";
-
-import loginAnimation from "../../public/lottieAnimations/login.json";
-import { Nav } from "../ui/Nav";
-
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -11,21 +11,15 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { signUp } from "../services/userApi";
 import { Typography } from "@material-tailwind/react";
 
-function SignUp() {
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
+import loginAnimation from "../../../public/lottieAnimations/login.json";
+import { Nav } from "../../ui/Nav";
+import { signUp } from "../../services/userApi";
+import { register, reset } from "../../features/auth/AuthSlice";
+import Spinner from "../../ui/Spinner";
 
+function SignUp() {
   const initSignUpFormData = {
     fullname: "",
     dateOfBirth: "",
@@ -38,13 +32,32 @@ function SignUp() {
     role: "user",
   };
 
+  const naviagte = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
+
   const [signUpFormData, setsignUpFormData] = useState(initSignUpFormData);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess) {
+      naviagte("/admin-dash");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, naviagte, dispatch]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!hasErrors() && !isFormDataEmpty()) {
-      await signUp(signUpFormData);
+      // await signUp(signUpFormData);
+      dispatch(register(signUpFormData));
     }
   };
 
@@ -296,10 +309,14 @@ function SignUp() {
     border-radius: 8rem;
   }
 `;
+
   return (
     <div>
       <style dangerouslySetInnerHTML={{ __html: customStyle }} />
       <Nav />
+
+      {isLoading ? <Spinner /> : ""}
+
       <div className="flex justify-center lg:justify-between items-center mt-[10rem] mb-[2rem]  px-[2rem] relative">
         <div className="hidden lg:block max-w-[40rem] ">
           <Lottie
