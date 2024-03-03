@@ -1,6 +1,33 @@
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { app } from "./firebase";
+import { reset, authGoogle } from "../../features/auth/AuthSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 function GoogleAuth() {
-  const handleGoogleAuth = () => {
+  const naviagte = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
+
+  const handleGoogleAuth = async () => {
     console.log("hellloo");
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth(app);
+      const result = await signInWithPopup(auth, provider);
+      console.log(result);
+      dispatch(
+        authGoogle({
+          email: result.user.email,
+          idToken: result._tokenResponse.idToken,
+        })
+      );
+    } catch (error) {
+      console.log("could not login with google", error);
+    }
   };
 
   return (

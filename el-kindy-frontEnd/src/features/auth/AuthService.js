@@ -17,9 +17,11 @@ const register = async (userData) => {
 
 const login = async (userData) => {
   const response = await instance.post(`${API_URL}/login`, userData);
-  if (response.data) {
-    // localStorage.setItem("loggedUser", JSON.stringify(response.data));
-  }
+  return response.data.data.user;
+};
+
+const authGoogle = async (userData) => {
+  const response = await instance.post(`${API_URL}/auth/google`, userData);
   return response.data.data.user;
 };
 
@@ -32,6 +34,7 @@ const authService = {
   register,
   login,
   getLoggedUser,
+  authGoogle,
 };
 
 export default authService;
