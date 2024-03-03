@@ -33,8 +33,19 @@ function Login() {
     if (isError) {
       toast.error(message);
     }
-    if (user) {
-      naviagte("/admin-dash");
+    // if (user) {
+    //   naviagte("/admin-dash");
+    // }
+    switch (user?.role) {
+      case "admin":
+        naviagte("/admin-dash");
+        break;
+      case "user":
+        naviagte("/user-dash");
+        break;
+
+      default:
+        break;
     }
 
     dispatch(reset());

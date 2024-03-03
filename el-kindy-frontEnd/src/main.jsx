@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "@material-tailwind/react";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
 
 import { store } from "./Store";
 import App from "./App.jsx";
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider>
     <Provider store={store}>
       <App />
+      <ToastContainer />
     </Provider>
   </ThemeProvider>
   // </React.StrictMode>

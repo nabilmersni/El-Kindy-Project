@@ -75,6 +75,11 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
+
+    notAuthenticated: (state, action) => {
+      state.isError = true;
+      state.message = action.payload || "You are not authenticated!";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -137,5 +142,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, notAuthenticated } = authSlice.actions;
 export default authSlice.reducer;

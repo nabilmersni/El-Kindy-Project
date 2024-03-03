@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux";
 import "../../public/assets/css/style.css";
 
 const DashNavBar = ({ toggleSidebar }) => {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <div className="dash__content__nav">
       <div onClick={toggleSidebar} className="dash__content__nav__left-side">
@@ -76,7 +79,7 @@ const DashNavBar = ({ toggleSidebar }) => {
         </div>
         <div className="dash__content__nav__right-side__current-user">
           <div className="dash__content__nav__right-side__current-user-fullname">
-            Braiek Ali
+            {user?.fullname}
           </div>
           <a
             href="#"

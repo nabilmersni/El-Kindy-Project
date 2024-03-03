@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { getLoggedUser, reset } from "./features/auth/AuthSlice";
 
@@ -16,12 +15,18 @@ import DashAdminUsers from "./users-management/dash-admin/pages/dash-admin-users
 import { useEffect } from "react";
 import SignUp from "./users-management/auth/SignUp";
 import Login from "./users-management/auth/Login";
+import {
+  OnlyAdminRoute,
+  PrivateRoute,
+} from "./users-management/routes-guard/ProtectRoute";
+import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getLoggedUser());
+    dispatch(reset());
   }, [dispatch]);
 
   return (
@@ -31,38 +36,48 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/admin-dash" element={<AdminDashboard />} />
 
-          {/* ---------------admin dash users  -----------------*/}
-          <Route path="/dash-admin-users" element={<DashAdminUsers />} />
-          {/*----------------End admin dash users  ---------------*/}
+          <Route element={<PrivateRoute />}>
+            <Route path="/user-dash" element={<UserDashboard />} />
 
-          {/* ---------------admin dash courses  -----------------*/}
-          <Route path="/dash-admin-courses" element={<DashAdminCourses />} />
-          <Route
-            path="/dash-admin-add-new-course"
-            element={<DashAdminAddNewCourse />}
-          />
-          {/*----------------End admin dash courses  ---------------*/}
+            <Route element={<OnlyAdminRoute />}>
+              <Route path="/admin-dash" element={<AdminDashboard />} />
 
-          {/* ---------------admin dash Quizes  -----------------*/}
-          <Route path="/dash-admin-quizes" element={<DashQuizesList />} />
-          <Route
-            path="/dash-admin-add-new-quiz"
-            element={<DashAdminAddNewQuiz />}
-          />
+              {/* ---------------admin dash users  -----------------*/}
+              <Route path="/dash-admin-users" element={<DashAdminUsers />} />
+              {/*----------------End admin dash users  ---------------*/}
 
-          <Route
-            path="/dash-admin-questions/:id"
-            element={<DashQuestionsList />}
-          />
+              {/* ---------------admin dash courses  -----------------*/}
+              <Route
+                path="/dash-admin-courses"
+                element={<DashAdminCourses />}
+              />
+              <Route
+                path="/dash-admin-add-new-course"
+                element={<DashAdminAddNewCourse />}
+              />
+              {/*----------------End admin dash courses  ---------------*/}
 
-          {/*----------------End admin dash Quizes  ---------------*/}
+              {/* ---------------admin dash Quizes  -----------------*/}
+              <Route path="/dash-admin-quizes" element={<DashQuizesList />} />
+              <Route
+                path="/dash-admin-add-new-quiz"
+                element={<DashAdminAddNewQuiz />}
+              />
+
+              <Route
+                path="/dash-admin-questions/:id"
+                element={<DashQuestionsList />}
+              />
+              {/* </Route> */}
+
+              {/*----------------End admin dash Quizes  ---------------*/}
+            </Route>
+          </Route>
 
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </BrowserRouter>
-      <ToastContainer />
     </>
   );
 }
