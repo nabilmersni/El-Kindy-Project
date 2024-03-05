@@ -20,65 +20,65 @@ import {
   PrivateRoute,
 } from "./users-management/routes-guard/ProtectRoute";
 import UserDashboard from "./pages/UserDashboard";
+import secureLocalStorage from "react-secure-storage";
+import DashAdminProfile from "./users-management/dash-admin/pages/dash-admin-profile";
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getLoggedUser());
-    dispatch(reset());
-  }, [dispatch]);
+    // dispatch(getLoggedUser());
+    // dispatch(reset());
+    const loggedUser = secureLocalStorage.getItem("user");
+    console.log(loggedUser);
+  }, []);
 
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
 
-          <Route element={<PrivateRoute />}>
-            <Route path="/user-dash" element={<UserDashboard />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/user-dash" element={<UserDashboard />} />
 
-            <Route element={<OnlyAdminRoute />}>
-              <Route path="/admin-dash" element={<AdminDashboard />} />
+          <Route element={<OnlyAdminRoute />}>
+            <Route path="/admin-dash" element={<AdminDashboard />} />
 
-              {/* ---------------admin dash users  -----------------*/}
-              <Route path="/dash-admin-users" element={<DashAdminUsers />} />
-              {/*----------------End admin dash users  ---------------*/}
+            {/* ---------------admin dash users  -----------------*/}
+            <Route path="/dash-admin-users" element={<DashAdminUsers />} />
+            <Route path="/dash-admin-profile" element={<DashAdminProfile />} />
+            {/*----------------End admin dash users  ---------------*/}
 
-              {/* ---------------admin dash courses  -----------------*/}
-              <Route
-                path="/dash-admin-courses"
-                element={<DashAdminCourses />}
-              />
-              <Route
-                path="/dash-admin-add-new-course"
-                element={<DashAdminAddNewCourse />}
-              />
-              {/*----------------End admin dash courses  ---------------*/}
+            {/* ---------------admin dash courses  -----------------*/}
+            <Route path="/dash-admin-courses" element={<DashAdminCourses />} />
+            <Route
+              path="/dash-admin-add-new-course"
+              element={<DashAdminAddNewCourse />}
+            />
+            {/*----------------End admin dash courses  ---------------*/}
 
-              {/* ---------------admin dash Quizes  -----------------*/}
-              <Route path="/dash-admin-quizes" element={<DashQuizesList />} />
-              <Route
-                path="/dash-admin-add-new-quiz"
-                element={<DashAdminAddNewQuiz />}
-              />
+            {/* ---------------admin dash Quizes  -----------------*/}
+            <Route path="/dash-admin-quizes" element={<DashQuizesList />} />
+            <Route
+              path="/dash-admin-add-new-quiz"
+              element={<DashAdminAddNewQuiz />}
+            />
 
-              <Route
-                path="/dash-admin-questions/:id"
-                element={<DashQuestionsList />}
-              />
-              {/* </Route> */}
+            <Route
+              path="/dash-admin-questions/:id"
+              element={<DashQuestionsList />}
+            />
+            {/* </Route> */}
 
-              {/*----------------End admin dash Quizes  ---------------*/}
-            </Route>
+            {/*----------------End admin dash Quizes  ---------------*/}
           </Route>
+        </Route>
 
-          <Route path="*" element={<h1>Not Found</h1>} />
-        </Routes>
-      </BrowserRouter>
-    </>
+        <Route path="*" element={<h1>Not Found</h1>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

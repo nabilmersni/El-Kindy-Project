@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./AuthService";
+import secureLocalStorage from "react-secure-storage";
 
 // Get user from localStorage
 // const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
+const loggedUser = secureLocalStorage.getItem("user");
+
 const initialState = {
-  user: null,
+  user: loggedUser || null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -65,11 +68,47 @@ export const authGoogle = createAsyncThunk(
   }
 );
 
+// face ID Registration
+export const faceIDRegistration = createAsyncThunk(
+  "auth/faceIDRegistration",
+  async ({ id, user }, thunkAPI) => {
+    try {
+      return await authService.faceIDRegistration(id, user);
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// auth faceID
+export const authFaceID = createAsyncThunk(
+  "auth/faceID",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.authFaceID(user);
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     reset: (state) => {
+      state.isError = false;
+      state.isSuccess = false;
+      state.isLoading = false;
+      state.message = "";
+    },
+
+    logout: (state) => {
+      state.user = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
@@ -138,9 +177,35 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+      .addCase(faceIDRegistration.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(faceIDRegistration.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(faceIDRegistration.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(authFaceID.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(authFaceID.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(authFaceID.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
 
-export const { reset, notAuthenticated } = authSlice.actions;
+export const { reset, notAuthenticated, logout } = authSlice.actions;
 export default authSlice.reducer;

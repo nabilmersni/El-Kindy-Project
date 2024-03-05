@@ -77,3 +77,251 @@ body {
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
+
+.users {
+  margin: 1.6rem 6.4rem 0 6.4rem;
+  position: relative;
+  height: 41.6rem;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-right: 4.8rem;
+}
+
+.users .users-list {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  border-radius: 4.8rem;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  padding-top: 0;
+}
+
+.user-table {
+  border-collapse: separate;
+  border-spacing: 0 1.6rem;
+  font-size: 1.6rem;
+  width: 100%;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+.user-table thead tr {
+  background-color: #f5f9fd;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+  border-spacing: 0 0;
+}
+
+.user-table thead tr th {
+  padding: 2rem;
+  color: #02241a;
+  font-size: 1.8rem;
+  text-transform: capitalize;
+}
+
+th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: -internal-center;
+}
+
+.user-table thead tr th:first-child {
+  border-left-style: solid;
+  border-top-left-radius: 3rem;
+  border-bottom-left-radius: 0.5rem;
+  border-color: transparent;
+}
+
+.user-table thead tr th:last-child {
+  border-left-style: solid;
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 0.5rem;
+  border-color: transparent;
+}
+
+.user-table tbody tr {
+  border-bottom: 0.1rem solid #dddddd;
+  font-size: 1.6rem;
+  border-radius: 8rem;
+  background-color: transparent;
+}
+
+.user-table tbody tr td {
+  background-color: var(--table-user-tr-bg);
+}
+
+.one-user {
+  box-shadow: 0 0.1rem 2rem rgb(0 0 0 / 6%);
+}
+
+.user-table tbody tr td:first-child {
+  border-left-style: solid;
+  border-top-left-radius: 8rem !important;
+  border-bottom-left-radius: 8rem !important;
+  border-color: transparent;
+}
+
+.user-table tbody tr td {
+  padding: 1.92rem 1.92rem;
+  color: var(--table-user-tr-text);
+  font-weight: 500;
+}
+/*******************************************************************************************/
+td {
+  display: table-cell;
+  vertical-align: inherit;
+}
+
+.user-table tbody tr .fullname-td__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.user-table tbody tr .fullname-td__img-container {
+  width: 5.6rem;
+  height: 5.6rem;
+  margin-right: 2.4rem;
+}
+
+.user-table tbody tr .fullname-td__img-container__img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 80rem;
+}
+
+.user-table tbody tr .fullname-td__fullname-username__fullname {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.user-table tbody tr .fullname-td__fullname-username__username {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #7b88ff;
+}
+
+.user-table tbody tr .state-td__active,
+.user-table tbody tr .state-td__unactive {
+  padding: 0.64rem 2.4rem;
+  background-color: var(--table-user-active-btn-bg);
+  border-radius: 1.92rem;
+  color: var(--table-user-active-btn-text);
+}
+.user-table tbody tr .state-td__active {
+  margin-left: 1.12rem;
+}
+
+.user-table tbody tr .state-td__unactive {
+  background-color: var(--table-user-unactive-btn-bg);
+  margin-left: 0.32rem;
+}
+
+.user-table tbody tr td:last-child {
+  border-right-style: solid;
+  border-bottom-right-radius: 8rem;
+  border-top-right-radius: 8rem;
+  border-color: transparent;
+  height: 9.44rem;
+}
+
+.user-table tbody tr .btn-td__btn {
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  padding: 1rem;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor: pointer;
+  margin: 0 0.96rem;
+  margin-left: 0;
+  margin-right: 0rem;
+  transition: all 0.4s ease;
+}
+
+.user-table tbody tr .btn-td__btn__icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.user-table tbody tr .btn-td__btn:hover {
+  background-color: #defee6;
+}
+
+.btn-td {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.bxs-edit {
+  font-size: 2.6rem;
+  color: #2a8fb9;
+}
+.bxs-edit:hover {
+  background-color: var(--table-user-edit-btn-hover);
+}
+.block-icon {
+  margin: 0.3rem;
+}
+
+/* table tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+  padding-right: 1rem;
+}
+
+table thead,
+table tbody tr {
+  display: sticky;
+  width: 100%;
+  table-layout: fixed;
+} */
+
+.tableFixHead {
+  overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+  height: 65vh; /* gives an initial height of 200px to the table */
+  padding-right: 1rem;
+}
+.tableFixHead thead th {
+  position: sticky; /* make the table heads sticky */
+  top: 0px; /* table head will be placed from the top of the table and sticks to it */
+}
+table {
+  border-collapse: collapse; /* make the table borders collapse to each other */
+  width: 100%;
+}
+
+th,
+td {
+  padding: 8px 16px;
+  /* border: 1px solid #ccc; */
+}
+th {
+  background: #f5f9fd;
+}
+
+tr {
+  margin: 2rem 0;
+}

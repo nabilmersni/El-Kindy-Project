@@ -1,74 +1,45 @@
+import { useEffect, useState } from "react";
 import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
 import UserItem from "../ui/UserItem";
 import DashAdminUsersHeader from "../ui/dash-admin-users__header";
+import userService from "../../../features/users/UserService";
 
 const DashAdminUsers = () => {
-  const participants = [
-    {
-      id: 1,
-      fullname: "Mersni nabil",
-      email: "nabil.mersni@esprit.tn",
-      level: "4Twin",
-      grade: "-",
-      assign: true,
-    },
-    {
-      id: 2,
-      fullname: "Mersni nabil",
-      email: "nabil.mersni@esprit.tn",
-      level: "4Twin",
-      grade: "-",
-      assign: true,
-    },
-    {
-      id: 3,
-      fullname: "Mersni nabil",
-      email: "nabil.mersni@esprit.tn",
-      level: "4Twin",
-      grade: "-",
-      assign: true,
-    },
-    {
-      id: 4,
-      fullname: "Mersni nabil",
-      email: "nabil.mersni@esprit.tn",
-      level: "4Twin",
-      grade: "-",
-      assign: true,
-    },
-  ];
+  const [users, setUsers] = useState([{}]);
+
+  const getAllUsers = async () => {
+    const data = await userService.getAllUsers();
+    setUsers(data);
+  };
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
   return (
     <DashLayout>
       <DashAdminUsersHeader />
-      <div className="dash__content__container__courses-list">
-        {/* {courses.map((item, index) => (
-          <CourseCard key={index} data={item} />
-        ))} */}
 
-        <div className="model__card--students-list__container">
-          <div className="model__card--students-list__header">
-            <div className="model__card--students-list__header-fullname">
-              Fullname
-            </div>
-            <div className="model__card--students-list__header-email">
-              Email
-            </div>
-            <div className="model__card--students-list__header-level">
-              Level
-            </div>
-            <div className="model__card--students-list__header-grade">
-              Grade
-            </div>
-            <div className="model__card--students-list__header-status">
-              Status
-            </div>
-            <div className="model__card--students-list__header-delete">#</div>
-          </div>
-          <div className="model__card--students-list">
-            {participants.map((item, index) => (
-              <UserItem key={index} data={item} />
-            ))}
+      <div className="userss">
+        <div className="users-list">
+          <div className="users-list__body tableFixHead">
+            <table className="user-table">
+              <thead>
+                <tr>
+                  <th>Full name</th>
+                  <th>email</th>
+                  <th>phone</th>
+                  <th>role</th>
+                  <th>account state</th>
+                  <th>#</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, index) => (
+                  <UserItem user={user} key={index} />
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

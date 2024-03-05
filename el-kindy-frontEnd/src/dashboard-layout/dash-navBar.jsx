@@ -1,8 +1,23 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "../../public/assets/css/style.css";
+import authService from "../features/auth/AuthService";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../features/auth/AuthSlice";
+import { toast } from "react-toastify";
 
 const DashNavBar = ({ toggleSidebar }) => {
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logoutHandler = async () => {
+    await authService.logout();
+    dispatch(logout());
+
+    toast.success("Logged out successfully");
+
+    navigate("/login");
+  };
 
   return (
     <div className="dash__content__nav">
@@ -30,27 +45,29 @@ const DashNavBar = ({ toggleSidebar }) => {
       <div className="dash__content__nav__right-side">
         <div className="dash__content__nav__right-side__icons">
           <div className="dash__content__nav__right-side__icons-logout">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              version="1.1"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              x="0"
-              y="0"
-              viewBox="0 0 512.005 512"
-              xmlSpace="preserve"
-              className="dash__content__nav__right-side__icons-logout-svg"
-            >
-              <g transform="matrix(-1,0,0,1,512.0050048828125,0)">
-                <path
-                  d="M320 277.336c-11.797 0-21.332 9.559-21.332 21.332v85.336c0 11.754-9.559 21.332-21.336 21.332h-64v-320c0-18.219-11.605-34.496-29.055-40.555l-6.316-2.113h99.371c11.777 0 21.336 9.578 21.336 21.336v64c0 11.773 9.535 21.332 21.332 21.332s21.332-9.559 21.332-21.332v-64c0-35.285-28.715-64-64-64H48c-.812 0-1.492.363-2.281.469-1.028-.086-2.008-.47-3.051-.47C19.137.004 0 19.138 0 42.669v384c0 18.219 11.605 34.496 29.055 40.555L157.44 510.02c4.352 1.343 8.68 1.984 13.227 1.984 23.531 0 42.664-19.137 42.664-42.668v-21.332h64c35.285 0 64-28.715 64-64v-85.336c0-11.773-9.535-21.332-21.332-21.332zm0 0"
-                  opacity="1"
-                ></path>
-                <path
-                  d="m505.75 198.254-85.336-85.332a21.33 21.33 0 0 0-23.25-4.633C389.207 111.598 384 119.383 384 128.004v64h-85.332c-11.777 0-21.336 9.555-21.336 21.332 0 11.777 9.559 21.332 21.336 21.332H384v64c0 8.621 5.207 16.406 13.164 19.715a21.335 21.335 0 0 0 23.25-4.63l85.336-85.335c8.34-8.34 8.34-21.824 0-30.164zm0 0"
-                  opacity="1"
-                ></path>
-              </g>
-            </svg>
+            <button onClick={logoutHandler}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                x="0"
+                y="0"
+                viewBox="0 0 512.005 512"
+                xmlSpace="preserve"
+                className="dash__content__nav__right-side__icons-logout-svg"
+              >
+                <g transform="matrix(-1,0,0,1,512.0050048828125,0)">
+                  <path
+                    d="M320 277.336c-11.797 0-21.332 9.559-21.332 21.332v85.336c0 11.754-9.559 21.332-21.336 21.332h-64v-320c0-18.219-11.605-34.496-29.055-40.555l-6.316-2.113h99.371c11.777 0 21.336 9.578 21.336 21.336v64c0 11.773 9.535 21.332 21.332 21.332s21.332-9.559 21.332-21.332v-64c0-35.285-28.715-64-64-64H48c-.812 0-1.492.363-2.281.469-1.028-.086-2.008-.47-3.051-.47C19.137.004 0 19.138 0 42.669v384c0 18.219 11.605 34.496 29.055 40.555L157.44 510.02c4.352 1.343 8.68 1.984 13.227 1.984 23.531 0 42.664-19.137 42.664-42.668v-21.332h64c35.285 0 64-28.715 64-64v-85.336c0-11.773-9.535-21.332-21.332-21.332zm0 0"
+                    opacity="1"
+                  ></path>
+                  <path
+                    d="m505.75 198.254-85.336-85.332a21.33 21.33 0 0 0-23.25-4.633C389.207 111.598 384 119.383 384 128.004v64h-85.332c-11.777 0-21.336 9.555-21.336 21.332 0 11.777 9.559 21.332 21.336 21.332H384v64c0 8.621 5.207 16.406 13.164 19.715a21.335 21.335 0 0 0 23.25-4.63l85.336-85.335c8.34-8.34 8.34-21.824 0-30.164zm0 0"
+                    opacity="1"
+                  ></path>
+                </g>
+              </svg>
+            </button>
           </div>
           <div className="dash__content__nav__right-side__icons-notif-container">
             <div className="dash__content__nav__right-side__icons-notif">

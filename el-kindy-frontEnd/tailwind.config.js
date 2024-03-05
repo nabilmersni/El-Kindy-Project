@@ -34,6 +34,11 @@ export default withMT({
         nunito: ["nunito", "sans-serif"],
       },
       fontSize: {},
+
+      boxShadow: {
+        custom: "5px 5px 10px 3px rgba(0, 0, 0, 0.15)",
+        custom2: "0px 5px 10px 1px rgba(0, 0, 0, 0.05)",
+      },
     },
   },
   plugins: [],

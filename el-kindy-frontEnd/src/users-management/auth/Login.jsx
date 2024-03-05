@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Lottie from "react-lottie";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 
 import { Nav } from "../../ui/Nav";
@@ -15,6 +14,7 @@ import loginAnimation from "../../../public/lottieAnimations/login.json";
 import { login, reset } from "../../features/auth/AuthSlice";
 import Spinner from "../../ui/Spinner";
 import GoogleAuth from "./GoogleAuth";
+import FaceIDAuth from "./FaceIDAuth";
 
 function Login() {
   const initLoginFormData = {
@@ -284,22 +284,7 @@ function Login() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-[1rem] ">
               <GoogleAuth />
 
-              <button
-                type="button"
-                aria-label="Sign in with Google"
-                className="flex items-center gap-3 bg-google-button-blue rounded-md p-0.5 pr-3 transition-colors duration-300 hover:bg-google-button-blue-hover"
-              >
-                <div className="flex items-center justify-center bg-white w-9 h-9 rounded-l">
-                  <img
-                    className="w-[1.5rem] "
-                    src="img/faceid-icon.svg"
-                    alt=""
-                  />
-                </div>
-                <span className="text-sm text-white tracking-wider">
-                  Sign in with Face ID
-                </span>
-              </button>
+              <FaceIDAuth />
             </div>
           </Box>
 
