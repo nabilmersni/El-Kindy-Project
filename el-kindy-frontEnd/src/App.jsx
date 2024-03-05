@@ -7,6 +7,11 @@ import DashAdminAddNewCourse from "./courses-management/dash-admin/pages/dash-ad
 import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
 import DashQuestionsList from "./quizes-management/dash/pages/dash-questions-list";
+import AdminDashAddEvent from "./Event-Management/Dash-Admin/ui/AdminDashAddEventCard";
+import DashAdminEvents from "./Event-Management/Dash-Admin/pages/dashAdminEvents";
+import DashAdminAddNewEvent from "./Event-Management/Dash-Admin/pages/dashAdminAddNewEvent";
+import DashAdminUpdateEvent from "./Event-Management/Dash-Admin/pages/dashAdminUpdateEvent";
+import EventDetailsCard from "./Event-Management/Dash-Admin/ui/eventDetails";
 
 function App() {
   return (
@@ -22,7 +27,27 @@ function App() {
           path="/dash-admin-add-new-course"
           element={<DashAdminAddNewCourse />}
         />
-        {/*----------------End admin dash courses  ---------------*/}
+        {/*----------------End admin dash Events  ---------------*/}
+
+
+
+        <Route
+          path="/dash-admin-add-new-event"
+          element={<DashAdminAddNewEvent />}
+        />
+
+        <Route
+          path="/event-details/:id"
+          element={<EventDetailsCard />}
+        />
+        <Route
+          path="/dash-admin-Update-new-event/:id"
+          element={<DashAdminUpdateEvent />}
+        />
+
+        <Route path="/dash-admin-events" element={<DashAdminEvents />} />
+
+
 
         {/* ---------------admin dash Quizes  -----------------*/}
         <Route path="/dash-admin-quizes" element={<DashQuizesList />} />
