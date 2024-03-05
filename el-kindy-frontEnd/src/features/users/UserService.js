@@ -1,4 +1,5 @@
 import axios from "axios";
+import secureLocalStorage from "react-secure-storage";
 
 const API_URL = "http://localhost:3000/api/v1/users";
 
@@ -13,8 +14,16 @@ const getAllUsers = async (userData) => {
   return response.data.data.users;
 };
 
+const updateMe = async (userData) => {
+  const response = await instance.post(`${API_URL}/updateMe`, userData);
+  secureLocalStorage.setItem("user", response.data.data.user);
+
+  return response.data.data.user;
+};
+
 const userService = {
   getAllUsers,
+  updateMe,
 };
 
 export default userService;

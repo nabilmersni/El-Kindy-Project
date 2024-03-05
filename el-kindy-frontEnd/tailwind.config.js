@@ -12,7 +12,7 @@ export default withMT({
         lightBlue: "#AED2FF",
         darkBlue: "#006BBE",
         headerBG: "#DBDFFD",
-        black: "#02241A",
+        blackk: "#02241A",
         bodyBg: "#E9F6FF",
         nav: "#627BBC",
 
@@ -38,6 +38,7 @@ export default withMT({
       boxShadow: {
         custom: "5px 5px 10px 3px rgba(0, 0, 0, 0.15)",
         custom2: "0px 5px 10px 1px rgba(0, 0, 0, 0.05)",
+        custom3: "0px 5px 10px 1px rgba(0, 0, 0, 0.08)",
       },
     },
   },

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./AuthService";
+import userService from "../users/UserService";
 import secureLocalStorage from "react-secure-storage";
 
 // Get user from localStorage
@@ -96,6 +97,20 @@ export const authFaceID = createAsyncThunk(
   }
 );
 
+// update me
+export const updateMe = createAsyncThunk(
+  "auth/updateMe",
+  async (user, thunkAPI) => {
+    try {
+      return await userService.updateMe(user);
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -136,6 +151,7 @@ const authSlice = createSlice({
         state.message = action.payload;
         state.user = null;
       })
+      // login
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
@@ -150,6 +166,7 @@ const authSlice = createSlice({
         state.message = action.payload;
         state.user = null;
       })
+      // getLoggedUser
       .addCase(getLoggedUser.pending, (state) => {
         state.isLoading = true;
       })
@@ -164,6 +181,7 @@ const authSlice = createSlice({
         state.message = "";
         state.user = null;
       })
+      // authGoogle
       .addCase(authGoogle.pending, (state) => {
         state.isLoading = true;
       })
@@ -178,6 +196,7 @@ const authSlice = createSlice({
         state.message = action.payload;
         state.user = null;
       })
+      // faceIDRegistration
       .addCase(faceIDRegistration.pending, (state) => {
         state.isLoading = true;
       })
@@ -191,6 +210,7 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      // authFaceID
       .addCase(authFaceID.pending, (state) => {
         state.isLoading = true;
       })
@@ -200,6 +220,20 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(authFaceID.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // updateMe
+      .addCase(updateMe.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateMe.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(updateMe.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
