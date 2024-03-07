@@ -43,7 +43,9 @@ function Login() {
       case "user":
         naviagte("/user-dash");
         break;
-
+      case "teacher":
+        naviagte("/user-dash");
+        break;
       default:
         break;
     }

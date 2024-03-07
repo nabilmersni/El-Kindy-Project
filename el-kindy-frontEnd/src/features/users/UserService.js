@@ -17,7 +17,6 @@ const getAllUsers = async (userData) => {
 const updateMe = async (userData) => {
   const response = await instance.post(`${API_URL}/updateMe`, userData);
   secureLocalStorage.setItem("user", response.data.data.user);
-
   return response.data.data.user;
 };
 

@@ -18,10 +18,12 @@ import Login from "./users-management/auth/Login";
 import {
   OnlyAdminRoute,
   PrivateRoute,
+  PublicRoute,
 } from "./users-management/routes-guard/ProtectRoute";
 import UserDashboard from "./pages/UserDashboard";
 import secureLocalStorage from "react-secure-storage";
-import DashAdminProfile from "./users-management/dash-admin/pages/dash-admin-profile";
+import DashAdminProfile from "./users-management/dash-admin/pages/dash-admin-profile/dash-admin-profile";
+import AvatarBuilder from "./users-management/components/avatar-builder/AvatarBuilder";
 
 function App() {
   // const dispatch = useDispatch();
@@ -36,9 +38,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/test" element={<AvatarBuilder />} />
+
+        <Route element={<PublicRoute />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
 
         <Route element={<PrivateRoute />}>
           <Route path="/user-dash" element={<UserDashboard />} />

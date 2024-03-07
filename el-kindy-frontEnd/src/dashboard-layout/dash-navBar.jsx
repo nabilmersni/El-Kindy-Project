@@ -104,7 +104,7 @@ const DashNavBar = ({ toggleSidebar }) => {
           >
             <img
               className="dash__content__nav__right-side__current-user-img"
-              src="../../public/assets/img/avatar2.png"
+              src={user?.photo_url || "../../public/assets/img/avatar2_2.png"}
               alt=""
             />
           </a>

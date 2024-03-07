@@ -1,0 +1,62 @@
+:root {
+  /* --avatarWidth: 4.5rem; */
+  --avatarWidth: 7rem;
+  --laptopWidth: calc(var(--avatarWidth) - 0.8rem);
+  --displayCount: 10;
+  --sectionWidth: calc(var(--avatarWidth) * var(--displayCount));
+}
+
+@keyframes test {
+  to {
+    transform: translateX(var(--value) px);
+  }
+}
+
+.AvatarList {
+  width: calc(var(--laptopWidth) * var(--displayCount));
+}
+
+@media (min-width: 1280px) {
+  .AvatarList {
+    width: calc(var(--avatarWidth) * var(--displayCount));
+  }
+}
+
+.AvatarList .listWrapper {
+  transition: all 0.35s ease-out;
+}
+
+.AvatarList .AvatarItemWrapper {
+  flex: 0 0 var(--laptopWidth);
+  height: var(--laptopWidth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1280px) {
+  .AvatarList .AvatarItemWrapper {
+    flex: 0 0 var(--avatarWidth);
+    height: var(--avatarWidth);
+  }
+}
+
+.AvatarList .AvatarItemWrapper:hover > .AvatarItem {
+  transform: scale(1.45);
+}
+
+.AvatarList .AvatarItemWrapper > .AvatarItem {
+  --avatarLaptopInnerWidth: calc(var(--laptopWidth) - 1.2rem);
+  --avatarInnerWidth: calc(var(--avatarWidth) - 1.5rem);
+  width: var(--avatarLaptopInnerWidth);
+  height: var(--avatarLaptopInnerWidth);
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+}
+
+@media (min-width: 1280px) {
+  .AvatarList .AvatarItemWrapper > .AvatarItem {
+    width: var(--avatarInnerWidth);
+    height: var(--avatarInnerWidth);
+  }
+}

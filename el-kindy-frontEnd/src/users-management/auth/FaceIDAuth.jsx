@@ -23,7 +23,7 @@ function FaceIDAuth() {
   const faceIoScriptLoaded = () => {
     console.log(faceIO);
     if (faceIO && !faceioInstance) {
-      faceioInstance = new faceIO("fioa0873");
+      faceioInstance = new faceIO("fioa83da");
     }
   };
 
