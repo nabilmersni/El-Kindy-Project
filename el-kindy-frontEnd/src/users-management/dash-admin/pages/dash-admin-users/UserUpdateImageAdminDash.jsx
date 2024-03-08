@@ -1,16 +1,14 @@
-import AvatarBuilder from "../../../components/avatar-builder/AvatarBuilder";
 import { Button } from "@material-tailwind/react";
 import Modal from "@mui/material/Modal";
 import { useRef } from "react";
 
-function ProfileImageUpload({
+function UserUpdateImageAdminDash({
   avatarUpload,
   updateFormData,
   open,
   initUpdateFormData,
   dispatch,
 }) {
-  //
   const avatarUploadRef = useRef(null);
 
   const handleOpen = () => {
@@ -26,9 +24,8 @@ function ProfileImageUpload({
     setAvatarUpload(undefined);
     setUpdateFormData(initUpdateFormData);
   };
-
   return (
-    <div className="flex flex-[2] flex-col w-full p-[1.5rem] shadow-custom3 rounded-[1.5rem] ">
+    <div className="flex  flex-col w-full p-[1.5rem]  ">
       <h1 className="font-semibold text-[2.7rem] ">Change Profile Picture</h1>
       <p className="text-[1.7rem] ">
         Change your profile picture from here, then click save
@@ -47,14 +44,14 @@ function ProfileImageUpload({
         </div>
         <div className="flex flex-col justify-center items-center">
           <div className="flex justify-center items-center gap-[1rem] ">
-            <Button
+            {/* <Button
               onClick={handleOpen}
               variant="text"
               size="md"
               className={`bg-lightBlue text-nav text-[2rem] font-extrabold font-nunito rounded-[.8rem] hover:bg-secondaryLight capitalize my-[2rem]`}
             >
               Create Avatar
-            </Button>
+            </Button> */}
             <input
               type="file"
               name="avatarUpload"
@@ -72,18 +69,27 @@ function ProfileImageUpload({
             >
               Upload Image
             </Button>
+
+            <Button
+              onClick={resetImage}
+              variant="outlined"
+              size="md"
+              className={`border-[#FA896B] text-[#FA896B] focus:ring-0  text-[2rem] font-extrabold font-nunito rounded-[.8rem] hover:bg-secondaryLight capitalize`}
+            >
+              Reset
+            </Button>
           </div>
-          <Button
+          {/* <Button
             onClick={resetImage}
             variant="outlined"
             size="md"
             className={`border-[#FA896B] text-[#FA896B] focus:ring-0  text-[2rem] font-extrabold font-nunito rounded-[.8rem] hover:bg-secondaryLight capitalize mb-[2rem]`}
           >
             Reset
-          </Button>
+          </Button> */}
         </div>
 
-        <div className="rounded-[2rem] ">
+        {/* <div className="rounded-[2rem] ">
           <Modal
             open={open}
             onClose={handleClose}
@@ -100,7 +106,7 @@ function ProfileImageUpload({
               />
             </div>
           </Modal>
-        </div>
+        </div> */}
 
         <p className="text-[1.7rem] mt-[1rem] ">
           Allowed JPG, GIF or PNG. Max size of 2MB
@@ -110,4 +116,4 @@ function ProfileImageUpload({
   );
 }
 
-export default ProfileImageUpload;
+export default UserUpdateImageAdminDash;

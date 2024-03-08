@@ -11,7 +11,7 @@ import DashAdminAddNewCourse from "./courses-management/dash-admin/pages/dash-ad
 import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
 import DashQuestionsList from "./quizes-management/dash/pages/dash-questions-list";
-import DashAdminUsers from "./users-management/dash-admin/pages/dash-admin-users";
+import DashAdminUsers from "./users-management/dash-admin/pages/dash-admin-users/dash-admin-users";
 import { useEffect } from "react";
 import SignUp from "./users-management/auth/SignUp";
 import Login from "./users-management/auth/Login";

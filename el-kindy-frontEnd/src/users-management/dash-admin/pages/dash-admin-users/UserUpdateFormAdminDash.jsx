@@ -1,7 +1,8 @@
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Buttonn from "@mui/material/Button";
+
 import { toast } from "react-toastify";
 import {
   getDownloadURL,
@@ -10,21 +11,20 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../../auth/firebase";
-
-import { updateMe } from "../../../../features/auth/AuthSlice";
-import { useState } from "react";
 import Spinner from "../../../../ui/Spinner";
+import userService from "../../../../features/users/UserService";
 
-function ProfileUpdateForm({
+function UserUpdateFormAdminDash({
+  user,
   initUpdateFormData,
   initFormError,
   updateFormData,
   errors,
-  dispatchReducer,
   avatarUpload,
+  updateLocalUser,
+  dispatchReducer,
 }) {
   const formInputSize = "1.9rem";
-  const dispatch = useDispatch();
   const [isUploadingImg, setIsUploadingImg] = useState(false);
 
   //
@@ -34,7 +34,16 @@ function ProfileUpdateForm({
     dispatchReducer({ type: "SET_ERRORS", payload: errors });
   const setAvatarUpload = (avatarUpload) =>
     dispatchReducer({ type: "SET_AVATAR_UPLOAD", payload: avatarUpload });
+  const setUserToUpdate = () => dispatchReducer({ type: "SET_USER_TO_UPDATE" });
+  const setOpenModal = (data) =>
+    dispatchReducer({ type: "SET_OPEN", payload: data });
   //
+
+  const updateUser = async (data) => {
+    const updatedUser = await userService.updateUser(user._id, data);
+    updateLocalUser(updatedUser._id, updatedUser);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -64,13 +73,16 @@ function ProfileUpdateForm({
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               setUpdateFormData({ ...updateFormData, photo_url: downloadURL });
               setIsUploadingImg(false);
-              dispatch(updateMe({ ...updateFormData, photo_url: downloadURL }));
+              //   dispatch(updateMe({ ...updateFormData, photo_url: downloadURL }));
+              updateUser({ ...updateFormData, photo_url: downloadURL });
+              setOpenModal(false);
             });
           }
         );
       } else {
-        console.log("start handleSubmit else");
-        dispatch(updateMe(updateFormData));
+        // dispatch(updateMe(updateFormData));
+        updateUser(updateFormData);
+        setOpenModal(false);
       }
     }
   };
@@ -175,7 +187,7 @@ function ProfileUpdateForm({
   };
 
   return (
-    <div className="flex flex-[3]  flex-col w-full p-[1.5rem] shadow-custom3 rounded-[1.5rem] ">
+    <div className="flex flex-col w-full   ">
       {isUploadingImg ? <Spinner /> : ""}
       <h1 className="font-semibold text-[2.7rem] ">Personal Details</h1>
       <p className="text-[1.7rem] mb-[2rem] ">
@@ -400,7 +412,7 @@ function ProfileUpdateForm({
           }}
         />
 
-        <div className="flex  justify-end items-center gap-[1rem] ">
+        <div className="flex  justify-center items-center gap-[1.5rem] ">
           <Buttonn
             size="large"
             type="submit"
@@ -445,4 +457,4 @@ function ProfileUpdateForm({
   );
 }
 
-export default ProfileUpdateForm;
+export default UserUpdateFormAdminDash;

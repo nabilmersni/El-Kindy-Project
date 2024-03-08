@@ -1,25 +1,37 @@
 import { useEffect, useState } from "react";
-import "../../../../public/assets/css/style.css";
-import DashLayout from "../../../dashboard-layout/dash-layout";
-import UserItem from "../ui/UserItem";
-import DashAdminUsersHeader from "../ui/dash-admin-users__header";
-import userService from "../../../features/users/UserService";
+import { useSelector } from "react-redux";
+
+import DashLayout from "../../../../dashboard-layout/dash-layout";
+import UserItem from "../../ui/UserItem";
+import DashAdminUsersHeader from "../../ui/dash-admin-users__header";
+import userService from "../../../../features/users/UserService";
 
 const DashAdminUsers = () => {
-  const [users, setUsers] = useState([{}]);
+  const { user: loggedInUser } = useSelector((state) => state.auth);
+  const [users, setUsers] = useState([]);
 
   const getAllUsers = async () => {
-    const data = await userService.getAllUsers();
-    setUsers(data);
+    if (!users.length) {
+      const data = await userService.getAllUsers(loggedInUser._id);
+      setUsers(data);
+    }
+  };
+
+  const updateLocalUser = (userId, updatedUser) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user._id === userId ? { ...user, ...updatedUser } : user
+      )
+    );
   };
 
   useEffect(() => {
     getAllUsers();
   }, []);
+
   return (
     <DashLayout>
       <DashAdminUsersHeader />
-
       <div className="userss">
         <div className="users-list">
           <div className="users-list__body tableFixHead">
@@ -36,7 +48,11 @@ const DashAdminUsers = () => {
               </thead>
               <tbody>
                 {users.map((user, index) => (
-                  <UserItem user={user} key={index} />
+                  <UserItem
+                    user={user}
+                    updateLocalUser={updateLocalUser}
+                    key={user?._id || index}
+                  />
                 ))}
               </tbody>
             </table>
