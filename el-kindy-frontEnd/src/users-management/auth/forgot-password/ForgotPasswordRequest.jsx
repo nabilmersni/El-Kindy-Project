@@ -1,77 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import Lottie from "react-lottie";
+import authService from "../../../features/auth/AuthService";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 
-import { Nav } from "../../ui/Nav";
-import loginAnimation from "../../../public/lottieAnimations/login.json";
-import { login, reset } from "../../features/auth/AuthSlice";
-import Spinner from "../../ui/Spinner";
-import GoogleAuth from "./GoogleAuth";
-import FaceIDAuth from "./FaceIDAuth";
+import { Nav } from "../../../ui/Nav";
+import loginAnimation from "../../../../public/lottieAnimations/login.json";
+import Spinner from "../../../ui/Spinner";
 
-function Login() {
-  const initLoginFormData = {
+function ForgotPasswordRequest() {
+  const navigate = useNavigate();
+
+  const [fogotPassFormData, setFogotPassFormData] = useState({
     email: "",
-    password: "",
-  };
-
-  const naviagte = useNavigate();
-  const dispatch = useDispatch();
-
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    // if (user) {
-    //   naviagte("/admin-dash");
-    // }
-    switch (user?.role) {
-      case "admin":
-        naviagte("/admin-dash");
-        break;
-      case "user":
-        naviagte("/user-dash");
-        break;
-      case "teacher":
-        naviagte("/user-dash");
-        break;
-      default:
-        break;
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, naviagte, dispatch]);
-
-  const [loginFormData, setLoginFormData] = useState(initLoginFormData);
+  });
 
   const [errors, setErrors] = useState({
     email: "",
-    password: "",
   });
+
+  const forgotPasswordFN = async (email) => {
+    await authService.forgotPasswordRequest({ email });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!hasErrors() && !isFormDataEmpty()) {
-      dispatch(login(loginFormData));
+      forgotPasswordFN(fogotPassFormData.email);
+      navigate("/login");
     } else {
       // Validation for Email
-      if (!loginFormData.email.trim()) {
+      if (!fogotPassFormData.email.trim()) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           email: "Email is required",
         }));
-      } else if (!/\S+@\S+\.\S+/.test(loginFormData.email)) {
+      } else if (!/\S+@\S+\.\S+/.test(fogotPassFormData.email)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           email: "Invalid email format",
@@ -82,19 +51,6 @@ function Login() {
           email: "",
         }));
       }
-
-      // Validation for Password
-      if (!loginFormData.password.trim()) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          password: "Password is required",
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          password: "",
-        }));
-      }
     }
   };
 
@@ -103,12 +59,14 @@ function Login() {
   };
 
   const isFormDataEmpty = () => {
-    return Object.entries(loginFormData).some(([key, value]) => value === "");
+    return Object.entries(fogotPassFormData).some(
+      ([key, value]) => value === ""
+    );
   };
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
-    setLoginFormData({ ...loginFormData, [name]: value });
+    setFogotPassFormData({ ...fogotPassFormData, [name]: value });
 
     // Validation for Email
     if (name === "email") {
@@ -121,21 +79,6 @@ function Login() {
         setErrors((prevErrors) => ({
           ...prevErrors,
           [name]: "Invalid email format",
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: "",
-        }));
-      }
-    }
-
-    // Validation for Password
-    if (name === "password") {
-      if (!value.trim()) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: "Password is required",
         }));
       } else {
         setErrors((prevErrors) => ({
@@ -172,7 +115,7 @@ function Login() {
       <style dangerouslySetInnerHTML={{ __html: customStyle }} />
       <Nav />
 
-      {isLoading ? <Spinner /> : ""}
+      {/* {isLoading ? <Spinner /> : ""} */}
 
       <div className="flex justify-center lg:justify-between items-center mt-[10rem] mb-[2rem] px-[1rem] relative">
         <div className="hidden lg:block w-[40rem] ">
@@ -182,8 +125,10 @@ function Login() {
           />
         </div>
 
-        <div className="flex flex-col justify-center items-center w-[30rem] py-[1rem] px-[1.5rem] bg-white rounded-[1rem] shadow-lg">
-          <h1 className="text-[1.8rem] text-primary font-bold">Sign in</h1>
+        <div className="flex flex-col justify-center items-center w-[28rem] py-[1rem] px-[1.5rem] bg-white rounded-[1rem] shadow-lg">
+          <h1 className="text-[1.8rem] text-primary font-bold">
+            Forgot Password
+          </h1>
           <p className="text-black font-light my-[.5rem] ">
             Adventure starts here
           </p>
@@ -192,7 +137,7 @@ function Login() {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, width: "100%" }}
           >
             <TextField
               margin="normal"
@@ -226,44 +171,6 @@ function Login() {
               }}
             />
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="password"
-              label="Password"
-              type="password"
-              name="password"
-              onChange={changeHandler}
-              onBlur={changeHandler}
-              error={Boolean(errors.password)}
-              helperText={errors.password}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: errors.password ? "red" : "#DBDFEA",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: errors.password ? "red" : "#7586FF",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: errors.password ? "red" : "#7586FF",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  "&.Mui-focused": {
-                    color: errors.password ? "red" : "#7586FF",
-                  },
-                },
-              }}
-            />
-
-            <div className="flex justify-end pr-[1rem] ">
-              <Link to={"/forgotPasswordRequest"}>
-                <p className="text-primary">Forgot password?</p>
-              </Link>
-            </div>
-
             <Button
               size="large"
               type="submit"
@@ -279,23 +186,24 @@ function Login() {
                 textTransform: "none", // Disable uppercase for text
               }}
             >
-              Login
+              Request
             </Button>
 
             <Divider sx={{ my: 1 }}>or</Divider>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-[1rem] ">
-              <GoogleAuth />
 
-              <FaceIDAuth />
+            <div className="flex justify-center mt-[1rem] ">
+              <Link to={"/login"}>
+                <p className="text-primary">Back to login</p>
+              </Link>
             </div>
           </Box>
 
-          <div className="flex justify-center items-center mt-[1.2rem] my-[.8rem] gap-[1rem] ">
+          {/* <div className="flex justify-center items-center mt-[1.2rem] my-[.8rem] gap-[1rem] ">
             <p>New on our platform ?</p>
             <Link to={"/signup"}>
               <p className="text-primary font-semibold">Create an account</p>
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div>
@@ -318,4 +226,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPasswordRequest;

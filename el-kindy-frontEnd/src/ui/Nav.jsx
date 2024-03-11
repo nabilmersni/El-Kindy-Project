@@ -83,7 +83,11 @@ export function Nav() {
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography variant="h6" className="mr-4 cursor-pointer py-1.5 lg:ml-2">
           <Link to={"/"}>
-            <img src="logo.svg" alt="el kindy logo" className="w-[1.6rem]" />
+            <img
+              src="/public/logo.svg"
+              alt="el kindy logo"
+              className="w-[1.6rem]"
+            />
           </Link>
         </Typography>
         <div className="hidden lg:block">

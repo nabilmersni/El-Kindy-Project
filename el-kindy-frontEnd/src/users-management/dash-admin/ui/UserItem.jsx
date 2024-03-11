@@ -58,17 +58,14 @@ const UserItem = ({ user, updateLocalUser }) => {
   };
 
   const initialState = {
-    userToUpdate: user,
     openModal: false,
     avatarUpload: undefined,
     updateFormData: initUpdateFormData,
     errors: initFormError,
   };
 
-  const [
-    { userToUpdate, openModal, avatarUpload, updateFormData, errors },
-    dispatchReducer,
-  ] = useReducer(reducer, initialState);
+  const [{ openModal, avatarUpload, updateFormData, errors }, dispatchReducer] =
+    useReducer(reducer, initialState);
 
   const setUpdateFormData = (data) =>
     dispatchReducer({ type: "SET_UPDATE_FORM_DATA", payload: data });

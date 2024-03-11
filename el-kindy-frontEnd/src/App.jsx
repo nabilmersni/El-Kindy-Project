@@ -23,7 +23,9 @@ import {
 import UserDashboard from "./pages/UserDashboard";
 import secureLocalStorage from "react-secure-storage";
 import DashAdminProfile from "./users-management/dash-admin/pages/dash-admin-profile/dash-admin-profile";
-import AvatarBuilder from "./users-management/components/avatar-builder/AvatarBuilder";
+import VerifyEmail from "./users-management/components/VerifyEmail";
+import ForgotPasswordRequest from "./users-management/auth/forgot-password/ForgotPasswordRequest";
+import ForgotPassword from "./users-management/auth/forgot-password/ForgotPassword";
 
 function App() {
   // const dispatch = useDispatch();
@@ -38,12 +40,17 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/test" element={<AvatarBuilder />} />
+        <Route path="/verifyEmail/:token" element={<VerifyEmail />} />
 
         <Route element={<PublicRoute />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/forgotPasswordRequest"
+            element={<ForgotPasswordRequest />}
+          />
+          <Route path="/forgotPassword/:token" element={<ForgotPassword />} />
         </Route>
 
         <Route element={<PrivateRoute />}>

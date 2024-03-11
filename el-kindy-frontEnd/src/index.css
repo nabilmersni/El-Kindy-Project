@@ -50,9 +50,9 @@ html {
   scroll-behavior: smooth;
 }
 
-/* @media (min-width: 1280px) {
+/* @media (min-width: 2000px) {
   html {
-    font-size: 1.05vw;
+    font-size: 0.4vw !important;
   }
 } */
 

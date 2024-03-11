@@ -1,5 +1,6 @@
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import { toast } from "react-toastify";
 
 const API_URL = "http://localhost:3000/api/v1/users";
 
@@ -13,7 +14,7 @@ const register = async (userData) => {
   if (response.data) {
     // localStorage.setItem("loggedUser", JSON.stringify(response.data));
   }
-  return response.data.data.user;
+  return response.data.user;
 };
 
 const login = async (userData) => {
@@ -59,6 +60,38 @@ const getLoggedUser = async () => {
   return response.data.user;
 };
 
+const verifyEmail = async (data) => {
+  const response = await instance.post(`${API_URL}/verifyEmail`, data);
+  return response;
+};
+
+const forgotPasswordRequest = async (data) => {
+  try {
+    const response = await instance.post(
+      `${API_URL}/forgotPasswordRequest`,
+      data
+    );
+    toast.success("Reset Password Request was sent to your email");
+    return response;
+  } catch (error) {
+    toast.error(error.response.data.message || "An error occurred");
+  }
+};
+
+const forgotPasswordChange = async (data, token) => {
+  try {
+    const response = await instance.post(`${API_URL}/forgotPassword`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("Password changed successfully");
+    return response;
+  } catch (error) {
+    toast.error(error.response.data.message || "An error occurred");
+  }
+};
+
 const authService = {
   register,
   login,
@@ -67,6 +100,9 @@ const authService = {
   faceIDRegistration,
   authFaceID,
   logout,
+  verifyEmail,
+  forgotPasswordRequest,
+  forgotPasswordChange,
 };
 
 export default authService;

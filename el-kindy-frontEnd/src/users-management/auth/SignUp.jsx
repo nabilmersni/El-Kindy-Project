@@ -46,7 +46,8 @@ function SignUp() {
       toast.error(message);
     }
     if (isSuccess) {
-      naviagte("/admin-dash");
+      toast.success("Confirmation email was sent to your email");
+      naviagte("/login");
     }
 
     dispatch(reset());

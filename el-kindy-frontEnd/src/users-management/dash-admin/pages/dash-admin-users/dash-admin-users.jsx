@@ -25,13 +25,17 @@ const DashAdminUsers = () => {
     );
   };
 
+  const addNewUser = (newUser) => {
+    setUsers([...users, newUser]);
+  };
+
   useEffect(() => {
     getAllUsers();
   }, []);
 
   return (
     <DashLayout>
-      <DashAdminUsersHeader />
+      <DashAdminUsersHeader addNewUser={addNewUser} />
       <div className="userss">
         <div className="users-list">
           <div className="users-list__body tableFixHead">

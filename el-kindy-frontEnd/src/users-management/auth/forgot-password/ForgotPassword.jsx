@@ -1,98 +1,89 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import Lottie from "react-lottie";
+import authService from "../../../features/auth/AuthService";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import { useParams } from "react-router";
 
-import { Nav } from "../../ui/Nav";
-import loginAnimation from "../../../public/lottieAnimations/login.json";
-import { login, reset } from "../../features/auth/AuthSlice";
-import Spinner from "../../ui/Spinner";
-import GoogleAuth from "./GoogleAuth";
-import FaceIDAuth from "./FaceIDAuth";
+import { Nav } from "../../../ui/Nav";
+import loginAnimation from "../../../../public/lottieAnimations/login.json";
+import Spinner from "../../../ui/Spinner";
 
-function Login() {
-  const initLoginFormData = {
-    email: "",
+function ForgotPassword() {
+  const navigate = useNavigate();
+
+  const { token } = useParams();
+
+  const [fogotPassFormData, setFogotPassFormData] = useState({
     password: "",
-  };
-
-  const naviagte = useNavigate();
-  const dispatch = useDispatch();
-
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    // if (user) {
-    //   naviagte("/admin-dash");
-    // }
-    switch (user?.role) {
-      case "admin":
-        naviagte("/admin-dash");
-        break;
-      case "user":
-        naviagte("/user-dash");
-        break;
-      case "teacher":
-        naviagte("/user-dash");
-        break;
-      default:
-        break;
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, naviagte, dispatch]);
-
-  const [loginFormData, setLoginFormData] = useState(initLoginFormData);
+    confirmPassword: "",
+  });
 
   const [errors, setErrors] = useState({
-    email: "",
     password: "",
+    confirmPassword: "",
   });
+
+  const forgotPasswordChange = async (data, token) => {
+    await authService.forgotPasswordChange(data, token);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!hasErrors() && !isFormDataEmpty()) {
-      dispatch(login(loginFormData));
+      forgotPasswordChange(fogotPassFormData, token);
+      navigate("/login");
     } else {
-      // Validation for Email
-      if (!loginFormData.email.trim()) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          email: "Email is required",
-        }));
-      } else if (!/\S+@\S+\.\S+/.test(loginFormData.email)) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          email: "Invalid email format",
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          email: "",
-        }));
-      }
-
       // Validation for Password
-      if (!loginFormData.password.trim()) {
+      if (!fogotPassFormData.password.trim()) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           password: "Password is required",
+        }));
+      } else if (fogotPassFormData.password.trim().length < 8) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: "Password must be at least 8 characters",
+        }));
+      } else if (
+        fogotPassFormData.confirmPassword &&
+        fogotPassFormData.password !== fogotPassFormData.confirmPassword
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Passwords do not match",
+          password: "",
         }));
       } else {
         setErrors((prevErrors) => ({
           ...prevErrors,
           password: "",
+          confirmPassword: "",
+        }));
+      }
+
+      // Validation for Confirm Password
+
+      if (!fogotPassFormData.confirmPassword.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Confirm Password is required",
+        }));
+      } else if (
+        fogotPassFormData.confirmPassword !== fogotPassFormData.password
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Passwords do not match",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "",
         }));
       }
     }
@@ -103,32 +94,14 @@ function Login() {
   };
 
   const isFormDataEmpty = () => {
-    return Object.entries(loginFormData).some(([key, value]) => value === "");
+    return Object.entries(fogotPassFormData).some(
+      ([key, value]) => value === ""
+    );
   };
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
-    setLoginFormData({ ...loginFormData, [name]: value });
-
-    // Validation for Email
-    if (name === "email") {
-      if (!value.trim()) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: "Email is required",
-        }));
-      } else if (!/\S+@\S+\.\S+/.test(value)) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: "Invalid email format",
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: "",
-        }));
-      }
-    }
+    setFogotPassFormData({ ...fogotPassFormData, [name]: value });
 
     // Validation for Password
     if (name === "password") {
@@ -136,6 +109,41 @@ function Login() {
         setErrors((prevErrors) => ({
           ...prevErrors,
           [name]: "Password is required",
+        }));
+      } else if (value.trim().length < 8) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Password must be at least 8 characters",
+        }));
+      } else if (
+        fogotPassFormData.confirmPassword &&
+        value !== fogotPassFormData.confirmPassword
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Passwords do not match",
+          [name]: "",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
+          confirmPassword: "",
+        }));
+      }
+    }
+
+    // Validation for Confirm Password
+    if (name === "confirmPassword") {
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Confirm Password is required",
+        }));
+      } else if (value !== fogotPassFormData.password) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Passwords do not match",
         }));
       } else {
         setErrors((prevErrors) => ({
@@ -172,7 +180,7 @@ function Login() {
       <style dangerouslySetInnerHTML={{ __html: customStyle }} />
       <Nav />
 
-      {isLoading ? <Spinner /> : ""}
+      {/* {isLoading ? <Spinner /> : ""} */}
 
       <div className="flex justify-center lg:justify-between items-center mt-[10rem] mb-[2rem] px-[1rem] relative">
         <div className="hidden lg:block w-[40rem] ">
@@ -182,8 +190,10 @@ function Login() {
           />
         </div>
 
-        <div className="flex flex-col justify-center items-center w-[30rem] py-[1rem] px-[1.5rem] bg-white rounded-[1rem] shadow-lg">
-          <h1 className="text-[1.8rem] text-primary font-bold">Sign in</h1>
+        <div className="flex flex-col justify-center items-center w-[28rem] py-[1rem] px-[1.5rem] bg-white rounded-[1rem] shadow-lg">
+          <h1 className="text-[1.8rem] text-primary font-bold">
+            Forgot Password
+          </h1>
           <p className="text-black font-light my-[.5rem] ">
             Adventure starts here
           </p>
@@ -192,46 +202,14 @@ function Login() {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, width: "100%" }}
           >
             <TextField
               margin="normal"
               required
               fullWidth
-              type="email"
-              id="email"
-              label="Email Address"
-              name="email"
-              onChange={changeHandler}
-              onBlur={changeHandler}
-              error={Boolean(errors.email)}
-              helperText={errors.email}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: errors.email ? "red" : "#DBDFEA",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: errors.email ? "red" : "#7586FF",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: errors.email ? "red" : "#7586FF",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  "&.Mui-focused": {
-                    color: errors.email ? "red" : "#7586FF",
-                  },
-                },
-              }}
-            />
-
-            <TextField
-              margin="normal"
-              required
-              fullWidth
               id="password"
-              label="Password"
+              label="New Password"
               type="password"
               name="password"
               onChange={changeHandler}
@@ -258,11 +236,37 @@ function Login() {
               }}
             />
 
-            <div className="flex justify-end pr-[1rem] ">
-              <Link to={"/forgotPasswordRequest"}>
-                <p className="text-primary">Forgot password?</p>
-              </Link>
-            </div>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              type="password"
+              id="repassword"
+              label="Confirm Password"
+              name="confirmPassword"
+              onChange={changeHandler}
+              onBlur={changeHandler}
+              error={Boolean(errors.confirmPassword)}
+              helperText={errors.confirmPassword}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: errors.confirmPassword ? "red" : "#DBDFEA",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: errors.confirmPassword ? "red" : "#7586FF",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: errors.confirmPassword ? "red" : "#7586FF",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  "&.Mui-focused": {
+                    color: errors.confirmPassword ? "red" : "#7586FF",
+                  },
+                },
+              }}
+            />
 
             <Button
               size="large"
@@ -279,23 +283,24 @@ function Login() {
                 textTransform: "none", // Disable uppercase for text
               }}
             >
-              Login
+              Change password
             </Button>
 
             <Divider sx={{ my: 1 }}>or</Divider>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-[1rem] ">
-              <GoogleAuth />
 
-              <FaceIDAuth />
+            <div className="flex justify-center mt-[1rem] ">
+              <Link to={"/login"}>
+                <p className="text-primary">Back to login</p>
+              </Link>
             </div>
           </Box>
 
-          <div className="flex justify-center items-center mt-[1.2rem] my-[.8rem] gap-[1rem] ">
+          {/* <div className="flex justify-center items-center mt-[1.2rem] my-[.8rem] gap-[1rem] ">
             <p>New on our platform ?</p>
             <Link to={"/signup"}>
               <p className="text-primary font-semibold">Create an account</p>
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div>
@@ -318,4 +323,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPassword;

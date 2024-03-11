@@ -1,5 +1,6 @@
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import { toast } from "react-toastify";
 
 const API_URL = "http://localhost:3000/api/v1/users";
 
@@ -12,7 +13,6 @@ const getAllUsers = async (excludeUserId) => {
   const queryString = excludeUserId ? `?excludeUserId=${excludeUserId}` : "";
 
   const response = await instance.get(`${API_URL}${queryString}`);
-  //   console.log(response.data.data.users);
   return response.data.data.users;
 };
 
@@ -32,11 +32,17 @@ const updateUser = async (id, userData) => {
   return response.data.data.user;
 };
 
+const addUser = async (data) => {
+  const response = await instance.post(`${API_URL}/addUser`, data);
+  return response;
+};
+
 const userService = {
   getAllUsers,
   updateMe,
   blockUser,
   updateUser,
+  addUser,
 };
 
 export default userService;

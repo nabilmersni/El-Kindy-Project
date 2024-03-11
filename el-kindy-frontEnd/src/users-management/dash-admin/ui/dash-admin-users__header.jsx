@@ -1,8 +1,93 @@
-import { Link } from "react-router-dom";
-import "../../../../public/assets/css/style.css";
-import DashAnimation from "../../../dashboard-layout/dash-animation";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
-const DashAdminUsersHeader = () => {
+import DashAnimation from "../../../dashboard-layout/dash-animation";
+import { useReducer } from "react";
+import UserUpdateImageAdminDash from "../pages/dash-admin-users/UserUpdateImageAdminDash";
+import UserAddFormAdminDash from "../pages/dash-admin-users/UserAddFormAdminDash";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "40vw",
+  height: "80vh",
+  bgcolor: "white",
+  boxShadow: 15,
+  // p: 4,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_OPEN":
+      return { ...state, openModal: action.payload };
+    case "SET_AVATAR_UPLOAD":
+      return { ...state, avatarUpload: action.payload };
+    case "SET_ADD_FORM_DATA":
+      return { ...state, addFormData: action.payload };
+    case "SET_ERRORS":
+      return { ...state, errors: action.payload };
+    default:
+      return state;
+  }
+};
+
+const DashAdminUsersHeader = ({ addNewUser }) => {
+  const initAddFormData = {
+    fullname: "",
+    dateOfBirth: "",
+    email: "",
+    phone: "",
+    phone2: "",
+    profession: "",
+    password: "",
+    confirmPassword: "",
+    role: "user",
+    photo_url:
+      "https://firebasestorage.googleapis.com/v0/b/el-kindy-auth.appspot.com/o/defaultProfileIMG.png?alt=media&token=3195bf63-8036-4290-9583-f0f4da435935",
+  };
+
+  const initFormError = {
+    fullname: "",
+    dateOfBirth: "",
+    email: "",
+    phone: "",
+    phone2: "",
+    profession: "",
+    password: "",
+    confirmPassword: "",
+    role: "",
+  };
+
+  const initialState = {
+    openModal: false,
+    avatarUpload: undefined,
+    addFormData: initAddFormData,
+    errors: initFormError,
+  };
+
+  const [{ openModal, avatarUpload, addFormData, errors }, dispatchReducer] =
+    useReducer(reducer, initialState);
+
+  const setAddFormData = (data) =>
+    dispatchReducer({ type: "SET_ADD_FORM_DATA", payload: data });
+  const setErrors = (errors) =>
+    dispatchReducer({ type: "SET_ERRORS", payload: errors });
+  const setAvatarUpload = (data) =>
+    dispatchReducer({ type: "SET_AVATAR_UPLOAD", payload: data });
+
+  const openAddFormModal = () => {
+    dispatchReducer({ type: "SET_OPEN", payload: true });
+  };
+  const closeAddFormModal = () => {
+    dispatchReducer({ type: "SET_OPEN", payload: false });
+    setAddFormData(initAddFormData);
+    setErrors(initFormError);
+    setAvatarUpload(undefined);
+    console.log("closess");
+  };
+
   return (
     <div className="dash__content__container__firstRow">
       <div className="dash__content__container__firstRow__leftSide">
@@ -55,7 +140,7 @@ const DashAdminUsersHeader = () => {
           </svg>
         </div>
         <div className="dash__content__container__type">
-          Role
+          State
           <svg
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
@@ -94,8 +179,9 @@ const DashAdminUsersHeader = () => {
             </g>
           </svg>
         </div>
-        <Link
-          to={"/dash-admin-add-new-course"}
+
+        <button
+          onClick={openAddFormModal}
           className="dash__content__container__firstRow__RightSide__addNewCourseBtn"
         >
           <svg
@@ -115,7 +201,7 @@ const DashAdminUsersHeader = () => {
               ></path>
             </g>
           </svg>
-        </Link>
+        </button>
       </div>
       <div className="dash__content__container__firstRow__RightSide__dancingNote">
         <DashAnimation
@@ -123,6 +209,44 @@ const DashAdminUsersHeader = () => {
           path="../../../../public/assets/json/dancing_note.json"
         />
       </div>
+
+      <Modal
+        open={openModal}
+        onClose={closeAddFormModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            ...style,
+            borderRadius: "3rem",
+            bgcolor: "white",
+            padding: "2rem",
+            // overflowY: "scroll",
+          }}
+        >
+          <div className="h-full overflow-y-auto p-[2.5rem] ">
+            <UserUpdateImageAdminDash
+              avatarUpload={avatarUpload}
+              dispatch={dispatchReducer}
+              initUpdateFormData={initAddFormData}
+              open={openModal}
+              updateFormData={addFormData}
+            />
+            <UserAddFormAdminDash
+              user={null}
+              initUpdateFormData={initAddFormData}
+              initFormError={initFormError}
+              updateFormData={addFormData}
+              errors={errors}
+              avatarUpload={avatarUpload}
+              addNewUser={addNewUser}
+              closeAddFormModal={closeAddFormModal}
+              dispatchReducer={dispatchReducer}
+            />
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };
