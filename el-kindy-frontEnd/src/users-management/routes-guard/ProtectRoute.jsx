@@ -5,13 +5,31 @@ import secureLocalStorage from "react-secure-storage";
 import { notAuthenticated } from "../../features/auth/AuthSlice";
 
 export function PrivateRoute() {
-  // const { user, isError, message } = useSelector((state) => state.auth);
+  const { user: loggedUser, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const loggedUser = secureLocalStorage.getItem("user");
+  // const loggedUser = secureLocalStorage.getItem("user");
 
   if (!loggedUser) {
-    toast.error("You are not authenticated!");
+    if (message === "logout") {
+      toast.success("Logged out successfully");
+    } else if (
+      (message === "logoutBlocked",
+      {
+        toastId: "logoutBlocked",
+      })
+    ) {
+      toast.error(
+        "Your account is locked. please contact the administration.",
+        {
+          toastId: "account locked",
+        }
+      );
+    } else {
+      toast.error("You are not authenticated!", {
+        toastId: "not authenticated",
+      });
+    }
     // dispatch(notAuthenticated("You are not authenticated!"));
     return <Navigate to="/login" />;
   }
@@ -28,6 +46,7 @@ export function OnlyAdminRoute() {
   if (loggedUser.role !== "admin") {
     toast.error("You are not authenticated as admin!", {
       style: { fontSize: "2rem" },
+      toastId: "not authenticated as admin",
     });
     // dispatch(notAuthenticated("You are not authenticated as admin!"));
     return <Navigate to="/login" />;

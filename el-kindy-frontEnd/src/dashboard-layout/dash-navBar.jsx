@@ -1,22 +1,28 @@
 import { useSelector, useDispatch } from "react-redux";
-import "../../public/assets/css/style.css";
 import authService from "../features/auth/AuthService";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../features/auth/AuthSlice";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+
+import { logout, setOnlineUsers, setSocket } from "../features/auth/AuthSlice";
+
+import "../../public/assets/css/style.css";
+import { useRef } from "react";
+import { io } from "socket.io-client";
 
 const DashNavBar = ({ toggleSidebar }) => {
-  const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+  const { user, socketId } = useSelector((state) => state.auth);
+  const socket = useRef();
   const dispatch = useDispatch();
 
   const logoutHandler = async () => {
     await authService.logout();
+    socket.current = io("ws://localhost:8800", { query: { socketId } });
+    socket.current.on("connect", () => {
+      socket.current.emit("loggedOut", user._id);
+      socket.current.on("get-users", (users) => {
+        dispatch(setOnlineUsers([users]));
+      });
+    });
     dispatch(logout());
-
-    toast.success("Logged out successfully");
-
-    navigate("/login");
   };
 
   return (
@@ -70,7 +76,34 @@ const DashNavBar = ({ toggleSidebar }) => {
             </button>
           </div>
           <div className="dash__content__nav__right-side__icons-notif-container">
-            <div className="dash__content__nav__right-side__icons-notif">
+            <Link
+              to={"/dash-admin-chat"}
+              className="dash__content__nav__right-side__icons-notif"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                width="512"
+                height="512"
+                x="0"
+                y="0"
+                viewBox="0 0 24 24"
+                // style="enable-background:new 0 0 512 512"
+                xmlSpace="preserve"
+                className="dash__content__nav__right-side__icons-notif-svg"
+              >
+                <g>
+                  <path
+                    d="M18 1H6a5.006 5.006 0 0 0-5 5v8a5.009 5.009 0 0 0 4 4.9V22a1 1 0 0 0 1.555.832L12.3 19H18a5.006 5.006 0 0 0 5-5V6a5.006 5.006 0 0 0-5-5zm-2 12H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zm2-4H6a1 1 0 0 1 0-2h12a1 1 0 0 1 0 2z"
+                    fill="#FFFFFF"
+                    opacity="1"
+                    data-original="#000000"
+                  ></path>
+                </g>
+              </svg>
+            </Link>
+            {/* <button className="dash__content__nav__right-side__icons-notif">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -88,10 +121,10 @@ const DashNavBar = ({ toggleSidebar }) => {
                   ></path>
                 </g>
               </svg>
-            </div>
-            <div className="dash__content__nav__right-side__icons-notif-number-container">
+            </button> */}
+            {/* <div className="dash__content__nav__right-side__icons-notif-number-container">
               13
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="dash__content__nav__right-side__current-user">

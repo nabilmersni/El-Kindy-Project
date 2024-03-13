@@ -37,12 +37,18 @@ const addUser = async (data) => {
   return response;
 };
 
+const getUserById = async (userID) => {
+  const response = await instance.get(`${API_URL}/${userID}`);
+  return response.data.data.user;
+};
+
 const userService = {
   getAllUsers,
   updateMe,
   blockUser,
   updateUser,
   addUser,
+  getUserById,
 };
 
 export default userService;

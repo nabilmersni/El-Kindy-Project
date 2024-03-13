@@ -39,6 +39,7 @@ export default withMT({
         custom: "5px 5px 10px 3px rgba(0, 0, 0, 0.15)",
         custom2: "0px 5px 10px 1px rgba(0, 0, 0, 0.05)",
         custom3: "0px 5px 10px 1px rgba(0, 0, 0, 0.08)",
+        custom4: "5px 5px 10px 3px rgba(0, 0, 0, 0.08)",
       },
     },
   },

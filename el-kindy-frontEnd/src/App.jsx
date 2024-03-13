@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getLoggedUser, reset } from "./features/auth/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setSocket, setOnlineUsers, logout } from "./features/auth/AuthSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,7 +12,7 @@ import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
 import DashQuestionsList from "./quizes-management/dash/pages/dash-questions-list";
 import DashAdminUsers from "./users-management/dash-admin/pages/dash-admin-users/dash-admin-users";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import SignUp from "./users-management/auth/SignUp";
 import Login from "./users-management/auth/Login";
 import {
@@ -26,16 +26,55 @@ import DashAdminProfile from "./users-management/dash-admin/pages/dash-admin-pro
 import VerifyEmail from "./users-management/components/VerifyEmail";
 import ForgotPasswordRequest from "./users-management/auth/forgot-password/ForgotPasswordRequest";
 import ForgotPassword from "./users-management/auth/forgot-password/ForgotPassword";
+import DashAdminChat from "./users-management/dash-admin/pages/dashAdminChat";
+import { io } from "socket.io-client";
+import authService from "./features/auth/AuthService";
 
 function App() {
-  // const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const loggedUser = secureLocalStorage.getItem("user");
+  const currentSocket = useRef();
 
   useEffect(() => {
     // dispatch(getLoggedUser());
     // dispatch(reset());
-    const loggedUser = secureLocalStorage.getItem("user");
     console.log(loggedUser);
-  }, []);
+    // socket init
+    if (loggedUser) {
+      currentSocket.current = io("ws://localhost:8800");
+      currentSocket.current.on("connect", () => {
+        dispatch(setSocket(currentSocket.current.id));
+        currentSocket.current.emit("new-user-add", loggedUser._id);
+        currentSocket.current.on("get-users", (users) => {
+          dispatch(setOnlineUsers(users));
+        });
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (loggedUser) {
+      currentSocket.current.on("logOutBlockedUser", (blockedUserId) => {
+        if (loggedUser._id === blockedUserId) {
+          console.log("heyyyy call socket");
+          logoutHandler();
+        }
+      });
+    }
+  }, [user]);
+
+  const logoutHandler = async () => {
+    if (loggedUser) {
+      await authService.logout();
+      currentSocket.current.emit("loggedOut", user._id);
+      currentSocket.current.on("get-users", (users) => {
+        dispatch(setOnlineUsers([users]));
+      });
+
+      dispatch(logout("logoutBlocked"));
+    }
+  };
 
   return (
     <BrowserRouter>
@@ -55,6 +94,8 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/user-dash" element={<UserDashboard />} />
+
+          <Route path="/dash-admin-chat" element={<DashAdminChat />} />
 
           <Route element={<OnlyAdminRoute />}>
             <Route path="/admin-dash" element={<AdminDashboard />} />

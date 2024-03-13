@@ -1,4 +1,5 @@
-import { useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -6,6 +7,7 @@ import Box from "@mui/material/Box";
 import userService from "../../../features/users/UserService";
 import UserUpdateFormAdminDash from "../pages/dash-admin-users/UserUpdateFormAdminDash";
 import UserUpdateImageAdminDash from "../pages/dash-admin-users/UserUpdateImageAdminDash";
+import { io } from "socket.io-client";
 
 const style = {
   position: "absolute",
@@ -40,6 +42,13 @@ const reducer = (state, action) => {
 };
 
 const UserItem = ({ user, updateLocalUser }) => {
+  const socket = useRef();
+  const { socketId } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8800", { query: { socketId } });
+  }, []);
+
   const initUpdateFormData = {
     fullname: user.fullname,
     dateOfBirth: new Date(user.dateOfBirth).toISOString().split("T")[0],
@@ -79,6 +88,7 @@ const UserItem = ({ user, updateLocalUser }) => {
 
   const blockUserHandler = (state) => {
     blockUser(state);
+    logoutBlockedUser();
   };
   const openUpdateFormModal = () => {
     dispatchReducer({ type: "SET_OPEN", payload: true });
@@ -87,6 +97,11 @@ const UserItem = ({ user, updateLocalUser }) => {
     dispatchReducer({ type: "SET_OPEN", payload: false });
     setUpdateFormData(initUpdateFormData);
     setErrors(initFormError);
+  };
+
+  const logoutBlockedUser = () => {
+    console.log("logoutBlockedUser");
+    socket.current.emit("block-user", user._id);
   };
 
   return (
