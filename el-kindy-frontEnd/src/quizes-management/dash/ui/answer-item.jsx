@@ -1,6 +1,61 @@
+import { useState } from "react";
 import "../../../../public/assets/css/style.css";
+import UpdateAnswer from "./update-answer";
+import { deleteAnswer, getAnswers } from "../../services/apiQuiz";
+import { useNavigate } from "react-router-dom";
 
-const AnswerItem = ({}) => {
+const AnswerItem = ({ data, questionId, quizId, answers, setAnswers }) => {
+  const [isOpened, setIsOpened] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = async () => {
+    setIsModalOpen(false);
+    await fetchAnswers();
+  };
+
+  const toggleQuestion = () => {
+    setIsOpened(!isOpened);
+  };
+  const [loading, setLoading] = useState(false);
+
+  const updateAnswers = (updatedAnswers) => {
+    setAnswers(updatedAnswers);
+  };
+  const fetchAnswers = async () => {
+    try {
+      if (quizId && questionId) {
+        const response = await getAnswers(quizId, questionId);
+        setAnswers(response.data); // Met à jour la liste des réponses
+      } else {
+        console.error("QuizId or questionId is not defined.");
+      }
+    } catch (error) {
+      console.error("Error fetching answers:", error);
+      // Gérer l'erreur
+    }
+  };
+
+  // const deleteanswer = (deleteanswer) => {
+  //   setAnswers((prevQuiz) =>
+  //     prevQuiz.filter((answer) => answer._id !== deleteanswer)
+  //   );
+  // };
+  const answerId = data._id;
+  const handleDeleteAnswer = async (quizId, questionId, answerId) => {
+    try {
+      await deleteAnswer(quizId, questionId, answerId);
+      console.log("answer deleted.");
+      //deleteanswer(questionId);
+    } catch (error) {
+      console.error("Error deleting answer:", error);
+      // Gérer l'erreur
+    }
+  };
+
   return (
     <div>
       <div className="question-item__reponse-item">
@@ -26,11 +81,14 @@ const AnswerItem = ({}) => {
             </svg>
           </div>
           <label htmlFor="radioOption1" className="radioLabelItem">
-            88 keys, 52 white and 36 black.
+            {data.answerText}
           </label>
         </div>
         <div className="question-item__reponse-buttons">
-          <div className="question-item__buttons-controllers-btn edit">
+          <div
+            className="question-item__buttons-controllers-btn edit"
+            onClick={openModal}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
@@ -53,7 +111,11 @@ const AnswerItem = ({}) => {
               </g>
             </svg>
           </div>
-          <div className="question-item__buttons-controllers-btn delete">
+
+          <div
+            className="question-item__buttons-controllers-btn delete"
+            onClick={() => handleDeleteAnswer(quizId, questionId, data._id)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
@@ -75,6 +137,19 @@ const AnswerItem = ({}) => {
         </div>
       </div>
       <hr className="question-item-hr" />
+
+      {isModalOpen && (
+        <UpdateAnswer
+          isOpen={isModalOpen}
+          Idquestion={questionId}
+          onClose={closeModal}
+          data={data}
+          answers={answers}
+          quizId={quizId}
+          setAnswers={setAnswers}
+          updateAnswers={updateAnswers}
+        />
+      )}
     </div>
   );
 };

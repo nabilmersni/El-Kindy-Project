@@ -1,50 +1,55 @@
+import { useEffect, useState } from "react";
 import "../../../../public/assets/css/style.css";
 import ManageParticipantsItem from "./manage-participants-item";
+import { assignUserToQuiz, getUsersByQuiz } from "../../services/apiQuiz";
 
-const ManageParticipantsModal = ({ isOpen, onClose }) => {
+const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
   if (!isOpen) {
-    return null; // Don't render anything if the modal is closed
+    return null;
   }
-  const participants = [
-    {
-      id: 1,
-      fullname: "Braiek Ali",
-      email: "ali.braiek@esprit.tn",
-      level: "3A",
-      grade: "-",
-      assign: true,
-    },
-    {
-      id: 2,
-      fullname: "Braiek Ali",
-      email: "ali.braiek@esprit.tn",
-      level: "3A",
-      grade: "7/10",
-      assign: false,
-    },
-    {
-      id: 3,
-      fullname: "Braiek Ali",
-      email: "ali.braiek@esprit.tn",
-      level: "3A",
-      grade: "-",
-      assign: true,
-    },
-    {
-      id: 4,
-      fullname: "Braiek Ali",
-      email: "ali.braiek@esprit.tn",
-      level: "3A",
-      grade: "-",
-      assign: true,
-    },
-  ];
+
+  const [email, setEmail] = useState("");
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const quizId = quiz._id;
+  const fetchUsers = async (quizId) => {
+    try {
+      const data = await getUsersByQuiz(quizId);
+      setUsers(data);
+    } catch (err) {
+      setError(err);
+    }
+  };
+  useEffect(() => {
+    fetchUsers(quizId);
+  }, [quizId]);
+
+  const addNewUser = (newQ) => {
+    setUsers([...users, newQ]);
+  };
+  const handleAssignUser = async () => {
+    const quizId = quiz._id;
+    try {
+      const response = await assignUserToQuiz(quizId, email);
+      console.log(response);
+      addNewUser(response.user);
+      console.log(response.message);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setEmail(event.target.value);
+  };
+
   return (
     <div className="manage-participants-model ">
       <div className="manage-participants-model__card">
         <div className="manage-participants-model__card--header">
           <div className="manage-participants-model__card--header-title">
             Manage participants
+            {/* {quiz._id} */}
           </div>
           <div
             className="manage-participants-model__card--header-exitBTn"
@@ -75,11 +80,19 @@ const ManageParticipantsModal = ({ isOpen, onClose }) => {
         <div className="manage-participants-model__card--content">
           <div className="model__card--addNewPToQuiz__form">
             <input
+              type="email"
+              value={email}
+              onChange={handleInputChange}
               className="pToQuiz-add-form__input"
               placeholder="ali.braiek@esprit.tn"
-              type="text"
+              // type="text"
             />
-            <div className="model__card--addNewP__btn">Add</div>
+            <div
+              onClick={handleAssignUser}
+              className="model__card--addNewP__btn"
+            >
+              Add
+            </div>
           </div>
 
           <div className="model__card--students-list__container">
@@ -102,9 +115,16 @@ const ManageParticipantsModal = ({ isOpen, onClose }) => {
               <div className="model__card--students-list__header-delete">#</div>
             </div>
             <div className="model__card--students-list">
-              {participants.map((item, index) => (
-                <ManageParticipantsItem key={index} data={item} />
+              {users.map((item, index) => (
+                <ManageParticipantsItem
+                  key={index}
+                  data={item}
+                  fetchUsers={fetchUsers}
+                />
               ))}
+              {/* {participants.map((item, index) => (
+                <ManageParticipantsItem key={index} data={item} />
+              ))} */}
             </div>
           </div>
         </div>

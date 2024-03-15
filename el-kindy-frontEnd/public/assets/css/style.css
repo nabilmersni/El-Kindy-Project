@@ -1651,3 +1651,22 @@ input:checked + .slider:before {
 .question-item__reponses-list.isOpened {
   display: block;
 }
+
+/* *********nawres*********** */
+.error-message {
+  color: red;
+  font-size: 2em; /* ou la taille que vous préférez */
+  display: block; /* Pour s'assurer que chaque message d'erreur apparaît sur une nouvelle ligne */
+}
+
+.manage-Questions-model__card {
+  width: 90rem;
+  height: 100rem;
+  background-color: #fff;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 4rem;
+  padding: 2rem 4rem;
+}

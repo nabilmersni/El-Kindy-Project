@@ -7,7 +7,7 @@ const ManageParticipantsItem = ({ data }) => {
         <div className="model__card--student--item__fullname-img-container">
           <img
             className="model__card--student--item__fullname-img"
-            src="../../../../public/assets/img/user-1.svg"
+            src={data.photo_url || "../../../../public/assets/img/user-1.svg"}
             alt=""
           />
         </div>
@@ -19,10 +19,10 @@ const ManageParticipantsItem = ({ data }) => {
       <div className="model__card--student--item__level">{data.level}</div>
       <div className="model__card--student--item__grade">{data.grade}</div>
       {data.assign ? (
-        <div className="model__card--student--item__statusBtn">Assign</div>
+        <div className="model__card--student--item__statusBtn">Start</div>
       ) : (
         <div className="model__card--student--item__statusBtn assigned">
-          Assigned
+          Started
         </div>
       )}
 

@@ -1,97 +1,17 @@
 import "../../../../public/assets/css/style.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { addQuiz } from "../../services/apiQuiz";
+import { Link, useNavigate } from "react-router-dom";
 
-const AddNewQuizCard = () => {
-  const [selectedLevel, setSelectedLevel] = useState("");
-
-  const handleLevelChange = (event) => {
-    setSelectedLevel(event.target.value);
-  };
-
-  //----------------------------------------
-  const [selectedTime, setSelectedTime] = useState("");
-
-  const handleTimeChange = (event) => {
-    setSelectedTime(event.target.value);
-  };
-
-  //-----------------------------------------
-  const [shuffleQuestionsChecked, setShuffleQuestionsChecked] = useState(true);
-
-  const handleShuffleQuestionsChange = () => {
-    setShuffleQuestionsChecked((prevChecked) => !prevChecked);
-  };
-
-  //-----------------------------------------
-  const [displayCorrectionChecked, setDisplayCorrectionChecked] =
-    useState(true);
-
-  const handleDisplayCorrectionChange = () => {
-    setDisplayCorrectionChecked((prevChecked) => !prevChecked);
-  };
-
-  //-----------------------------------------
-  const [timeLimitChecked, setTimeLimitChecked] = useState(false);
-
-  const handleTimeLimitChange = () => {
-    setTimeLimitChecked((prevChecked) => !prevChecked);
-  };
-
-  //-------------------------------------------
-  // -------------
-  const [enteredName, setEnteredNom] = useState("");
-  const nomChangeHandle = (event) => {
-    setEnteredNom(event.target.value);
-  };
-
-  // -------------
-  const [enteredDescription, setEnteredDescription] = useState("");
-  const descriptionChangeHandle = (event) => {
-    setEnteredDescription(event.target.value);
-  };
-
-  // -------------
-  const [enteredNumberOfQuestions, setEnteredNumberOfQuestions] = useState("");
-  const numberOfQuestionsChangeHandle = (event) => {
-    setEnteredNumberOfQuestions(event.target.value);
-  };
-
-  // -------------
-  const [enteredNumberOfAttempts, setEnteredNumberOfAttempts] = useState("");
-  const numberOfAttemptsChangeHandle = (event) => {
-    setEnteredNumberOfAttempts(event.target.value);
-  };
-
-  // -------------
-  const [enteredTimeLimit, setEnteredTimeLimit] = useState("");
-  const TimeLimitChangeHandle = (event) => {
-    setEnteredTimeLimit(event.target.value);
-  };
-
-  //---------------------------------------
-  const submitHandler = (event) => {
-    event.preventDefault();
-
-    const quizData = {
-      name: enteredName,
-      description: enteredDescription,
-      level: selectedLevel,
-      questionsNb: enteredNumberOfQuestions,
-      attemptsNb: enteredNumberOfAttempts,
-      time: enteredTimeLimit,
-      timeUnite: selectedTime,
-      questionsShuffle: shuffleQuestionsChecked,
-      displayCorrection: displayCorrectionChecked,
-    };
-
-    console.log(quizData);
-  };
+const AddNewQuizCard = (props) => {
+  // userId = "65de3882778293cf8ce1fb2f";
+  const { quizItem, addNewQuiz, onValueChange, errors } = props;
 
   return (
     <div className="dash-card__container">
-      <form onSubmit={submitHandler} className="dash-card">
+      <form className="dash-card">
         <div className="dash-card__header">
-          <div className="dash-card__header-title">Quiz details</div>
+          <div className="dash-card__header-title">Add new Quiz</div>
           <div className="dash-card__header-icon">
             <svg
               id="course-add-card__header-icon-svg"
@@ -119,149 +39,159 @@ const AddNewQuizCard = () => {
         <hr className="dash-card__hr-border" />
 
         <div className="course-add-form__input__group">
-          <label className="course-add-form__input__label">
+          <label htmlFor="quizName" className="course-add-form__input__label">
             Name <span>*</span>
           </label>
           <input
+            name="quizName"
             type="text"
             className="course-add-form__input"
             placeholder="Name"
-            onChange={nomChangeHandle}
+            value={quizItem.quizName}
+            onChange={(e) => onValueChange(e)}
           />
+          {errors.quizName && (
+            <span className="error-message">
+              <span className="error-text">{errors.quizName}</span>
+            </span>
+          )}
         </div>
 
         <div className="course-add-form__input__group">
-          <label className="course-add-form__input__label">
+          <label
+            htmlFor="description"
+            className="course-add-form__input__label"
+          >
             Description <span>*</span>
           </label>
           <textarea
+            name="description"
             className="course-add-form__input textarea"
             placeholder="Description"
-            onChange={descriptionChangeHandle}
+            value={quizItem.description}
+            onChange={(e) => onValueChange(e)}
           ></textarea>
+          {errors.description && (
+            <span className="error-message">{errors.description}</span>
+          )}
         </div>
 
         <div className="course-add-form__input__group-row">
           <div className="course-add-form__input__group">
-            <label
-              htmlFor="courseCategory"
-              className="course-add-form__input__label"
-            >
+            <label htmlFor="level" className="course-add-form__input__label">
               Level <span>*</span>
             </label>
-            <select
+            <input
+              id="level"
+              name="level"
+              type="text"
               className="course-add-form__input"
-              value={selectedLevel}
-              onChange={handleLevelChange}
-            >
-              <option value="" disabled hidden>
-                Level
-              </option>
-              <option value="individual">1A</option>
-              <option value="inGroup">2A</option>
-              <option value="inGroup">3A</option>
-            </select>
+              placeholder="10"
+              value={quizItem.level}
+              onChange={(e) => onValueChange(e)}
+            />
+            {errors.level && (
+              <span className="error-message">{errors.level}</span>
+            )}
           </div>
 
           <div className="course-add-form__input__group">
             <label
-              htmlFor="courseAttempts"
+              htmlFor="nbQuestions"
               className="course-add-form__input__label"
             >
               Number of questions <span>*</span>
             </label>
             <input
-              id="questionsNumber"
-              name="questionsNumber"
+              id="nbQuestions"
+              name="nbQuestions"
               type="number"
               className="course-add-form__input"
               placeholder="10"
-              onChange={numberOfQuestionsChangeHandle}
+              value={quizItem.nbQuestions}
+              onChange={(e) => onValueChange(e)}
             />
+            {errors.nbQuestions && (
+              <span className="error-message">{errors.nbQuestions}</span>
+            )}
           </div>
-        </div>
 
-        <div className="course-add-form__input__group half-width">
-          <label className="course-add-form__input__label">
-            Number of attempts <span>*</span>
-          </label>
-          <input
-            id="courseAttempts"
-            name="courseAttempts"
-            type="number"
-            className="course-add-form__input"
-            placeholder="Number of attempts"
-            onChange={numberOfAttemptsChangeHandle}
-          />
-        </div>
-
-        <div className="course-add-form__input__group switchBtn">
-          <p className="course-add-form__input__label switchBtn">Time limit</p>
-          <label className="switch">
+          <div className="course-add-form__input__group">
+            <label
+              htmlFor="quizDuration"
+              className="course-add-form__input__label"
+            >
+              Quiz duration <span>*</span>
+            </label>
             <input
-              type="checkbox"
-              checked={timeLimitChecked}
-              onChange={handleTimeLimitChange}
-            />
-            <span className="slider round"></span>
-          </label>
-        </div>
-
-        {timeLimitChecked ? (
-          <div className="course-add-form__input__group-row switchBtn">
-            <input
-              id="timeLimit"
-              name="timeLimit"
+              id="quizDuration"
+              name="quizDuration"
               type="number"
               className="course-add-form__input"
-              placeholder="1"
-              onChange={TimeLimitChangeHandle}
+              placeholder="10"
+              value={quizItem.quizDuration}
+              onChange={(e) => onValueChange(e)}
             />
-            <select
-              className="course-add-form__input"
-              value={selectedTime}
-              onChange={handleTimeChange}
+            {errors.quizDuration && (
+              <span className="error-message">{errors.quizDuration}</span>
+            )}
+          </div>
+
+          <div className="course-add-form__input__group">
+            <label
+              htmlFor="quizStartDate"
+              className="course-add-form__input__label"
             >
-              <option value="Hours">Hours</option>
-              <option value="Minutes">Minutes</option>
-            </select>
-          </div>
-        ) : null}
-
-        <div className="course-add-form__input__group-row">
-          <div className="course-add-form__input__group switchBtn">
-            <p className="course-add-form__input__label switchBtn">
-              Shuffle the questions
-            </p>
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={shuffleQuestionsChecked}
-                onChange={handleShuffleQuestionsChange}
-              />
-              <span className="slider round"></span>
+              Date start <span>*</span>
             </label>
+            <input
+              id="quizStartDate"
+              name="quizStartDate"
+              type="date"
+              className="course-add-form__input"
+              placeholder="10"
+              value={quizItem.quizStartDate}
+              onChange={(e) => onValueChange(e)}
+            />
+            {errors.quizStartDate && (
+              <span className="error-message">{errors.quizStartDate}</span>
+            )}
           </div>
 
-          <div className="course-add-form__input__group switchBtn">
-            <p className="course-add-form__input__label switchBtn">
-              Display the correction
-            </p>
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={displayCorrectionChecked}
-                onChange={handleDisplayCorrectionChange}
-              />
-              <span className="slider round"></span>
+          <div className="course-add-form__input__group">
+            <label
+              htmlFor="quizEndDate"
+              className="course-add-form__input__label"
+            >
+              Date end <span>*</span>
             </label>
+            <input
+              id="quizEndDate"
+              name="quizEndDate"
+              type="date"
+              className="course-add-form__input"
+              placeholder="10"
+              value={quizItem.quizEndDate}
+              onChange={(e) => onValueChange(e)}
+            />
+            {errors.quizEndDate && (
+              <span className="error-message">{errors.quizEndDate}</span>
+            )}
           </div>
         </div>
 
         <hr className="dash-card__hr-border quiz" />
 
-        <button type="submit" className="add-new-course__submit-btn quiz">
+        <button
+          type="submit"
+          onClick={addNewQuiz}
+          className="add-new-course__submit-btn quiz "
+        >
+          {/* <Link to={`/dash-admin-questions/${quizItem._id}/questions`}> */}
+          {/* <Link to={`/dash-admin-quizes`}> */}
           Add New Quiz
+          {/* </Link> */}
+          {/* Add New Quiz */}
         </button>
       </form>
     </div>

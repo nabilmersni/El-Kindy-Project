@@ -30,6 +30,10 @@ import ForgotPassword from "./users-management/auth/forgot-password/ForgotPasswo
 import DashAdminChat from "./users-management/dash-admin/pages/dashAdminChat";
 import { io } from "socket.io-client";
 import authService from "./features/auth/AuthService";
+import DashQuestionListHeader from "./quizes-management/dash/ui/dash-questions-list-header";
+import DashupdateQuiz from "./quizes-management/dash/pages/DashupdateQuiz";
+import UpdateQuestion from "./quizes-management/dash/ui/update-question";
+import DashAddNewQuestion from "./quizes-management/dash/pages/dash-add-new-question";
 
 function App() {
   const { user } = useSelector((state) => state.auth);
@@ -124,12 +128,25 @@ function App() {
               path="/dash-admin-add-new-quiz"
               element={<DashAdminAddNewQuiz />}
             />
-
             <Route
-              path="/dash-admin-questions/:id"
+              path="/dash-admin-questions/:id/questions"
               element={<DashQuestionsList />}
             />
-            {/* </Route> */}
+            <Route path="/dash-admin-quizes/:id" element={<DashupdateQuiz />} />
+
+            <Route
+              path="/dash-admin-questions/:quizId/questions"
+              element={<DashQuestionListHeader />}
+            />
+
+            <Route
+              path="/dash-add-new-question/:quizId/questions"
+              element={<DashAddNewQuestion />}
+            />
+            <Route
+              path="/dash-admin-questions/:quizId/questions"
+              element={<UpdateQuestion />}
+            />
 
             {/*----------------End admin dash Quizes  ---------------*/}
           </Route>
