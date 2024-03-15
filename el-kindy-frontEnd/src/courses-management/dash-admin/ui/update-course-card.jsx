@@ -1,10 +1,13 @@
 import "../../../../public/assets/css/style.css";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import courseService from "../../services/courseService";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const AddNewCourseCard = () => {
+const UpdateCourseCard = () => {
   const navigate = useNavigate();
+
+  const { id } = useParams(); // Récupérer l'ID de l'URL
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
@@ -14,6 +17,25 @@ const AddNewCourseCard = () => {
   const [enteredPrice, setEnteredPrice] = useState("");
 
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const response = await courseService.getCourseById(id);
+        const courseData = response.data;
+        setSelectedCategory(courseData.courseCategory);
+        setSelectedType(courseData.courseType);
+        setEnteredTitle(courseData.courseTitle);
+        setEnteredDescription(courseData.courseDescription);
+        setEnteredPrice(courseData.coursePrice);
+        setImage(courseData.imageUrl);
+      } catch (error) {
+        console.error("Error fetching course details:", error.message);
+      }
+    };
+
+    fetchCourseDetails();
+  }, [id]);
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
@@ -45,7 +67,7 @@ const AddNewCourseCard = () => {
     setEnteredPrice(event.target.value);
   };
 
-  // -------------
+  //--------------
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -62,39 +84,25 @@ const AddNewCourseCard = () => {
       // Set loading state or show a loading spinner here if needed
 
       // Make the API call
-      const response = await courseService.addCourse(courseData);
+      const response = await courseService.updateCourse(id, courseData);
+
+      // Ajouter l'image au cours nouvellement ajouté
+      const formData = new FormData();
+      formData.append("image", image);
+      const uploadResponse = await courseService.addImageToCourse(
+        id,
+        formData
+      );
 
       // Handle the response (success or error)
-      console.log("Course added successfully:", response.data);
-
-      // Vérifier si le cours a été ajouté avec succès
-      if (response.status === 201) {
-        // Extraire l'ID du cours nouvellement ajouté
-        const courseId = response.data._id;
-
-        // Ajouter l'image au cours nouvellement ajouté
-        const formData = new FormData();
-        formData.append("image", image);
-        const uploadResponse = await courseService.addImageToCourse(
-          courseId,
-          formData
-        );
-
-        console.log(
-          "Course and image added successfully:",
-          uploadResponse.data
-        );
-
-        navigate("/dash-admin-courses");
-
-        // Effacer le formulaire ou gérer le succès comme nécessaire
-      } else {
-        console.error("Error adding course:", response.data.error);
-      }
-
+      console.log("Course updated successfully:", response.data);
+      navigate("/dash-admin-courses");
       // Clear the form or handle success as needed
     } catch (error) {
+      // Handle the error (display an error message, log, etc.)
       console.error("Error adding course:", error.message);
+    } finally {
+      // Reset loading state or hide loading spinner if used
     }
   };
 
@@ -137,6 +145,7 @@ const AddNewCourseCard = () => {
             type="text"
             className="course-add-form__input"
             placeholder="Title"
+            value={enteredTitle}
             onChange={titleChangeHandle}
           />
         </div>
@@ -151,6 +160,7 @@ const AddNewCourseCard = () => {
           <textarea
             className="course-add-form__input textarea"
             placeholder="Description"
+            value={enteredDescription}
             onChange={descriptionChangeHandle}
           ></textarea>
         </div>
@@ -189,6 +199,7 @@ const AddNewCourseCard = () => {
               type="number"
               className="course-add-form__input course-add-form__input__label-Price"
               placeholder="Price"
+              value={enteredPrice}
               onChange={priceChangeHandle}
             />
           </div>
@@ -253,12 +264,17 @@ const AddNewCourseCard = () => {
                   </g>
                 </g>
               </svg>
-              <img
-                className="course-add-form-image__img"
-                src={image && URL.createObjectURL(image)}
-                alt=""
-                style={!image ? { display: "none" } : {}}
-              />
+              {image && (
+                <img
+                  className="course-add-form-image__img"
+                  src={
+                    image && typeof image === "string"
+                      ? `http://localhost:3000/${image}`
+                      : URL.createObjectURL(image)
+                  }
+                  alt="Course Image"
+                />
+              )}
             </div>
             <div className="course-add-form-image__description">
               <div style={{ display: "flex" }}>
@@ -303,11 +319,11 @@ const AddNewCourseCard = () => {
         <hr className="dash-card__hr-border hr-border-2" />
 
         <button type="submit" className="add-new-course__submit-btn">
-          Add New Course
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default AddNewCourseCard;
+export default UpdateCourseCard;

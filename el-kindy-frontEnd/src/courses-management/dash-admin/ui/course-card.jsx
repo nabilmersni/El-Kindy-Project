@@ -1,32 +1,40 @@
 import "../../../../public/assets/css/style.css";
+import { useState } from "react";
+import courseService from "../../services/courseService";
+import { Link } from "react-router-dom";
+const CourseCard = ({ data, onDelete }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
 
-const CourseCard = ({ data }) => {
+  const handleDelete = async () => {
+    await courseService.deleteCourse(data._id);
+    onDelete(data._id);
+  };
   // console.log(data);
   return (
     <div className="dash__courses__list__card">
       <div className="dash__courses__list__card-img-container">
         <img
           className="dash__courses__list__card-img"
-          src="../../../../public/assets/img/photo1.jpg"
+          src={`http://localhost:3000/${data.imageUrl}`}
           alt=""
         />
       </div>
       <div className="dash__courses__list__card-content">
         <div className="dash__courses__list__card-content-title">
-          {data.title}
+          {data.courseTitle}
         </div>
         <div className="dash__courses__list__card-content-type-price">
           <div className="dash__courses__list__card-content-type">
             Course type:
-            <p>{data.type}</p>
+            <p>{data.courseType}</p>
           </div>
           <div className="dash__courses__list__card-content-price">
-            {data.price} TND
+            {data.coursePrice} TND
           </div>
         </div>
         <div className="dash__courses__list__card-content-btns">
           <div className="dash__courses__list__card-content-btns-category">
-            {data.category}
+            {data.courseCategory}
           </div>
           <div className="dash__courses__list__card-content-btns-list">
             <a
@@ -52,8 +60,8 @@ const CourseCard = ({ data }) => {
                 </g>
               </svg>
             </a>
-            <a
-              href="#"
+            <Link
+              to={`/dash-admin-update-course/${data._id}`}
               className="dash__courses__list__card-content-btns-list__update"
             >
               <svg
@@ -77,10 +85,10 @@ const CourseCard = ({ data }) => {
                   ></path>
                 </g>
               </svg>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <div
               className="dash__courses__list__card-content-btns-list__delete"
+              onClick={handleDelete}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +107,7 @@ const CourseCard = ({ data }) => {
                   ></path>
                 </g>
               </svg>
-            </a>
+            </div>
           </div>
         </div>
       </div>

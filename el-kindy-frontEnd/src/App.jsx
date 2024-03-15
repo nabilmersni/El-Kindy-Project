@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LandingPage from "./pages/LandingPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import DashAdminCourses from "./courses-management/dash-admin/pages/dash-admin-courses";
+import DashAdminUpdateCourse from "./courses-management/dash-admin/pages/dash-admin-update-course";
 import DashAdminAddNewCourse from "./courses-management/dash-admin/pages/dash-admin-add-new-course";
 import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
@@ -110,6 +111,10 @@ function App() {
             <Route
               path="/dash-admin-add-new-course"
               element={<DashAdminAddNewCourse />}
+            />
+            <Route
+              path="/dash-admin-update-course/:id"
+              element={<DashAdminUpdateCourse />}
             />
             {/*----------------End admin dash courses  ---------------*/}
 
