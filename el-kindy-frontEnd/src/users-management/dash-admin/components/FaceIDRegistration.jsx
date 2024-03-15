@@ -25,7 +25,7 @@ function FaceIDRegistration() {
   const faceIoScriptLoaded = () => {
     console.log(faceIO);
     if (faceIO && !faceioInstance) {
-      faceioInstance = new faceIO("fioa83da");
+      faceioInstance = new faceIO("fioa7ba2");
     }
   };
 
