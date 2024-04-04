@@ -502,6 +502,60 @@ html {
   color: #444;
 }
 
+/* Sarra Modif 2*/
+
+.manage-participants-btn2 {
+  display: flex;
+  justify-content: flex-end;
+  float: right;
+  padding-left: 13rem;
+
+}
+.manage-participants-model__card2 {
+  width: 110rem;
+  height: 80rem;
+  background-color: #fff;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 4rem;
+  padding: 2rem 4rem;
+}
+.Details-titles {
+  display: inline-block;
+}
+.Details-titles2 {
+  font-size: 2.2rem;
+  color: #000;
+  font-weight: 700;
+  padding: 15px;
+  text-align: center;
+}
+.eventD-item {
+  color: #ff7244;
+}
+.eventD-item__title img {
+  margin-top: 20px;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 11px 8px 4px rgb(4 2 18 / 10%);
+}
+
+.Tickets__card--header-exitBTn{
+  background-color: #006bbe;
+  width: 2rem;
+  height:2rem;
+  padding: 0.5rem;
+  border-radius: 100%;
+  fill: #fff;
+  cursor: pointer;
+  transition: all ease-out 0.1s;
+  float: right;
+}
+
+
+
 .dash__courses__list__card-content-type-price {
   display: flex;
   justify-content: space-between;

@@ -47,6 +47,13 @@ import GamesPage from "./users-management/user-side/pages/GamesPage";
 import NotFound from "./ui/NotFound";
 import QuizDetailsFront from "./quizes-management/front/ui/quiz-details-front";
 import QuizListFront from "./quizes-management/front/ui/quiz-list-front";
+import EventDetailsCard from "./Event-Management/Dash-Admin/ui/eventDetails";
+import DashAdminUpdateEvent from "./Event-Management/Dash-Admin/pages/dashAdminUpdateEvent";
+import DashAdminAddNewEvent from "./Event-Management/Dash-Admin/pages/dashAdminAddNewEvent";
+import ViewAllEvents from "./ui/ViewAllEvents";
+import TicketItems from "./ui/TicketItems";
+import DashAdminEvents from "./Event-Management/Dash-Admin/pages/dashAdminEvents";
+import FrontAllEvent from "./Event-Management/front_side/FrontAllEvent";
 
 function App() {
   // const { user } = useSelector((state) => state.auth);
@@ -131,6 +138,10 @@ function App() {
               path="/quiz-details-front/:userId/:quizId"
               element={<QuizDetailsFront />}
             />
+            {/* ---------------Event -------------- */}
+            {/* <Route path="/AllEvents" element={<ViewAllEvents />} /> */}
+            <Route path="/user-side/AllEvents" element={<FrontAllEvent />} />
+          <Route path="/tickets/:eventId" element={<TicketItems />} />
           </Route>
 
           {/*  */}
@@ -153,7 +164,23 @@ function App() {
               path="/dash-admin-update-course/:id"
               element={<DashAdminUpdateCourse />}
             />
-            {/*----------------End admin dash courses  ---------------*/}
+             {/*---------------- admin dash Events  ---------------*/}
+
+        <Route
+          path="/dash-admin-add-new-event"
+          element={<DashAdminAddNewEvent />}
+        />
+
+        <Route
+          path="/event-details/:id"
+          element={<EventDetailsCard />}
+        />
+        <Route
+          path="/dash-admin-Update-new-event/:id"
+          element={<DashAdminUpdateEvent />}
+        />
+
+        <Route path="/dash-admin-events" element={<DashAdminEvents />} />
 
             {/* ---------------admin dash Quizes  -----------------*/}
             <Route path="/dash-admin-quizes" element={<DashQuizesList />} />

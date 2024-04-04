@@ -1,17 +1,22 @@
-import Lottie from "react-lottie";
-
+import React, { useEffect, useState } from 'react';
+import { getallEvents, createTicketAndAssociateWithEvent, getTicketsByEventId } from '../Event-Management/Services/apiEvent'; // Import the required functions
+import { useNavigate } from 'react-router-dom';
+import Title1 from './Title1';
+import Lottie from 'react-lottie';
 import guitarAnimation from "../../public/lottieAnimations/guitar.json";
 import speakerAnimation from "../../public/lottieAnimations/speaker.json";
-import ButtonPrimary from "./ButtonPrimary";
-import Title1 from "./Title1";
-import { useState } from "react";
-import { createTicketAndAssociateWithEvent, getTicketsByEventId, getallEvents } from "../Event-Management/Services/apiEvent";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import ButtonPrimary from './ButtonPrimary';
+import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
-function Event() {
+
+function ViewAllEvents() {
+  const { user } = useSelector((state) => state.auth);
+
   const [events, setEvents] = useState([]);
-
+  const navigate = useNavigate();
+  const [joinedEvents, setJoinedEvents] = useState([]);
+  
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -19,16 +24,18 @@ function Event() {
   const fetchEvents = async () => {
     try {
       const allEvents = await getallEvents();
-      const limitedEvents = allEvents.slice(0, 3);
-      setEvents(limitedEvents);
+      setEvents(allEvents);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
   };
+
+
+
   const handleJoinEvent = async (eventId) => {
     try {
       const tickets = await getTicketsByEventId(eventId);
-      const userId = '65de3882778293cf8ce1fb2f'; 
+       const userId = user._id; 
   
       const userAlreadyJoined = tickets.some(ticket => ticket.user === userId);
       if (userAlreadyJoined) {
@@ -49,24 +56,23 @@ function Event() {
       }
     }
   };
-
   return (
-    <div className="container mx-auto w-auto mt-[8rem] px-8">
-      <div className="relative">
-        <Title1>Event</Title1>
-        <div className="flex justify-center items-center mt-5 mb-8">
-          <p className="text-black font-normal text-center max-w-[40rem] ">
-            <span className="text-primary font-extrabold">El Kindy Band</span>{" "}
-            is a competition open to amateur ensembles comprising 2 to 10
-            musicians capable of playing any style of music. Free program
-            lasting 10 to 20 minutes, consisting of one to three pieces.
-          </p>
-        </div>
 
-        <div className="flex flex-col lg:flex-row justify-center items-center gap-[2rem]">
-          {events.map(event => (
-            <div key={event.id} className="flex flex-col justify-between items-center p-[1rem] border-primary border-[.3rem] rounded-[2rem] h-full">
-              <div className="rounded-[2rem]  ">
+    <div className="container mx-auto px-8  px-[1rem] lg:pl-28 pl-[1rem] pb-[5rem]">
+      <Title1>Event</Title1>
+      <div className="flex justify-center items-center mt-5 mb-8">
+        <p className="text-black font-normal text-center max-w-[40rem] ">
+          <span className="text-primary font-extrabold">El Kindy Band</span>{" "}
+          is a competition open to amateur ensembles comprising 2 to 10
+          musicians capable of playing any style of music. Free program
+          lasting 10 to 20 minutes, consisting of one to three pieces.
+        </p>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {events.map((event, index) => (
+          <div key={event.id} className="event-container">
+            <div className="event-content p-[1rem] border-primary border-[.3rem] rounded-[2rem] flex flex-col justify-between items-center h-full">
+              <div className="rounded-[2rem] w-full">
                 <img
                   src={`http://localhost:3000/upload-directory/${event.EventImage}`}
                   alt=""
@@ -79,25 +85,22 @@ function Event() {
               <div className="flex justify-evenly items-center w-full">
                 <div className="flex justify-between items-center">
                   <img
-                    src="img/location-icon.svg"
+                    src="/img/location-icon.svg"
                     alt=""
-                    className="w-[1.3rem] mr-[.5rem] "
+                    className="w-[1.3rem] mr-[.5rem]"
                   />
                   <p>{event.EventPlace}</p>
                 </div>
-
                 <span className="w-[.5rem] h-[.5rem] bg-primary rounded-full"></span>
-
                 <div className="flex justify-between items-center">
                   <img
-                    src="img/calendar-icon.svg"
+                    src="/img/calendar-icon.svg"
                     alt=""
-                    className="w-[1.3rem] mr-[.5rem] "
+                    className="w-[1.3rem] mr-[.5rem]"
                   />
                   <p>{event.EventDate}</p>
                 </div>
               </div>
-
               <div className="flex justify-evenly items-center w-full -mb-[2rem]">
                 <ButtonPrimary size={"1rem"}>more info</ButtonPrimary>
                 <span className="w-[.5rem] h-[.5rem] bg-primary rounded-full"></span>
@@ -113,22 +116,12 @@ function Event() {
                 </Link>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="flex justify-center">
-          <Link to="/AllEvents">
-            <ButtonPrimary size={"1rem"}>
-              <p className="text-[1.2rem]">View all events</p>
-            </ButtonPrimary>
-          </Link>
-        </div>
-
+          </div>
+        ))}
         <div className="hidden lg:block">
-          <div className="max-w-[11rem] absolute top-[-3rem] left-0">
+          <div className="max-w-[11rem] absolute pt-[8rem] top-[-3rem] left-0">
             <Lottie options={{ animationData: guitarAnimation }} />
           </div>
-
           <div className="max-w-[11rem] absolute top-[3rem] right-0">
             <Lottie
               isClickToPauseDisabled={true}
@@ -140,4 +133,5 @@ function Event() {
     </div>
   );
 }
-export default Event;
+
+export default ViewAllEvents;

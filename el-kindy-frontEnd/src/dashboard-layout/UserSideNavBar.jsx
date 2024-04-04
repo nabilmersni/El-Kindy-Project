@@ -53,7 +53,7 @@ function NavList() {
         </ListItem>
       </Link>
 
-      <Link to={"/user-side/events"}>
+      <Link to={"/user-side/AllEvents"}>
         <ListItem className="flex items-center gap-2 font-nunito py-2 pr-4 hover:text-nav hover:bg-[#e8f6ff]">
           Events
         </ListItem>

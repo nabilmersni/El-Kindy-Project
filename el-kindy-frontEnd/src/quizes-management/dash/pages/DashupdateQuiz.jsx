@@ -62,11 +62,34 @@ function DashupdateQuiz() {
     setEnteredPrice(e.target.value);
   };
   const handleAvailablePlacesChange = (e) => {
-    setAvailablePlaces(e.target.value);
-  };
+    const value = e.target.value;
 
+    // Vérifiez si la valeur est un nombre positif
+    if (value < 0 || isNaN(value)) {
+      setErrors({
+        ...errors,
+        quizDuration: "Quiz Duration must be a positive number.",
+      });
+    } else {
+      setErrors({ ...errors, quizDuration: "" });
+    }
+
+    setAvailablePlaces(value);
+  };
   const handleEventChange = (e) => {
-    setEventDate(e.target.value);
+    const value = e.target.value;
+
+    // Vérifiez si la valeur est un nombre positif
+    if (value < 0 || isNaN(value)) {
+      setErrors({
+        ...errors,
+        nbQuestions: "Number of questions must be a positive number.",
+      });
+    } else {
+      setErrors({ ...errors, nbQuestions: "" });
+    }
+
+    setEventDate(value);
   };
   return (
     <div>

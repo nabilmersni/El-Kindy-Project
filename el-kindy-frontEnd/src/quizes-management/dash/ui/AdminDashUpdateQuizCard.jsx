@@ -15,7 +15,7 @@ const AdminDashUpdateQuizCard = (props) => {
     handleSubmit,
     errors,
   } = props;
-
+  const hasErrors = Object.values(errors).some((error) => error !== "");
   return (
     <DashLayout>
       <div className="dash-card__container">
@@ -119,7 +119,11 @@ const AdminDashUpdateQuizCard = (props) => {
 
           <hr className="dash-card__hr-border hr-border-2" />
 
-          <button onClick={handleSubmit} className="add-new-course__submit-btn">
+          <button
+            onClick={handleSubmit}
+            className="add-new-course__submit-btn"
+            disabled={hasErrors}
+          >
             Update Quiz
           </button>
         </form>
