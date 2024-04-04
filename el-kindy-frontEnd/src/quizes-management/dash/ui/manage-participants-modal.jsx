@@ -7,7 +7,6 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
   if (!isOpen) {
     return null;
   }
-
   const [email, setEmail] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -24,15 +23,24 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
     fetchUsers(quizId);
   }, [quizId]);
 
-  const addNewUser = (newQ) => {
-    setUsers([...users, newQ]);
+  const addNewUser = (newP) => {
+    setUsers([...users, newP]);
   };
+
   const handleAssignUser = async () => {
+    const isUserExist = users.some((user) => user.email === email);
+    console.log("Is user exist:", isUserExist);
+    if (isUserExist) {
+      setError("Cet utilisateur existe déjà dans la liste.");
+      return;
+    }
+
     const quizId = quiz._id;
     try {
       const response = await assignUserToQuiz(quizId, email);
       console.log(response);
       addNewUser(response.user);
+
       console.log(response.message);
     } catch (error) {
       console.error(error.message);
@@ -49,7 +57,6 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
         <div className="manage-participants-model__card--header">
           <div className="manage-participants-model__card--header-title">
             Manage participants
-            {/* {quiz._id} */}
           </div>
           <div
             className="manage-participants-model__card--header-exitBTn"
@@ -85,15 +92,15 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
               onChange={handleInputChange}
               className="pToQuiz-add-form__input"
               placeholder="ali.braiek@esprit.tn"
-              // type="text"
             />
             <div
               onClick={handleAssignUser}
               className="model__card--addNewP__btn"
             >
-              Add
+              Assign
             </div>
           </div>
+          {error && <div className="error-message">{error}</div>}
 
           <div className="model__card--students-list__container">
             <div className="model__card--students-list__header">
@@ -104,15 +111,15 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
                 Email
               </div>
               <div className="model__card--students-list__header-level">
-                Level
+                Profession
               </div>
-              <div className="model__card--students-list__header-grade">
-                Grade
-              </div>
+
               <div className="model__card--students-list__header-status">
                 Status
               </div>
-              <div className="model__card--students-list__header-delete">#</div>
+              <div className="model__card--students-list__header-delete">
+                Action
+              </div>
             </div>
             <div className="model__card--students-list">
               {users.map((item, index) => (
@@ -120,11 +127,9 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
                   key={index}
                   data={item}
                   fetchUsers={fetchUsers}
+                  quizId={quizId}
                 />
               ))}
-              {/* {participants.map((item, index) => (
-                <ManageParticipantsItem key={index} data={item} />
-              ))} */}
             </div>
           </div>
         </div>

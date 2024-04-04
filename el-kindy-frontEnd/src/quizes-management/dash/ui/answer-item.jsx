@@ -29,30 +29,24 @@ const AnswerItem = ({ data, questionId, quizId, answers, setAnswers }) => {
     try {
       if (quizId && questionId) {
         const response = await getAnswers(quizId, questionId);
-        setAnswers(response.data); // Met à jour la liste des réponses
+        setAnswers(response.data);
       } else {
         console.error("QuizId or questionId is not defined.");
       }
     } catch (error) {
       console.error("Error fetching answers:", error);
-      // Gérer l'erreur
     }
   };
 
-  // const deleteanswer = (deleteanswer) => {
-  //   setAnswers((prevQuiz) =>
-  //     prevQuiz.filter((answer) => answer._id !== deleteanswer)
-  //   );
-  // };
   const answerId = data._id;
   const handleDeleteAnswer = async (quizId, questionId, answerId) => {
     try {
+      alert("Answer deleted successfully!");
       await deleteAnswer(quizId, questionId, answerId);
       console.log("answer deleted.");
-      //deleteanswer(questionId);
+      await fetchAnswers();
     } catch (error) {
       console.error("Error deleting answer:", error);
-      // Gérer l'erreur
     }
   };
 

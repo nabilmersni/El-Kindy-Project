@@ -33,6 +33,8 @@ import {
 import SocketContext from "../features/context/SocketContext";
 
 function NavList() {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1 text-nav text-[1.15rem] font-semibold">
       <Link to={"/user-side"}>
@@ -45,7 +47,7 @@ function NavList() {
           Courses
         </ListItem>
       </Link>
-      <Link to={"/user-side/quizs"}>
+      <Link to={"/quiz-list-front/quizzes/" + user._id}>
         <ListItem className="flex items-center gap-2 font-nunito py-2 pr-4 hover:text-nav hover:bg-[#e8f6ff]">
           Quizs
         </ListItem>

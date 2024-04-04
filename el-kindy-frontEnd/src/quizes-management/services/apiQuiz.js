@@ -81,6 +81,17 @@ export const deleteQuiz = async (id) => {
   }
 };
 
+export const startQuizUpdate = async (userId, quizId) => {
+  try {
+    const response = await axios.patch(
+      `${baseURL}/startQuiz/${userId}/${quizId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating isComleted quiz with ID ${quizId}:`, error);
+    throw error;
+  }
+};
 export const assignUserToQuiz = async (quizId, email) => {
   try {
     const response = await fetch(`${baseURL}/${quizId}/assign`, {
@@ -106,17 +117,87 @@ export const getUsersByQuiz = async (quizId) => {
   const response = await fetch(`${baseURL}/${quizId}/users`);
   return response.json();
 };
-// export const postUser = async (user) => {
-//   const response = await fetch('/api/users', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(user)
-//   });
-//   return response.json();
-// }
 
+export const startQuiz = async (userId, quizId, Started) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/${userId}/${quizId}/startquiz`,
+      { isStarted: Started }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchQuizzesByUser = async (userId, setQuizzes) => {
+  try {
+    const response = await axios.get(`${baseURL}/quizzes/${userId}`);
+    setQuizzes(response.data);
+    console.log("data", response.data);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des quiz :", error);
+  }
+};
+export const getQuizWithQuestionsAndAnswers = async (userId, quizId) => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/${userId}/${quizId}/questionsandanswers`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        "Erreur lors de la récupération du quiz avec les questions et les réponses"
+    );
+  }
+};
+
+export const getQuizUser = async (userId, quizId) => {
+  try {
+    const response = await axios.get(`${baseURL}/${userId}/${quizId}/quizuser`);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        "Erreur lors de la récupération du quiz avec les questions et les réponses"
+    );
+  }
+};
+
+export const markQuizAsCompleted = async (userId, quizId) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/users/${userId}/quizzes/${quizId}/complete`
+    );
+    if (response.status === 200) {
+      console.log("Le quiz a été marqué comme terminé avec succès");
+    }
+  } catch (error) {
+    console.error("Erreur lors du marquage du quiz comme terminé :", error);
+  }
+};
+export const removeUserFromQuiz = async (userId, quizId) => {
+  try {
+    const response = await axios.delete(
+      `${baseURL}/quizzes/${quizId}/users/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error removing user from quiz: " + error.message);
+  }
+};
+export const getStartedUsersPercentage = async (quizId) => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/quiz/${quizId}/starteduserscount`
+    );
+    return response.data.percentage;
+  } catch (error) {
+    console.error("Erreur lors du calcul du pourcentage :", error);
+    return 0;
+  }
+};
 //*********************************Crud_Question***********************************
 
 export const getQuestionsForQuiz = async (id) => {
@@ -255,15 +336,72 @@ export async function getAnswerByIdAndQuestionId(questionId, answerId) {
   }
 }
 
-export async function updateAnswer(questionId, answerId, updatedData) {
+// export async function updateAnswer(questionId, answerId, updatedData) {
+//   try {
+//     const response = await axios.put(
+//       `${baseURL}/${questionId}/answers/${answerId}`,
+//       updatedData
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error("Erreur lors de la mise à jour de la réponse :", error);
+//     throw error;
+//   }
+// }
+
+// export async function updateAnswer(questionId, answerId, updatedData, image) {
+//   try {
+//     const config = {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     };
+
+//     const response = await axios.put(
+//       `${baseURL}/${questionId}/answers/${answerId}`,
+//       image ? image : updatedData,
+//       image ? config : null
+//     );
+
+//     return response.data;
+//   } catch (error) {
+//     console.error("Erreur lors de la mise à jour de la réponse :", error);
+//     throw error;
+//   }
+// }
+
+export const addImageToAnswer = async (answerId, image) => {
+  return axios.post(`${baseURL}/${answerId}/image`, image, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export async function updateAnswer(
+  questionId,
+  answerId,
+  answerText,
+  isCorrect,
+  image
+) {
   try {
+    const formData = new FormData();
+    formData.append("answerText", answerText);
+    formData.append("isCorrect", isCorrect);
+    formData.append("image", image);
+
     const response = await axios.put(
       `${baseURL}/${questionId}/answers/${answerId}`,
-      updatedData
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return response.data;
   } catch (error) {
-    console.error("Erreur lors de la mise à jour de la réponse :", error);
-    throw error;
+    throw new Error("Error updating answer");
   }
 }

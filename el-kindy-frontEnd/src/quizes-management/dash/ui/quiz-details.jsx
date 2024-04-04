@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import { getQuizById } from "../../services/apiQuiz";
-export default function QuizDetails({ data, isOpen, isCloseQuiz, quiz }) {
-  // console.log("name quiz est", data);
+
+export default function QuizDetails({ isOpen, isCloseQuiz, quiz }) {
   if (!isOpen) {
-    return null; // Don't render anything if the modal is closed
+    return null;
   }
 
   const [quizDetails, setQuizDetails] = useState(null);
@@ -12,48 +11,6 @@ export default function QuizDetails({ data, isOpen, isCloseQuiz, quiz }) {
   useEffect(() => {
     getQuizById(quiz._id).then((data) => setQuizDetails(data));
   }, [quiz._id]);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-
-    const days = [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ];
-    const months = [
-      "janvier",
-      "février",
-      "mars",
-      "avril",
-      "mai",
-      "juin",
-      "juillet",
-      "août",
-      "septembre",
-      "octobre",
-      "novembre",
-      "décembre",
-    ];
-
-    const day = days[date.getDay()];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-
-    const dayOfMonth = date.getDate();
-
-    return `${day} ${dayOfMonth} ${month} ${year}`;
-  };
 
   return (
     <div
@@ -73,8 +30,8 @@ export default function QuizDetails({ data, isOpen, isCloseQuiz, quiz }) {
       <div
         style={{
           width: "100%",
-          height: "60%", // Augmentez la largeur selon vos besoins
-          maxWidth: "500px", // Définit une largeur maximale pour le modal
+          height: "60%",
+          maxWidth: "500px",
           backgroundColor: "white",
           borderRadius: "8px",
           overflow: "hidden",
@@ -84,7 +41,6 @@ export default function QuizDetails({ data, isOpen, isCloseQuiz, quiz }) {
           className="manage-participants-model__card--header"
           style={{
             padding: "15px",
-
             borderBottom: "1px solid #ddd",
             display: "flex",
             justifyContent: "space-between",
@@ -126,54 +82,78 @@ export default function QuizDetails({ data, isOpen, isCloseQuiz, quiz }) {
             margin: "0",
           }}
         />
-        <div className="modal">
+        <div
+          className="modal"
+          style={{
+            padding: "15px",
+            textAlign: "center",
+            fontSize: "1.5rem", // Ajustez la taille de la police ici
+          }}
+        >
           <div
             className="modal-content"
             style={{
               padding: "15px",
             }}
           >
-            <div>
+            <div className="Details-quiz">
               {quizDetails && (
                 <>
                   <div
-                    className="quiz-item__title"
+                    className="quiz-item-details__title"
                     style={{ marginBottom: "10px" }}
                   >
-                    Quiz name is: {quizDetails.quizName}
+                    {/* Quiz name is:
+                    <p className="quiz-item-details"> {quizDetails.quizName}</p> */}
+                    <span style={{ fontWeight: "bold" }}>Quiz name is:</span>{" "}
+                    <span className="quiz-item-details">
+                      {quizDetails.quizName}
+                    </span>
                   </div>
                   <div
-                    className="quiz-item__title"
+                    className="quiz-item-details__title"
                     style={{ marginBottom: "10px" }}
                   >
-                    Description of quiz: {quizDetails.description}
+                    <span style={{ fontWeight: "bold" }}>
+                      {" "}
+                      Description of quiz:
+                    </span>{" "}
+                    <span className="quiz-item-details">
+                      {quizDetails.description}
+                    </span>
                   </div>
                   <div
-                    className="quiz-item__title"
+                    className="quiz-item-details__title"
                     style={{ marginBottom: "10px" }}
                   >
-                    Level of quiz: {quizDetails.level}
+                    <span style={{ fontWeight: "bold" }}> Level of quiz:</span>
+
+                    <span className="quiz-item-details">
+                      {quizDetails.level}
+                    </span>
                   </div>
                   <div
-                    className="quiz-item__title"
+                    className="quiz-item-details__title"
                     style={{ marginBottom: "10px" }}
                   >
-                    Number question of quiz: {quizDetails.nbQuestions}
+                    <span style={{ fontWeight: "bold" }}>
+                      Number question of quiz:
+                    </span>
+                    <span className="quiz-item-details">
+                      {quizDetails.nbQuestions}
+                    </span>
                   </div>
                   <div
-                    className="quiz-item__title"
+                    className="quiz-item-details__title"
                     style={{ marginBottom: "10px" }}
                   >
-                    Duration of quiz: {quizDetails.quizDuration}
-                  </div>
-                  <div
-                    className="quiz-item__title"
-                    style={{ marginBottom: "10px" }}
-                  >
-                    Start date of quiz: {formatDate(quizDetails.quizStartDate)}
-                  </div>
-                  <div className="quiz-item__title">
-                    End date of quiz: {formatDate(quizDetails.quizEndDate)}
+                    <span style={{ fontWeight: "bold" }}>
+                      {" "}
+                      Duration of quiz:
+                    </span>{" "}
+                    <span className="quiz-item-details">
+                      {quizDetails.quizDuration} Minutes
+                    </span>
                   </div>
                 </>
               )}

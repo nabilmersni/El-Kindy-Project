@@ -1,10 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import ManageParticipantsItem from "./manage-participants-item";
-import {
-  createQuestionForQuiz,
-  getQuestionsForQuiz,
-} from "../../services/apiQuiz";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
+
+import { createQuestionForQuiz } from "../../services/apiQuiz";
 
 export default function AddNewQuestion({
   isOpen,
@@ -16,12 +12,13 @@ export default function AddNewQuestion({
   if (!isOpen) {
     return null;
   }
-  //const navigate = useNavigate();
+
   const [questionText, setQuestionText] = useState("");
   const [nbPoint, setNbPoint] = useState("");
   const [image, setImage] = useState(null);
-
   const inputRef = useRef(null);
+  const [nbPointError, setNbPointError] = useState("");
+  const [questionTextError, setQuestionTextError] = useState("");
   const handleImageClick = () => {
     inputRef.current.click();
   };
@@ -31,20 +28,34 @@ export default function AddNewQuestion({
   };
 
   const handleSubmit = async () => {
+    setNbPointError("");
+    setQuestionTextError("");
+
+    if (!questionText.trim()) {
+      setQuestionTextError("  Question  is required.");
+      return;
+    }
+
+    if (!nbPoint.trim()) {
+      setNbPointError("Number of points is required.");
+      return;
+    }
+
+    const nbPointNumber = parseFloat(nbPoint);
+    if (isNaN(nbPointNumber) || nbPointNumber <= 0) {
+      setNbPointError("Please enter a positive number for points.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", image);
     formData.append("questionText", questionText);
-    formData.append("nbPoint", nbPoint);
-    console.log("ahoyyyyyyyyyyyyyyyy");
+    formData.append("nbPoint", nbPointNumber);
+
     try {
       const response = await createQuestionForQuiz(quizId, formData);
-      // console.log(response.savedQuestion);
-      //setQuestionss(response.savedQuestion);
-      //console.log("add new question", response);
       addNewQuestion(response);
       onClose();
-
-      //navigate(`/dash-admin-questions/${quizId}/questions`);
     } catch (err) {
       console.error(err);
     }
@@ -98,6 +109,7 @@ export default function AddNewQuestion({
             value={nbPoint}
             onChange={(e) => setNbPoint(e.target.value)}
           />
+          {nbPointError && <div className="error-message">{nbPointError}</div>}
         </div>
 
         <div className="manage-participants-model__card--content">
@@ -115,6 +127,9 @@ export default function AddNewQuestion({
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
             ></textarea>
+            {questionTextError && (
+              <div className="error-message">{questionTextError}</div>
+            )}
           </div>
         </div>
 

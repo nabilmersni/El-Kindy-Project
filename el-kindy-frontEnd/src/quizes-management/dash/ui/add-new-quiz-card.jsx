@@ -1,10 +1,6 @@
 import "../../../../public/assets/css/style.css";
-import { useEffect, useState } from "react";
-import { addQuiz } from "../../services/apiQuiz";
-import { Link, useNavigate } from "react-router-dom";
 
 const AddNewQuizCard = (props) => {
-  // userId = "65de3882778293cf8ce1fb2f";
   const { quizItem, addNewQuiz, onValueChange, errors } = props;
 
   return (
@@ -81,15 +77,28 @@ const AddNewQuizCard = (props) => {
             <label htmlFor="level" className="course-add-form__input__label">
               Level <span>*</span>
             </label>
-            <input
+
+            <select
               id="level"
               name="level"
-              type="text"
               className="course-add-form__input"
-              placeholder="10"
               value={quizItem.level}
               onChange={(e) => onValueChange(e)}
-            />
+            >
+              <option value="">Select Level</option>
+              <option value="Initiation">Initiation</option>
+              <option value="Preparatoire">Preparatoire</option>
+              <option value="1er">1er</option>
+              <option value="2eme">2eme</option>
+              <option value="3eme">3eme</option>
+              <option value="4eme">4eme</option>
+              <option value="5eme">5eme</option>
+              <option value="6eme">6eme</option>
+              <option value="Diplome">Diplome</option>
+              <option value="1er Adulte">1er Adulte</option>
+              <option value="2eme Adulte">2eme Adulte</option>
+              <option value="3eme Adulte">3eme Adulte</option>
+            </select>
             {errors.level && (
               <span className="error-message">{errors.level}</span>
             )}
@@ -123,60 +132,23 @@ const AddNewQuizCard = (props) => {
             >
               Quiz duration <span>*</span>
             </label>
-            <input
-              id="quizDuration"
-              name="quizDuration"
-              type="number"
-              className="course-add-form__input"
-              placeholder="10"
-              value={quizItem.quizDuration}
-              onChange={(e) => onValueChange(e)}
-            />
-            {errors.quizDuration && (
-              <span className="error-message">{errors.quizDuration}</span>
-            )}
-          </div>
-
-          <div className="course-add-form__input__group">
-            <label
-              htmlFor="quizStartDate"
-              className="course-add-form__input__label"
-            >
-              Date start <span>*</span>
-            </label>
-            <input
-              id="quizStartDate"
-              name="quizStartDate"
-              type="date"
-              className="course-add-form__input"
-              placeholder="10"
-              value={quizItem.quizStartDate}
-              onChange={(e) => onValueChange(e)}
-            />
-            {errors.quizStartDate && (
-              <span className="error-message">{errors.quizStartDate}</span>
-            )}
-          </div>
-
-          <div className="course-add-form__input__group">
-            <label
-              htmlFor="quizEndDate"
-              className="course-add-form__input__label"
-            >
-              Date end <span>*</span>
-            </label>
-            <input
-              id="quizEndDate"
-              name="quizEndDate"
-              type="date"
-              className="course-add-form__input"
-              placeholder="10"
-              value={quizItem.quizEndDate}
-              onChange={(e) => onValueChange(e)}
-            />
-            {errors.quizEndDate && (
-              <span className="error-message">{errors.quizEndDate}</span>
-            )}
+            <div className="input-with-unit">
+              <input
+                id="quizDuration"
+                name="quizDuration"
+                type="number"
+                className="course-add-form__input input-small"
+                placeholder="10"
+                value={quizItem.quizDuration}
+                onChange={(e) => onValueChange(e)}
+              />
+              {errors.quizDuration && (
+                <span className="error-message">{errors.quizDuration}</span>
+              )}
+              <span className="course-add-form__input__label unit">
+                minutes
+              </span>
+            </div>
           </div>
         </div>
 
@@ -187,11 +159,7 @@ const AddNewQuizCard = (props) => {
           onClick={addNewQuiz}
           className="add-new-course__submit-btn quiz "
         >
-          {/* <Link to={`/dash-admin-questions/${quizItem._id}/questions`}> */}
-          {/* <Link to={`/dash-admin-quizes`}> */}
           Add New Quiz
-          {/* </Link> */}
-          {/* Add New Quiz */}
         </button>
       </form>
     </div>

@@ -13,8 +13,6 @@ const DashAdminAddNewQuiz = () => {
     level: "",
     nbQuestions: 0,
     quizDuration: 0,
-    quizStartDate: "",
-    quizEndDate: "",
   });
   const [errors, setErrors] = useState({
     quizName: "",
@@ -22,8 +20,6 @@ const DashAdminAddNewQuiz = () => {
     level: "",
     nbQuestions: "",
     quizDuration: "",
-    quizStartDate: "",
-    quizEndDate: "",
   });
 
   const onValueChange = (e) => {
@@ -63,17 +59,7 @@ const DashAdminAddNewQuiz = () => {
           errorMessage = "Quiz duration must be a positive number";
         }
         break;
-      case "quizStartDate":
-        errorMessage = value.trim() ? "" : "Quiz start date is required";
-        if (value.trim() && !isValidDate(value)) {
-          errorMessage = "Quiz start date must be a valid date";
-        } else if (value.trim() && !isFutureDate(value)) {
-          errorMessage = "Quiz start date must be in the future";
-        }
-        break;
-      case "quizEndDate":
-        errorMessage = value.trim() ? "" : "Quiz end date is required";
-        break;
+
       default:
         break;
     }
@@ -81,17 +67,6 @@ const DashAdminAddNewQuiz = () => {
       ...prevErrors,
       [fieldName]: errorMessage,
     }));
-  };
-
-  const isValidDate = (dateString) => {
-    const date = new Date(dateString);
-    return !isNaN(date.getTime());
-  };
-
-  const isFutureDate = (dateString) => {
-    const currentDate = new Date();
-    const selectedDate = new Date(dateString);
-    return selectedDate > currentDate;
   };
 
   const validateForm = () => {

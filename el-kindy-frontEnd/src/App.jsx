@@ -42,10 +42,11 @@ import DashAddNewQuestion from "./quizes-management/dash/pages/dash-add-new-ques
 import KaraokiPage from "./users-management/user-side/pages/KaraokiPage";
 import ChatPage from "./users-management/user-side/pages/ChatPage";
 import AccountSettingsPage from "./users-management/user-side/pages/AccountSettingsPage";
-
 import SocketContext from "./features/context/SocketContext";
 import GamesPage from "./users-management/user-side/pages/GamesPage";
 import NotFound from "./ui/NotFound";
+import QuizDetailsFront from "./quizes-management/front/ui/quiz-details-front";
+import QuizListFront from "./quizes-management/front/ui/quiz-list-front";
 
 function App() {
   // const { user } = useSelector((state) => state.auth);
@@ -122,6 +123,14 @@ function App() {
             />
             <Route path="/user-side/games" element={<GamesPage />} />
             {/* ---------------END user routes-----------------*/}
+            <Route
+              path="/quiz-list-front/quizzes/:userId/"
+              element={<QuizListFront />}
+            />
+            <Route
+              path="/quiz-details-front/:userId/:quizId"
+              element={<QuizDetailsFront />}
+            />
           </Route>
 
           {/*  */}

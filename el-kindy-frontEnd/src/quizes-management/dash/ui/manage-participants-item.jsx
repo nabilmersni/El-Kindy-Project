@@ -1,6 +1,52 @@
+import { useEffect, useState } from "react";
 import "../../../../public/assets/css/style.css";
+import {
+  getQuizUser,
+  removeUserFromQuiz,
+  startQuiz,
+} from "../../services/apiQuiz";
 
-const ManageParticipantsItem = ({ data }) => {
+const ManageParticipantsItem = ({ data, quizId, fetchUsers }) => {
+  const [started, setStarted] = useState(true);
+  const userId = data._id;
+
+  useEffect(() => {
+    const quizuser = async () => {
+      try {
+        const quizuser = await getQuizUser(userId, quizId);
+        if (quizuser) {
+          setStarted(quizuser.isStarted);
+        } else {
+          console.error("Error: user quiz not found");
+        }
+      } catch (error) {
+        console.error("Error fetching quizs:", error);
+      }
+    };
+    quizuser();
+  }, []);
+
+  const handleStartQuiz = async (userId, quizId, started) => {
+    try {
+      setStarted(started);
+
+      await startQuiz(userId, quizId, started);
+
+      console.log("Quiz started successfully");
+    } catch (error) {
+      console.error("Error starting quiz:", error);
+    }
+  };
+
+  const handleRemoveUser = async () => {
+    try {
+      await removeUserFromQuiz(data._id, quizId);
+      alert("User deleted successfully from quiz!");
+      fetchUsers(quizId);
+    } catch (error) {
+      console.error("Error removing user from quiz:", error);
+    }
+  };
   return (
     <div className="model__card--student--item">
       <div className="model__card--student--item__fullname-container">
@@ -16,17 +62,28 @@ const ManageParticipantsItem = ({ data }) => {
         </div>
       </div>
       <div className="model__card--student--item__email">{data.email}</div>
-      <div className="model__card--student--item__level">{data.level}</div>
-      <div className="model__card--student--item__grade">{data.grade}</div>
-      {data.assign ? (
-        <div className="model__card--student--item__statusBtn">Start</div>
+      <div className="model__card--student--item__level">{data.profession}</div>
+      {!started ? (
+        <div
+          className="model__card--student--item__statusBtn"
+          onClick={() => handleStartQuiz(userId, quizId, true)}
+        >
+          Start
+        </div>
       ) : (
-        <div className="model__card--student--item__statusBtn assigned">
+        <div
+          className="model__card--student--item__statusBtn assigned"
+          onClick={() => handleStartQuiz(userId, quizId, false)}
+        >
           Started
         </div>
       )}
 
-      <div className="model__card--student--item__deleteBTn">
+      <div
+        className="model__card--student--item__deleteBTn"
+        onClick={handleRemoveUser}
+        style={{ marginRight: "50px" }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           version="1.1"

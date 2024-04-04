@@ -1,10 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
 import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
-
-import { useParams } from "react-router-dom";
-import { getQuizById, updateQuiz } from "../../services/apiQuiz";
-
 const AdminDashUpdateQuizCard = (props) => {
   const {
     quizName,
@@ -12,19 +7,14 @@ const AdminDashUpdateQuizCard = (props) => {
     nbQuestions,
     level,
     quizDuration,
-    quizStartDate,
-    quizEndDate,
     handleTitleChange,
     handleDescriptionChange,
     handlePriceChange,
     handleAvailablePlacesChange,
-    handleEventPlaceChange,
-    handleDatePlaceChange,
     handleEventChange,
     handleSubmit,
     errors,
   } = props;
-  // Vérifier si nbQuestions est défini avant d'y accéder
 
   return (
     <DashLayout>
@@ -32,14 +22,13 @@ const AdminDashUpdateQuizCard = (props) => {
         <form className="dash-card">
           <div className="course-add-form__input__group">
             <label htmlFor="quizName" className="course-add-form__input__label">
-              Event Name <span>*</span>
+              Quiz Name <span>*</span>
             </label>
             <input
               type="text"
               value={quizName}
               className="course-add-form__input"
               placeholder="Title"
-              //  onChange={(e) => setEnteredTitle(e.target.value)}
               onChange={handleTitleChange}
             />
           </div>
@@ -49,7 +38,7 @@ const AdminDashUpdateQuizCard = (props) => {
               htmlFor="descrition"
               className="course-add-form__input__label"
             >
-              Event Description <span>*</span>
+              Quiz Description <span>*</span>
             </label>
             <textarea
               className="course-add-form__input textarea"
@@ -63,12 +52,28 @@ const AdminDashUpdateQuizCard = (props) => {
             <label htmlFor="level" className="course-add-form__input__label">
               Level <span>*</span>
             </label>
-            <input
-              type="text"
+
+            <select
+              id="level"
+              name="level"
               className="course-add-form__input"
               value={level}
               onChange={handlePriceChange}
-            />
+            >
+              <option value="">Select Level</option>
+              <option value="Initiation">Initiation</option>
+              <option value="Preparatoire">Preparatoire</option>
+              <option value="1er">1er</option>
+              <option value="2eme">2eme</option>
+              <option value="3eme">3eme</option>
+              <option value="4eme">4eme</option>
+              <option value="5eme">5eme</option>
+              <option value="6eme">6eme</option>
+              <option value="Diplome">Diplome</option>
+              <option value="1er Adulte">1er Adulte</option>
+              <option value="2eme Adulte">2eme Adulte</option>
+              <option value="3eme Adulte">3eme Adulte</option>
+            </select>
           </div>
 
           <div className="course-add-form__input__group-row">
@@ -86,7 +91,6 @@ const AdminDashUpdateQuizCard = (props) => {
                 value={nbQuestions}
                 onChange={handleEventChange}
               />
-              {/* {errors.nbQuestions && <p>{errors.nbQuestions}</p>} */}
 
               {errors.nbQuestions && (
                 <span className="error-message">{errors.nbQuestions}</span>
@@ -111,44 +115,6 @@ const AdminDashUpdateQuizCard = (props) => {
                 <span className="error-message">{errors.quizDuration}</span>
               )}
             </div>
-          </div>
-
-          <div className="course-add-form__input__group">
-            <label
-              htmlFor="quizStartDate"
-              className="course-add-form__input__label"
-            >
-              Quiz Start Date <span>*</span>
-            </label>
-            <input
-              type="date"
-              className="course-add-form__input"
-              placeholder="quizStartDate"
-              value={quizStartDate}
-              onChange={handleEventPlaceChange}
-            />
-            {errors.quizStartDate && (
-              <span className="error-message">{errors.quizStartDate}</span>
-            )}
-          </div>
-
-          <div className="course-add-form__input__group">
-            <label
-              htmlFor="quizEndDate"
-              className="course-add-form__input__label"
-            >
-              Quiz End Date <span>*</span>
-            </label>
-            <input
-              type="date"
-              className="course-add-form__input"
-              placeholder="quizEndDate"
-              value={quizEndDate}
-              onChange={handleDatePlaceChange}
-            />
-            {errors.quizEndDate && (
-              <span className="error-message">{errors.quizEndDate}</span>
-            )}
           </div>
 
           <hr className="dash-card__hr-border hr-border-2" />

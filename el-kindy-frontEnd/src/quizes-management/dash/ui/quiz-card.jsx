@@ -1,20 +1,23 @@
 import "../../../../public/assets/css/style.css";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-
-import axios from "axios";
 import "react-circular-progressbar/dist/styles.css";
 import ManageParticipantsModal from "./manage-participants-modal";
-import { Link, useParams } from "react-router-dom";
-import { deleteQuiz, getQuizById, getallQuizs } from "../../services/apiQuiz";
-// import Quiz from "./quiz";
+import { Link } from "react-router-dom";
+import {
+  deleteQuiz,
+  getQuizById,
+  getStartedUsersPercentage,
+} from "../../services/apiQuiz";
 import { useEffect, useState } from "react";
 import QuizDetails from "./quiz-details";
-import QuestionCard from "./question-card";
-
 const QuizCard = ({ data, onDelete }) => {
-  const percentage = 66;
+  const [quiz, setQuiz] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [startedUsersPercentage, setStartedUsersPercentage] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const styles = buildStyles({
-    // Customize the color of the path, trail, and text
     pathColor: "#006bbe",
     trailColor: "#C7DEF1",
     textColor: "#444",
@@ -23,8 +26,6 @@ const QuizCard = ({ data, onDelete }) => {
   });
 
   //---------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -33,7 +34,6 @@ const QuizCard = ({ data, onDelete }) => {
     setIsModalOpen(false);
   };
   //***************************** */
-  const [showDetails, setShowDetails] = useState(false);
   const openDetails = () => {
     setShowDetails(true);
   };
@@ -47,25 +47,22 @@ const QuizCard = ({ data, onDelete }) => {
   const handleDeleteQuiz = async () => {
     try {
       await deleteQuiz(data._id);
+      alert("Quiz deleted successfully!");
       onDelete(data._id);
-      // Mettre à jour l'état ou recharger la liste des quiz après la suppression
       console.log("Quiz deleted successfully");
     } catch (error) {
       console.error("Error deleting quiz:", error);
-      // Gérer les erreurs, par exemple afficher un message d'erreur à l'utilisateur
     }
   };
 
   //******************************getById***************
-  const [quiz, setQuiz] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+
   useEffect(() => {
     if (data) {
       const fetchQuiz = async () => {
         setIsLoading(true);
         try {
-          const fetchedQuiz = await getQuizById(data._id); // Assuming data.id contains the quiz ID
+          const fetchedQuiz = await getQuizById(data._id);
           setQuiz(fetchedQuiz);
         } catch (error) {
           setError(error);
@@ -77,6 +74,23 @@ const QuizCard = ({ data, onDelete }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchStartedUsersPercentage = async () => {
+      try {
+        const startedUsersCount = await getStartedUsersPercentage(data._id);
+        setStartedUsersPercentage(startedUsersCount);
+      } catch (error) {
+        console.error(
+          "Erreur lors du calcul du pourcentage d'utilisateurs ayant commencé le quiz :",
+          error
+        );
+        setStartedUsersPercentage(0);
+      }
+    };
+    fetchStartedUsersPercentage();
+  }, [data._id]);
+
+  const percentageString = startedUsersPercentage.toFixed(1);
   return (
     <div>
       <>
@@ -93,7 +107,9 @@ const QuizCard = ({ data, onDelete }) => {
                     <div onClick={openDetails}>
                       {showDetails && (
                         <QuizDetails
+                          key="quizdetails1"
                           quiz={data}
+
                           // onClose={() => setIsModalOpen(false)}
                         />
                       )}
@@ -179,7 +195,6 @@ const QuizCard = ({ data, onDelete }) => {
                 </div>
                 <Link
                   to={`/dash-admin-questions/${data._id}/questions`}
-                  // to={"/dash-admin-questions"}
                   className="quiz-item__manageQuestions-btn"
                 >
                   Manage Questions
@@ -194,7 +209,6 @@ const QuizCard = ({ data, onDelete }) => {
                 Manage participants
               </div>
 
-              <div className="quit-item__level">3rd A</div>
               <div className="quiz-item__showParticipant">
                 <div className="quiz-item__showParticipant-img-container --1">
                   <img
@@ -225,23 +239,25 @@ const QuizCard = ({ data, onDelete }) => {
             <div className="quiz-item-column__3">
               <div className="quiz-item__circular-progress">
                 <CircularProgressbar
-                  value={percentage}
-                  text={`${percentage}%`}
+                  value={parseFloat(percentageString)}
+                  text={`${percentageString}%`}
                   styles={styles}
                   strokeWidth={12}
                 />
               </div>
-              <div className="quiz-item__creation-date">23/02/2024</div>
+              <div className="quiz-item__creation-date">User started</div>
             </div>
           </div>
         </div>
       </>
+
       <ManageParticipantsModal
         isOpen={isModalOpen}
         onClose={closeModal}
         quiz={quiz}
       />
       <QuizDetails
+        key="quizdetails2"
         isOpen={showDetails}
         isCloseQuiz={closeDetails}
         quiz={quiz}

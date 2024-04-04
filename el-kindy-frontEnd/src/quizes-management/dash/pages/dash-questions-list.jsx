@@ -3,17 +3,13 @@ import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
 import DashQuestionListHeader from "../ui/dash-questions-list-header";
 import QuestionCard from "../ui/question-card";
-import {
-  deleteQuestionFromQuiz,
-  getQuestionsForQuiz,
-} from "../../services/apiQuiz";
-import { useNavigate, useParams } from "react-router-dom";
-import AddNewQuestion from "../ui/add-new-question";
+import { getQuestionsForQuiz } from "../../services/apiQuiz";
+import { useParams } from "react-router-dom";
 
 const DashQuestionsList = () => {
   const [questions, setQuestions] = useState([]);
   const { id } = useParams();
-  const { id: quizId } = useParams(); // Renommez id en quizId
+  const { id: quizId } = useParams();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -62,6 +58,7 @@ const DashQuestionsList = () => {
             setQuestions={setQuestions}
             questions={questions}
             deleteanswer={deleteanswer}
+            index={index}
           />
         ))}
       </div>

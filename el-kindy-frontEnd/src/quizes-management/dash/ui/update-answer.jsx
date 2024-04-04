@@ -1,32 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   getAnswerByIdAndQuestionId,
-  getQuestionById,
   updateAnswer,
-  updateQuestionInQuiz,
 } from "../../services/apiQuiz";
 import { useNavigate } from "react-router-dom";
 
 const UpdateAnswer = (props) => {
-  const {
-    data,
-    isOpen,
-    onClose,
-    Idquestion,
-    quizId,
-
-    updateAnswers,
-  } = props;
+  const { data, isOpen, onClose, Idquestion } = props;
   const [answerText, setAnswerText] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
+  const inputRef = useRef(null);
 
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
   useEffect(() => {
     if (isOpen && data && data._id) {
       getAnswerByIdAndQuestionId(Idquestion, data._id)
         .then((answer) => {
           setAnswerText(answer.answerText);
           setIsCorrect(answer.isCorrect);
+
+          if (answer.image) {
+            setImage(answer.image);
+          }
         })
         .catch((error) => {
           console.error("Erreur lors de la récupération de la réponse:", error);
@@ -35,21 +39,13 @@ const UpdateAnswer = (props) => {
   }, [isOpen, Idquestion, data]);
 
   const updateAnswerData = async () => {
-    const updatedAnswer = {
-      ...data,
-      answerText,
-      isCorrect,
-    };
-
     try {
-      await updateAnswer(Idquestion, data._id, updatedAnswer);
-
+      await updateAnswer(Idquestion, data._id, answerText, isCorrect, image);
       onClose();
     } catch (error) {
       console.error(error);
     }
   };
-
   const handleTitleChange = (e) => {
     setAnswerText(e.target.value);
   };
@@ -61,8 +57,6 @@ const UpdateAnswer = (props) => {
   if (!isOpen) {
     return null;
   }
-
- 
 
   return (
     <div>
@@ -145,7 +139,67 @@ const UpdateAnswer = (props) => {
               style={{ marginTop: "20px" }}
             ></div>
           </div>
+          <div className="course-add-form__input__group">
+            <label htmlFor="image" className="course-add-form__input__label">
+              Image <span>*</span>
+            </label>
+            <div className="course-add-form-image">
+              <div className="course-add-form-image__container">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  x="0"
+                  y="0"
+                  viewBox="0 0 24 24"
+                  xmlSpace="preserve"
+                  className="course-add-form-image__container-svg"
+                ></svg>
 
+                {image && (
+                  <img
+                    className="course-add-form-image__img"
+                    src={
+                      image && typeof image === "string"
+                        ? `http://localhost:3000/upload-directory/${image}`
+                        : URL.createObjectURL(image)
+                    }
+                  />
+                )}
+              </div>
+              <div className="course-add-form-image__description">
+                <div style={{ display: "flex" }}>
+                  <div
+                    className="course-add-form-image__add"
+                    onClick={handleImageClick}
+                  >
+                    <label className="course-add-form-image__addBtn">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        version="1.1"
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
+                        x="0"
+                        y="0"
+                        viewBox="0 0 512 512"
+                        xmlSpace="preserve"
+                        className="course-add-form-image__addBtn-svg"
+                      ></svg>
+                      Choose a photo
+                    </label>
+
+                    <input
+                      name="course-add-form-image__file-btn"
+                      type="file"
+                      className="course-add-form-image__file-btn"
+                      ref={inputRef}
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <button
             onClick={updateAnswerData}
             className="add-new-course__submit-btn"

@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 const UpdateQuestion = (props) => {
   const navigate = useNavigate();
 
-  const { data, isOpen, isCloseQuiz, quizId, updateQuestions } = props;
+  const { data, isOpen, isCloseQuiz, quizId } = props;
   const [questionText, setQuestionText] = useState("");
   const [nbPoint, setEnteredPrice] = useState("");
   const [image, setImage] = useState(null);
   const [oldImage, setOldImage] = useState(null);
   const inputRef = useRef(null);
-
+  const [nbPointError, setNbPointError] = useState("");
   const handleImageClick = () => {
     inputRef.current.click();
   };
@@ -50,34 +50,43 @@ const UpdateQuestion = (props) => {
   };
 
   const handlePriceChange = (e) => {
-    setEnteredPrice(e.target.value);
+    const value = e.target.value;
+    setEnteredPrice(value);
+
+    if (value < 0) {
+      setNbPointError("Le nombre de points doit être un nombre positif.");
+    } else {
+      setNbPointError("");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const updatedQuestionData = {
         questionText: questionText,
         nbPoint: nbPoint,
       };
+
       let imageData;
       if (image instanceof Blob) {
         imageData = image;
       } else {
         imageData = oldImage;
       }
+      if (imageData !== oldImage) {
+        const formData = new FormData();
+        formData.append("image", image);
+
+        const uploadResponse = await addImageToCourse(data._id, formData);
+      }
       const result = await updateQuestionInQuiz(
         quizId,
         data._id,
         updatedQuestionData
-
-        // imageData
       );
-      const formData = new FormData();
-      formData.append("image", image);
-      const uploadResponse = await addImageToCourse(data._id, formData);
       navigate(`/dash-admin-questions/${quizId}/questions`);
-      console.log("Question mise à jour avec succès:", result);
       props.updateQuestions();
       isCloseQuiz();
     } catch (error) {
@@ -138,6 +147,9 @@ const UpdateQuestion = (props) => {
                 value={nbPoint}
                 onChange={handlePriceChange}
               />
+              {nbPointError && (
+                <div className="error-message">{nbPointError}</div>
+              )}
             </div>
 
             <div className="manage-participants-model__card--content">
@@ -190,11 +202,6 @@ const UpdateQuestion = (props) => {
                       image && typeof image === "string"
                         ? `http://localhost:3000/upload-directory/${image}`
                         : URL.createObjectURL(image)
-                      // image
-                      //   ? image instanceof Blob
-                      //     ? URL.createObjectURL(image)
-                      //     : oldImage
-                      //   : null
                     }
                     style={!oldImage ? { display: "none" } : {}}
                   />

@@ -2,13 +2,21 @@ import { Link } from "react-router-dom";
 import "../../../../public/assets/css/style.css";
 import DashAnimation from "../../../dashboard-layout/dash-animation";
 
-const DashQuizesListHeader = () => {
+const DashQuizesListHeader = ({ onSearchLevelChange }) => {
+  const handleSearchChange = (e) => {
+    onSearchLevelChange(e.target.value);
+  };
   return (
     <div className="dash__content__container__firstRow quiz">
       <div className="dash__content__container__firstRow__leftSide">
         <h1 className="dash__content__container__title quiz">Quizes List</h1>
         <div className="dash__content__container__input">
-          <input className="dash__content__container__search" type="search" />
+          <input
+            className="dash__content__container__search"
+            type="search"
+            placeholder="Search by level"
+            onChange={handleSearchChange}
+          />
           <div className="dash__content__container__search-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -32,27 +40,6 @@ const DashQuizesListHeader = () => {
               </g>
             </svg>
           </div>
-        </div>
-        <p className="dash__content__container__filterBy">Filter by:</p>
-        <div className="dash__content__container__category">
-          Level
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            x="0"
-            y="0"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-            className="filter-arrow-icon"
-          >
-            <g>
-              <path
-                d="M385.1 219.9 199.2 34c-20-20-52.3-20-72.3 0s-20 52.3 0 72.3L276.7 256 126.9 405.7c-20 20-20 52.3 0 72.3s52.3 20 72.3 0l185.9-185.9c19.9-19.9 19.9-52.3 0-72.2z"
-                opacity="1"
-              ></path>
-            </g>
-          </svg>
         </div>
       </div>
       <div className="dash__content__container__firstRow__RightSide">
