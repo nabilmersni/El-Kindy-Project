@@ -6,7 +6,7 @@ import AvatarEditor from "./AvatarEditor/AvatarEditor";
 import AvatarList from "./AvatarList/AvatarList";
 import "./AvatarBuilder.css";
 
-const AvatarBuilder = ({ setAvatarBlop, handleClose }) => {
+const AvatarBuilder = ({ setAvatarBlop, handleClose, small }) => {
   const [config, setConfig] = useState(
     genConfig({
       isGradient: Boolean(Math.round(Math.random())),
@@ -56,7 +56,9 @@ const AvatarBuilder = ({ setAvatarBlop, handleClose }) => {
         <div id={avatarId} className="mb-16">
           <ReactNiceAvatar
             // className="w-64 h-64 highres:w-80 highres:h-80"
-            className="w-[19rem] h-[19rem] highres:w-80 highres:h-80"
+            className={`${
+              small ? "w-[9rem] h-[9rem]" : "w-[19rem] h-[19rem]"
+            } highres:w-80 highres:h-80`}
             hairColorRandom
             shape={shape}
             {...config}
@@ -68,30 +70,59 @@ const AvatarBuilder = ({ setAvatarBlop, handleClose }) => {
           updateConfig={updateConfig}
           updateShape={updateShape}
           download={download}
+          small={small}
         />
         {/* Avatar list */}
-        <div className="mt-[5rem] ">
-          <AvatarList selectConfig={selectConfig} />
+        <div className={`${small ? "mt-[2rem] lg:mt-[5rem]" : "mt-[5rem]"}`}>
+          <AvatarList selectConfig={selectConfig} small={small} />
         </div>
       </main>
 
-      <div className="flex justify-center items-center mt-[6rem] mb-[2rem] gap-[2rem] ">
-        <button
-          onClick={download}
-          type="button"
-          className="w-fit text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:bg-blue-gray-500  font-bold rounded-lg text-[2rem] px-5 py-2.5 me-2 mb-2 transition-all duration-75"
+      {small ? (
+        <div
+          className={`flex justify-center items-center  mb-[2rem] ${
+            small ? "gap-[.5rem] md:gap-[1.5rem]" : "gap-[1.5rem]"
+          }`}
         >
-          Apply
-        </button>
-        <div className="divider bg-[#ffffff26] w-[0.3rem] h-[4rem] rounded mx-2" />
-        <button
-          onClick={handleClose}
-          type="button"
-          className="w-fit text-white bg-[#ff734c] hover:bg-[#fe4a19] focus:outline-none focus:bg-[#ff5d30]  font-bold rounded-lg text-[2rem] px-5 py-2.5 me-2 mb-2 transition-all duration-75"
-        >
-          Exit
-        </button>
-      </div>
+          <button
+            onClick={download}
+            type="button"
+            className="w-fit text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:bg-blue-gray-500  font-bold rounded-lg text-[1.1rem] px-5 py-2.5 me-2 mb-2 transition-all duration-75"
+          >
+            Apply
+          </button>
+          <div
+            className={`divider bg-[#ffffff26] w-[0.2rem] h-[2rem] rounded ${
+              small ? "hidden md:mx-2 md:block" : "mx-2"
+            }`}
+          />
+          <button
+            onClick={handleClose}
+            type="button"
+            className="w-fit text-white bg-[#ff734c] hover:bg-[#fe4a19] focus:outline-none focus:bg-[#ff5d30]  font-bold rounded-lg text-[1.1rem] px-5 py-2.5 me-2 mb-2 transition-all duration-75"
+          >
+            Exit
+          </button>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center mt-[6rem] mb-[2rem] gap-[2rem] ">
+          <button
+            onClick={download}
+            type="button"
+            className="w-fit text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:bg-blue-gray-500  font-bold rounded-lg text-[2rem] px-5 py-2.5 me-2 mb-2 transition-all duration-75"
+          >
+            Apply
+          </button>
+          <div className="divider bg-[#ffffff26] w-[0.3rem] h-[4rem] rounded mx-2" />
+          <button
+            onClick={handleClose}
+            type="button"
+            className="w-fit text-white bg-[#ff734c] hover:bg-[#fe4a19] focus:outline-none focus:bg-[#ff5d30]  font-bold rounded-lg text-[2rem] px-5 py-2.5 me-2 mb-2 transition-all duration-75"
+          >
+            Exit
+          </button>
+        </div>
+      )}
     </div>
   );
 };

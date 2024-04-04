@@ -14,8 +14,8 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
-  socketId: "",
   onlineUsers: [],
+  unseenMsgCount: 0,
 };
 
 // register user
@@ -122,7 +122,6 @@ const authSlice = createSlice({
       state.isSuccess = false;
       state.isLoading = false;
       state.message = "";
-      state.socketId = "";
     },
 
     logout: (state, action) => {
@@ -130,7 +129,6 @@ const authSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
-      state.socketId = "";
       state.message = action.payload || "logout";
     },
 
@@ -138,11 +136,12 @@ const authSlice = createSlice({
       state.isError = true;
       state.message = action.payload || "You are not authenticated!";
     },
-    setSocket: (state, action) => {
-      state.socketId = action.payload;
-    },
+
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
+    },
+    setUnseenMsgCount: (state, action) => {
+      state.unseenMsgCount = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -251,6 +250,11 @@ const authSlice = createSlice({
   },
 });
 
-export const { reset, notAuthenticated, logout, setOnlineUsers, setSocket } =
-  authSlice.actions;
+export const {
+  reset,
+  notAuthenticated,
+  logout,
+  setOnlineUsers,
+  setUnseenMsgCount,
+} = authSlice.actions;
 export default authSlice.reducer;

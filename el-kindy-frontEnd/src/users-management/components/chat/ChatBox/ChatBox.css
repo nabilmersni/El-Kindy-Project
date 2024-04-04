@@ -3,6 +3,7 @@
   padding: 0.9rem;
   border-radius: 1.3rem 1.3rem 1.3rem 0.2rem;
   max-width: 28rem;
+  min-width: 9rem;
   width: fit-content;
   display: flex;
   flex-direction: column;
@@ -23,5 +24,34 @@
 .own {
   align-self: flex-end;
   border-radius: 1.3rem 1.3rem 0.2rem 1.3rem;
+  background: linear-gradient(98.63deg, #30b3fa 0%, #358ff9 100%);
+}
+
+.message-small {
+  color: white;
+  padding: 0.8rem;
+  border-radius: 1rem 1rem 1rem 0.2rem;
+  max-width: 22rem;
+  min-width: 6rem;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 1.2rem;
+  background: linear-gradient(98.63deg, #ee9521 0%, #f1662e 100%);
+  overflow-wrap: break-word;
+  margin-bottom: 1.5rem;
+}
+
+.message-small > span:nth-child(2) {
+  /* font-size: 0.7rem; */
+  font-size: 0.75rem;
+  color: var(--textColor);
+  align-self: end;
+}
+
+.own-small {
+  align-self: flex-end;
+  border-radius: 1rem 1rem 0.2rem 1rem;
   background: linear-gradient(98.63deg, #30b3fa 0%, #358ff9 100%);
 }

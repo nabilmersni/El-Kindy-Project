@@ -2,25 +2,23 @@ import { useSelector, useDispatch } from "react-redux";
 import authService from "../features/auth/AuthService";
 import { Link } from "react-router-dom";
 
-import { logout, setOnlineUsers, setSocket } from "../features/auth/AuthSlice";
+import { logout, setOnlineUsers } from "../features/auth/AuthSlice";
 
 import "../../public/assets/css/style.css";
-import { useRef } from "react";
-import { io } from "socket.io-client";
+import { useContext, useRef } from "react";
+import SocketContext from "../features/context/SocketContext";
 
 const DashNavBar = ({ toggleSidebar }) => {
-  const { user, socketId } = useSelector((state) => state.auth);
-  const socket = useRef();
+  const { user, unseenMsgCount } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const socket = useContext(SocketContext);
 
   const logoutHandler = async () => {
     await authService.logout();
-    socket.current = io("ws://localhost:8800", { query: { socketId } });
-    socket.current.on("connect", () => {
-      socket.current.emit("loggedOut", user._id);
-      socket.current.on("get-users", (users) => {
-        dispatch(setOnlineUsers([users]));
-      });
+    socket.current.emit("loggedOut", user._id);
+    socket.current.on("get-users", (users) => {
+      dispatch(setOnlineUsers([users]));
     });
     dispatch(logout());
   };
@@ -50,8 +48,11 @@ const DashNavBar = ({ toggleSidebar }) => {
       </div>
       <div className="dash__content__nav__right-side">
         <div className="dash__content__nav__right-side__icons">
-          <div className="dash__content__nav__right-side__icons-logout">
-            <button onClick={logoutHandler}>
+          <div
+            onClick={logoutHandler}
+            className="dash__content__nav__right-side__icons-logout"
+          >
+            <button>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -80,28 +81,39 @@ const DashNavBar = ({ toggleSidebar }) => {
               to={"/dash-admin-chat"}
               className="dash__content__nav__right-side__icons-notif"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                version="1.1"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                width="512"
-                height="512"
-                x="0"
-                y="0"
-                viewBox="0 0 24 24"
-                // style="enable-background:new 0 0 512 512"
-                xmlSpace="preserve"
-                className="dash__content__nav__right-side__icons-notif-svg"
-              >
-                <g>
-                  <path
-                    d="M18 1H6a5.006 5.006 0 0 0-5 5v8a5.009 5.009 0 0 0 4 4.9V22a1 1 0 0 0 1.555.832L12.3 19H18a5.006 5.006 0 0 0 5-5V6a5.006 5.006 0 0 0-5-5zm-2 12H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zm2-4H6a1 1 0 0 1 0-2h12a1 1 0 0 1 0 2z"
-                    fill="#FFFFFF"
-                    opacity="1"
-                    data-original="#000000"
-                  ></path>
-                </g>
-              </svg>
+              <div className="relative">
+                {unseenMsgCount > 0 ? (
+                  <div className="absolute top-[-1rem] right-[-1rem] flex justify-center items-center w-[2.5rem] h-[2.5rem]  bg-[#ff955c] rounded-full p-[1.4rem] ">
+                    <p className="text-[1.7rem] font-semibold text-white ">
+                      {unseenMsgCount}
+                    </p>
+                  </div>
+                ) : (
+                  ""
+                )}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  width="512"
+                  height="512"
+                  x="0"
+                  y="0"
+                  viewBox="0 0 24 24"
+                  // style="enable-background:new 0 0 512 512"
+                  xmlSpace="preserve"
+                  className="dash__content__nav__right-side__icons-notif-svg"
+                >
+                  <g>
+                    <path
+                      d="M18 1H6a5.006 5.006 0 0 0-5 5v8a5.009 5.009 0 0 0 4 4.9V22a1 1 0 0 0 1.555.832L12.3 19H18a5.006 5.006 0 0 0 5-5V6a5.006 5.006 0 0 0-5-5zm-2 12H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zm2-4H6a1 1 0 0 1 0-2h12a1 1 0 0 1 0 2z"
+                      fill="#FFFFFF"
+                      opacity="1"
+                      data-original="#000000"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
             </Link>
             {/* <button className="dash__content__nav__right-side__icons-notif">
               <svg

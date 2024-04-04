@@ -47,6 +47,21 @@
   transition: all 0.2s ease-out;
 }
 
+.SectionWrapper2:after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 120%;
+  border-radius: 5px;
+  /* font-size: 0.75rem; */
+  font-size: 0.8rem;
+  color: #fff;
+  background: #303030;
+  padding: 0.15rem 0.75rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease-out;
+}
+
 .SectionWrapper .childrenWrapper > svg {
   top: auto !important;
   right: auto !important;

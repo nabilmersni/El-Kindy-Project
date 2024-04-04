@@ -15,9 +15,16 @@ import { Typography } from "@material-tailwind/react";
 
 import loginAnimation from "../../../public/lottieAnimations/login.json";
 import { Nav } from "../../ui/Nav";
-import { signUp } from "../../services/userApi";
 import { register, reset } from "../../features/auth/AuthSlice";
 import Spinner from "../../ui/Spinner";
+
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "./firebase";
 
 function SignUp() {
   const initSignUpFormData = {
@@ -30,6 +37,7 @@ function SignUp() {
     password: "",
     confirmPassword: "",
     role: "user",
+    uploadCV: "",
   };
 
   const naviagte = useNavigate();
@@ -40,6 +48,7 @@ function SignUp() {
   );
 
   const [signUpFormData, setsignUpFormData] = useState(initSignUpFormData);
+  const [isUploadingCV, setIsUploadingCV] = useState(false);
 
   useEffect(() => {
     if (isError) {
@@ -57,8 +66,53 @@ function SignUp() {
     event.preventDefault();
 
     if (!hasErrors() && !isFormDataEmpty()) {
+      if (signUpFormData.uploadCV) {
+        console.log("start uploadCV", signUpFormData.uploadCV);
+        const storage = getStorage(app);
+        const fileName = new Date().getTime() + signUpFormData.uploadCV.name;
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(
+          storageRef,
+          signUpFormData.uploadCV
+        );
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            setIsUploadingCV(true);
+            // const progress =
+            //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            // // setImagePercent(Math.round(progress));
+          },
+          (error) => {
+            setAvatarUpload(undefined);
+            toast.error(error);
+            // setImageError(true);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              setsignUpFormData({
+                ...signUpFormData,
+                cv_url: downloadURL,
+                uploadCV: "",
+              });
+              setIsUploadingCV(false);
+              dispatch(
+                register({
+                  ...signUpFormData,
+                  cv_url: downloadURL,
+                  uploadCV: "",
+                })
+              );
+            });
+          }
+        );
+      } else {
+        console.log("start handleSubmit else");
+        dispatch(register(signUpFormData));
+      }
+
       // await signUp(signUpFormData);
-      dispatch(register(signUpFormData));
+      // dispatch(register(signUpFormData));
     }
   };
 
@@ -72,16 +126,29 @@ function SignUp() {
     password: "",
     confirmPassword: "",
     role: "",
+    uploadCV: "",
   });
 
   const hasErrors = () => {
     return Object.values(errors).some((error) => error !== "");
   };
 
+  // const isFormDataEmpty = () => {
+  //   return Object.entries(signUpFormData).some(
+  //     ([key, value]) => key !== "phone2" && value === ""
+  //   );
+  // };
+
   const isFormDataEmpty = () => {
-    return Object.entries(signUpFormData).some(
-      ([key, value]) => key !== "phone2" && value === ""
-    );
+    if (signUpFormData.role !== "teacher") {
+      return Object.entries(signUpFormData).some(
+        ([key, value]) => key !== "phone2" && key !== "uploadCV" && value === ""
+      );
+    } else {
+      return Object.entries(signUpFormData).some(
+        ([key, value]) => key !== "phone2" && value === ""
+      );
+    }
   };
 
   const changeHandler = (event) => {
@@ -275,6 +342,18 @@ function SignUp() {
 
     // Validation for Role
     if (name === "role") {
+      if (value === "teacher") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          uploadCV: "CV is required",
+        }));
+      } else {
+        // setsignUpFormData({ ...signUpFormData, uploadCV: "" });
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          uploadCV: "",
+        }));
+      }
       if (!["user", "teacher"].includes(value)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
@@ -284,6 +363,22 @@ function SignUp() {
         setErrors((prevErrors) => ({
           ...prevErrors,
           role: "",
+        }));
+      }
+    }
+
+    // Validation for upload CV
+    if (name === "uploadCV") {
+      setsignUpFormData({ ...signUpFormData, uploadCV: event.target.files[0] });
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "CV is required",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "",
         }));
       }
     }
@@ -316,17 +411,17 @@ function SignUp() {
       <style dangerouslySetInnerHTML={{ __html: customStyle }} />
       <Nav />
 
-      {isLoading ? <Spinner /> : ""}
+      {isLoading || isUploadingCV ? <Spinner /> : ""}
 
       <div className="flex justify-center lg:justify-between items-center mt-[10rem] mb-[2rem]  px-[2rem] relative">
-        <div className="hidden lg:block max-w-[40rem] ">
+        <div className="hidden lg:block w-[50%] max-w-[40rem] ">
           <Lottie
             isClickToPauseDisabled={true}
             options={{ animationData: loginAnimation }}
           />
         </div>
 
-        <div className="flex flex-col justify-center items-center w-[35rem] py-[1rem] px-[1.5rem] bg-white rounded-[1rem] shadow-lg">
+        <div className="flex flex-col justify-center items-center w-[35rem] py-[1rem] px-[1.5rem] bg-white rounded-[1rem] shadow-lg lg:mr-[5rem]">
           <h1 className="text-[1.8rem] text-primary font-bold">Sign up</h1>
           <p className="text-black font-light my-[.5rem] ">
             Adventure starts here
@@ -650,6 +745,55 @@ function SignUp() {
                 </Typography>
               )}
             </FormControl>
+
+            {signUpFormData.role === "teacher" ? (
+              <FormControl margin="dense">
+                {/* <FormLabel
+                  id="demo-row-radio-buttons-group-label"
+                  required
+                  sx={{ color: "#7586FF" }}
+                >
+                  Upload CV
+                </FormLabel> */}
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  type="file"
+                  id="uploadCV"
+                  label="Upload CV"
+                  name="uploadCV"
+                  onChange={changeHandler}
+                  onBlur={changeHandler}
+                  error={Boolean(errors.uploadCV)}
+                  helperText={errors.uploadCV}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: errors.confirmPassword ? "red" : "#DBDFEA",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: errors.confirmPassword ? "red" : "#7586FF",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: errors.confirmPassword ? "red" : "#7586FF",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      // color: "#7586FF",
+                      "&.Mui-focused": {
+                        color: errors.confirmPassword ? "red" : "#7586FF",
+                      },
+                    },
+                  }}
+                />
+              </FormControl>
+            ) : (
+              ""
+            )}
 
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

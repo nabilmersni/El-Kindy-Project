@@ -1,6 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSocket, setOnlineUsers, logout } from "./features/auth/AuthSlice";
+import {
+  setOnlineUsers,
+  logout,
+  reset,
+  getLoggedUser,
+} from "./features/auth/AuthSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,13 +18,14 @@ import DashQuizesList from "./quizes-management/dash/pages/dash-quizes-list";
 import DashAdminAddNewQuiz from "./quizes-management/dash/pages/dash-add-new-quiz";
 import DashQuestionsList from "./quizes-management/dash/pages/dash-questions-list";
 import DashAdminUsers from "./users-management/dash-admin/pages/dash-admin-users/dash-admin-users";
-import { useEffect, useRef } from "react";
+import { useEffect, useContext } from "react";
 import SignUp from "./users-management/auth/SignUp";
 import Login from "./users-management/auth/Login";
 import {
   OnlyAdminRoute,
   PrivateRoute,
   PublicRoute,
+  UserSideRoutes,
 } from "./users-management/routes-guard/ProtectRoute";
 import UserDashboard from "./pages/UserDashboard";
 import secureLocalStorage from "react-secure-storage";
@@ -28,67 +34,73 @@ import VerifyEmail from "./users-management/components/VerifyEmail";
 import ForgotPasswordRequest from "./users-management/auth/forgot-password/ForgotPasswordRequest";
 import ForgotPassword from "./users-management/auth/forgot-password/ForgotPassword";
 import DashAdminChat from "./users-management/dash-admin/pages/dashAdminChat";
-import { io } from "socket.io-client";
 import authService from "./features/auth/AuthService";
 import DashQuestionListHeader from "./quizes-management/dash/ui/dash-questions-list-header";
 import DashupdateQuiz from "./quizes-management/dash/pages/DashupdateQuiz";
 import UpdateQuestion from "./quizes-management/dash/ui/update-question";
 import DashAddNewQuestion from "./quizes-management/dash/pages/dash-add-new-question";
+import KaraokiPage from "./users-management/user-side/pages/KaraokiPage";
+import ChatPage from "./users-management/user-side/pages/ChatPage";
+import AccountSettingsPage from "./users-management/user-side/pages/AccountSettingsPage";
+
+import SocketContext from "./features/context/SocketContext";
+import GamesPage from "./users-management/user-side/pages/GamesPage";
+import NotFound from "./ui/NotFound";
 
 function App() {
-  const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  // const { user } = useSelector((state) => state.auth);
+  // const socketContext = useContext(SocketContext);
   const loggedUser = secureLocalStorage.getItem("user");
-  const currentSocket = useRef();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // dispatch(getLoggedUser());
-    // dispatch(reset());
-    console.log(loggedUser);
-    // socket init
+  const getRefreshedUser = async () => {
     if (loggedUser) {
-      currentSocket.current = io("ws://localhost:8800");
-      currentSocket.current.on("connect", () => {
-        dispatch(setSocket(currentSocket.current.id));
-        currentSocket.current.emit("new-user-add", loggedUser._id);
-        currentSocket.current.on("get-users", (users) => {
-          dispatch(setOnlineUsers(users));
-        });
-      });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (loggedUser) {
-      currentSocket.current.on("logOutBlockedUser", (blockedUserId) => {
-        if (loggedUser._id === blockedUserId) {
-          console.log("heyyyy call socket");
-          logoutHandler();
-        }
-      });
-    }
-  }, [user]);
-
-  const logoutHandler = async () => {
-    if (loggedUser) {
-      await authService.logout();
-      currentSocket.current.emit("loggedOut", user._id);
-      currentSocket.current.on("get-users", (users) => {
-        dispatch(setOnlineUsers([users]));
-      });
-
-      dispatch(logout("logoutBlocked"));
+      try {
+        const refreshedUser = await authService.getLoggedUser();
+        // console.log("refreshedUser", refreshedUser);
+        secureLocalStorage.setItem("user", refreshedUser);
+        dispatch(getLoggedUser(refreshedUser));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
+  useEffect(() => {
+    getRefreshedUser();
+  }, []);
+
+  // useEffect(() => {
+  //   if (loggedUser && socketContext.current) {
+  //     socketContext.current.on("logOutBlockedUser", (blockedUserId) => {
+  //       if (loggedUser._id === blockedUserId) {
+  //         console.log("heyyyy call socket");
+  //         logoutHandler();
+  //       }
+  //     });
+  //   }
+  // }, [user, socketContext.current]);
+
+  // const logoutHandler = async () => {
+  //   if (loggedUser && socketContext.current) {
+  //     await authService.logout();
+  //     socketContext.current.emit("loggedOut", user._id);
+  //     socketContext.current.on("get-users", (users) => {
+  //       dispatch(setOnlineUsers([users]));
+  //     });
+
+  //     dispatch(logout("logoutBlocked"));
+  //   }
+  // };
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/verifyEmail/:token" element={<VerifyEmail />} />
-
+        {/*  */}
         <Route element={<PublicRoute />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/verifyEmail/:token" element={<VerifyEmail />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/forgotPasswordRequest"
@@ -96,18 +108,30 @@ function App() {
           />
           <Route path="/forgotPassword/:token" element={<ForgotPassword />} />
         </Route>
-
+        {/*  */}
         <Route element={<PrivateRoute />}>
-          <Route path="/user-dash" element={<UserDashboard />} />
+          <Route element={<UserSideRoutes />}>
+            <Route path="/user-side" element={<UserDashboard />} />
 
-          <Route path="/dash-admin-chat" element={<DashAdminChat />} />
+            {/* ---------------START user routes-----------------*/}
+            <Route path="/user-side/karaoke" element={<KaraokiPage />} />
+            <Route path="/user-side/chat" element={<ChatPage />} />
+            <Route
+              path="/user-side/account"
+              element={<AccountSettingsPage />}
+            />
+            <Route path="/user-side/games" element={<GamesPage />} />
+            {/* ---------------END user routes-----------------*/}
+          </Route>
 
+          {/*  */}
           <Route element={<OnlyAdminRoute />}>
             <Route path="/admin-dash" element={<AdminDashboard />} />
 
             {/* ---------------admin dash users  -----------------*/}
             <Route path="/dash-admin-users" element={<DashAdminUsers />} />
             <Route path="/dash-admin-profile" element={<DashAdminProfile />} />
+            <Route path="/dash-admin-chat" element={<DashAdminChat />} />
             {/*----------------End admin dash users  ---------------*/}
 
             {/* ---------------admin dash courses  -----------------*/}
@@ -152,7 +176,7 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,18 @@
 import React from "react";
 import "./SectionWrapper.css";
 
-const SectionWrapper = ({ className = "", children, switchConfig, tip }) => {
+const SectionWrapper = ({
+  className = "",
+  children,
+  switchConfig,
+  tip,
+  small,
+}) => {
   return (
     <div
-      className={"SectionWrapper " + className}
+      className={
+        `${small ? "SectionWrapper2 " : ""} SectionWrapper ` + className
+      }
       data-tip={tip}
       onClick={switchConfig}
     >

@@ -42,6 +42,16 @@ const getUserById = async (userID) => {
   return response.data.data.user;
 };
 
+const getUsersStats = async () => {
+  const response = await instance.get(`${API_URL}/count/stats`);
+  return response.data.data;
+};
+
+const acceptCV = async (id) => {
+  const response = await instance.patch(`${API_URL}/acceptCV/${id}`);
+  return response.data.data.user;
+};
+
 const userService = {
   getAllUsers,
   updateMe,
@@ -49,6 +59,8 @@ const userService = {
   updateUser,
   addUser,
   getUserById,
+  getUsersStats,
+  acceptCV,
 };
 
 export default userService;

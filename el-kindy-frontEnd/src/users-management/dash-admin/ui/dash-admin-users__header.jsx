@@ -1,11 +1,13 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+// import TextField from "@mui/material/TextField";
+// import MenuItem from "@mui/material/MenuItem";
 
 import DashAnimation from "../../../dashboard-layout/dash-animation";
 import { useReducer } from "react";
 import UserUpdateImageAdminDash from "../pages/dash-admin-users/UserUpdateImageAdminDash";
 import UserAddFormAdminDash from "../pages/dash-admin-users/UserAddFormAdminDash";
-
+import { Select, MenuItem } from "@mui/material";
 const style = {
   position: "absolute",
   top: "50%",
@@ -33,7 +35,14 @@ const reducer = (state, action) => {
   }
 };
 
-const DashAdminUsersHeader = ({ addNewUser }) => {
+const DashAdminUsersHeader = ({
+  addNewUser,
+  setSearchTerm,
+  stateFilter,
+  setStateFilter,
+  cvFilter,
+  setCvFilter,
+}) => {
   const initAddFormData = {
     fullname: "",
     dateOfBirth: "",
@@ -88,13 +97,31 @@ const DashAdminUsersHeader = ({ addNewUser }) => {
     console.log("closess");
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleFilterChange = (event) => {
+    if (event.target.name === "state") {
+      setStateFilter(event.target.value);
+    } else {
+      setCvFilter(event.target.value);
+    }
+  };
+
   return (
     <div className="dash__content__container__firstRow">
       <div className="dash__content__container__firstRow__leftSide">
         <h1 className="dash__content__container__title">Users List</h1>
         <div className="dash__content__container__input">
-          <input className="dash__content__container__search" type="search" />
-          <div className="dash__content__container__search-icon">
+          <input
+            onChange={handleSearchChange}
+            // value={searchTerm}
+            className="dash__content__container__search font-nunito text-[2rem] font-semibold min-w-[35rem] pl-[2rem] placeholder:font-normal placeholder:text-[#a9a9a9] placeholder:text-[1.8rem]"
+            type="search"
+            placeholder="Search by name, email, role"
+          />
+          <div className="dash__content__container__search-icon ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
@@ -119,45 +146,67 @@ const DashAdminUsersHeader = ({ addNewUser }) => {
           </div>
         </div>
         <p className="dash__content__container__filterBy">Filter by:</p>
-        <div className="dash__content__container__category">
-          Role
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            x="0"
-            y="0"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-            className="filter-arrow-icon"
+
+        <div className="w-[15rem] ">
+          <Select
+            labelId="State"
+            id="State"
+            value={stateFilter}
+            size="small"
+            onChange={handleFilterChange}
+            fullWidth
+            name="state"
+            sx={{
+              borderRadius: "90rem",
+
+              "& .MuiInputBase-input": {
+                fontSize: `1.8rem`,
+                lineHeight: "normal",
+                textAlign: "center",
+              },
+            }}
           >
-            <g>
-              <path
-                d="M385.1 219.9 199.2 34c-20-20-52.3-20-72.3 0s-20 52.3 0 72.3L276.7 256 126.9 405.7c-20 20-20 52.3 0 72.3s52.3 20 72.3 0l185.9-185.9c19.9-19.9 19.9-52.3 0-72.2z"
-                opacity="1"
-              ></path>
-            </g>
-          </svg>
+            <MenuItem value="any" sx={{ fontSize: "1.8rem" }}>
+              State
+            </MenuItem>
+            <MenuItem value="active" sx={{ fontSize: "1.8rem" }}>
+              Active
+            </MenuItem>
+            <MenuItem value="unactive" sx={{ fontSize: "1.8rem" }}>
+              Unactive
+            </MenuItem>
+          </Select>
         </div>
-        <div className="dash__content__container__type">
-          State
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            x="0"
-            y="0"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-            className="filter-arrow-icon"
+
+        <div className="w-[15rem] ml-[2rem] ">
+          <Select
+            labelId="CV"
+            id="CV"
+            value={cvFilter}
+            size="small"
+            onChange={handleFilterChange}
+            fullWidth
+            name="cv"
+            sx={{
+              borderRadius: "90rem",
+
+              "& .MuiInputBase-input": {
+                fontSize: `1.8rem`,
+                lineHeight: "normal",
+                textAlign: "center",
+              },
+            }}
           >
-            <g>
-              <path
-                d="M385.1 219.9 199.2 34c-20-20-52.3-20-72.3 0s-20 52.3 0 72.3L276.7 256 126.9 405.7c-20 20-20 52.3 0 72.3s52.3 20 72.3 0l185.9-185.9c19.9-19.9 19.9-52.3 0-72.2z"
-                opacity="1"
-              ></path>
-            </g>
-          </svg>
+            <MenuItem value="any" sx={{ fontSize: "1.8rem" }}>
+              CV
+            </MenuItem>
+            <MenuItem value="false" sx={{ fontSize: "1.8rem" }}>
+              Pending
+            </MenuItem>
+            <MenuItem value="true" sx={{ fontSize: "1.8rem" }}>
+              Accepted
+            </MenuItem>
+          </Select>
         </div>
       </div>
       <div className="dash__content__container__firstRow__RightSide">

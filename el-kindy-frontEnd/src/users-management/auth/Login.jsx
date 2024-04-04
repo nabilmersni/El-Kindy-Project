@@ -41,10 +41,10 @@ function Login() {
         naviagte("/admin-dash");
         break;
       case "user":
-        naviagte("/user-dash");
+        naviagte("/user-side");
         break;
       case "teacher":
-        naviagte("/user-dash");
+        naviagte("/user-side");
         break;
       default:
         break;

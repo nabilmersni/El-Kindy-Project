@@ -22,10 +22,22 @@ const addChat = async (data) => {
   return response.data.data.chat;
 };
 
+const updateChatSeen = async (userID, data) => {
+  const response = await instance.patch(`${API_URL}/${userID}`, data);
+  return response.data.chat;
+};
+
+const unseenChatsCount = async (userID) => {
+  const response = await instance.get(`${API_URL}/stat/unseen/${userID}`);
+  return response.data.data.unseenChatsCount;
+};
+
 const chatService = {
   userChats,
   userChat,
   addChat,
+  updateChatSeen,
+  unseenChatsCount,
 };
 
 export default chatService;

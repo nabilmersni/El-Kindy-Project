@@ -9,6 +9,8 @@ import userService from "../../../../features/users/UserService";
 const DashAdminUsers = () => {
   const { user: loggedInUser } = useSelector((state) => state.auth);
   const [users, setUsers] = useState([]);
+  const [stateFilter, setStateFilter] = useState("any");
+  const [cvFilter, setCvFilter] = useState("any");
 
   const getAllUsers = async () => {
     if (!users.length) {
@@ -33,9 +35,44 @@ const DashAdminUsers = () => {
     getAllUsers();
   }, []);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredUsers = users.filter((user) => {
+    const searchTermMatch =
+      user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    let cvFilterMatch;
+    if (cvFilter === "true") {
+      cvFilterMatch = user.isCvAccepted === true && user.role === "teacher";
+    } else if (cvFilter === "false") {
+      cvFilterMatch = user.isCvAccepted === false && user.role === "teacher";
+    } else {
+      cvFilterMatch = true;
+    }
+
+    if (stateFilter === "any") {
+      return searchTermMatch && cvFilterMatch;
+    } else if (stateFilter === "active") {
+      return searchTermMatch && user.state === true && cvFilterMatch;
+    } else if (stateFilter === "unactive") {
+      return searchTermMatch && user.state === false && cvFilterMatch;
+    } else {
+      return searchTermMatch && cvFilterMatch;
+    }
+  });
+
   return (
     <DashLayout>
-      <DashAdminUsersHeader addNewUser={addNewUser} />
+      <DashAdminUsersHeader
+        addNewUser={addNewUser}
+        setSearchTerm={setSearchTerm}
+        stateFilter={stateFilter}
+        setStateFilter={setStateFilter}
+        cvFilter={cvFilter}
+        setCvFilter={setCvFilter}
+      />
       <div className="userss">
         <div className="users-list">
           <div className="users-list__body tableFixHead">
@@ -47,11 +84,11 @@ const DashAdminUsers = () => {
                   <th>phone</th>
                   <th>role</th>
                   <th>account state</th>
-                  <th>#</th>
+                  <th>#Action</th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => (
+                {filteredUsers.map((user, index) => (
                   <UserItem
                     user={user}
                     updateLocalUser={updateLocalUser}

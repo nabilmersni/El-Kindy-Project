@@ -79,7 +79,7 @@ export function Nav() {
   }, []);
 
   return (
-    <Navbar className="mx-auto fixed top-2 left-0 right-0 z-50 max-w-screen-xl px-4 py-2">
+    <Navbar className="mx-auto fixed top-2 left-0 right-0 z-50 w-[97%] lg:max-w-screen-xl px-4 py-2">
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography variant="h6" className="mr-4 cursor-pointer py-1.5 lg:ml-2">
           <Link to={"/"}>

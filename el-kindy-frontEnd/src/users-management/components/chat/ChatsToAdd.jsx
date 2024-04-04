@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
-import { io } from "socket.io-client";
 
 import AvailableChat from "./AvailableChat";
 import userService from "../../../features/users/UserService";
 import chatService from "../../../features/chat/ChatService";
+import SocketContext from "../../../features/context/SocketContext";
 
 const formInputSize = "2rem";
 
@@ -13,20 +13,21 @@ function ChatsToAdd({
   chats,
   setChats,
   closeAddChatModal,
-  socketId,
+  small,
 }) {
   const [availableUsersChat, setAvailableUsersChat] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const socket = useRef();
+  const socket = useContext(SocketContext);
 
   const exludedUsers = [currentUserId];
   chats.map((chat) => {
-    exludedUsers.push(chat.members.find((member) => member !== currentUserId));
+    exludedUsers.push(
+      chat.members.find((member) => member.user !== currentUserId).user
+    );
   });
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8800", { query: { socketId } });
     const getAvailableUsersChat = async () => {
       try {
         const availableUsersChat = await userService.getAllUsers(
@@ -48,7 +49,6 @@ function ChatsToAdd({
         receiverId: availableUserId,
       });
       setChats([...chats, newChat]);
-      // socket.current.emit("new-chat", newChat);
       socket.current.emit("new-chat");
       closeAddChatModal();
     } catch (error) {
@@ -66,60 +66,90 @@ function ChatsToAdd({
     setSearchTerm(event.target.value);
   };
 
-  //add new chat from socket
-
-  // useEffect(() => {
-  //   socket.current = io("ws://localhost:8800", { query: { socketId } });
-  //   socket.current.emit("new-chat", user._id);
-  //   socket.current.on("get-users", (users) => {
-  //     dispatch(setOnlineUsers(users));
-  //   });
-  // }, [user]);
-
   return (
     <div className="flex flex-col h-full p-[1rem]">
-      <h1 className="text-[3rem] mb-[.5rem] ">Start new conversation</h1>
-      <div className="mb-[2rem]">
-        <TextField
-          margin="normal"
-          fullWidth
-          type="text"
-          id="search"
-          label="Search"
-          name="search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                fontSize: `${formInputSize}`,
-                borderColor: "#DBDFEA",
-              },
-              "&:hover fieldset": {
-                borderColor: "#7586FF",
-              },
-              "&.Mui-focused fieldset": {
-                fontSize: `${formInputSize}`,
-                borderColor: "#7586FF",
-              },
-            },
-            "& .MuiInputLabel-root": {
-              fontSize: `${formInputSize}`,
-              "&.Mui-focused": {
-                fontSize: `${formInputSize}`,
-                color: "#7586FF",
-              },
-            },
+      <h1
+        className={`${
+          small ? "text-[1.6rem] mb-[.4rem]" : "text-[3rem] mb-[.5rem]"
+        }`}
+      >
+        Start new conversation
+      </h1>
 
-            "& .MuiInputBase-input": {
-              fontSize: `${formInputSize}`,
-            },
-            "& .MuiFormHelperText-root": {
-              fontSize: "1.6rem",
-            },
-          }}
-        />
-      </div>
+      {small ? (
+        <div className="mb-[1.5rem]">
+          <TextField
+            margin="normal"
+            fullWidth
+            type="text"
+            id="search"
+            label="Search"
+            name="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#DBDFEA",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#7586FF",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#7586FF",
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: "#7586FF",
+                },
+              },
+            }}
+          />
+        </div>
+      ) : (
+        <div className="mb-[2rem]">
+          <TextField
+            margin="normal"
+            fullWidth
+            type="text"
+            id="search"
+            label="Search"
+            name="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#DBDFEA",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#7586FF",
+                },
+                "&.Mui-focused fieldset": {
+                  fontSize: `${formInputSize}`,
+                  borderColor: "#7586FF",
+                },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: `${formInputSize}`,
+                "&.Mui-focused": {
+                  fontSize: `${formInputSize}`,
+                  color: "#7586FF",
+                },
+              },
+
+              "& .MuiInputBase-input": {
+                fontSize: `${formInputSize}`,
+              },
+              "& .MuiFormHelperText-root": {
+                fontSize: "1.6rem",
+              },
+            }}
+          />
+        </div>
+      )}
+
       <div className="flex flex-col h-full overflow-y-auto pr-[2rem] ">
         {availableUsersChat.length ? (
           filteredAvailableUsers.map((availableUser) => (
@@ -127,11 +157,15 @@ function ChatsToAdd({
               onClick={() => addChatHandle(availableUser._id)}
               key={availableUser._id}
             >
-              <AvailableChat userData={availableUser} />
+              <AvailableChat userData={availableUser} small={small} />
             </div>
           ))
         ) : (
-          <p className="text-[2.5rem] self-center my-auto">
+          <p
+            className={`${
+              small ? "text-[1.4rem]" : "text-[2.5rem]"
+            } self-center my-auto`}
+          >
             No new chats available
           </p>
         )}

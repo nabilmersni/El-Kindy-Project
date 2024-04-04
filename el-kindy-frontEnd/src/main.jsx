@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import { store } from "./Store";
+import { SocketProvider } from "./features/context/SocketContext";
+
 import App from "./App.jsx";
 import "./index.css";
 
@@ -12,8 +14,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   <ThemeProvider>
     <Provider store={store}>
-      <App />
-      <ToastContainer />
+      <SocketProvider>
+        <App />
+        <ToastContainer />
+      </SocketProvider>
     </Provider>
   </ThemeProvider>
   // </React.StrictMode>

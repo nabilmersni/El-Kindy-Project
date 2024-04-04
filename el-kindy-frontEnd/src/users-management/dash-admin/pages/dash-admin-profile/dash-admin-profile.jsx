@@ -12,6 +12,7 @@ import DashLayout from "../../../../dashboard-layout/dash-layout";
 import FaceIDRegistration from "../../components/FaceIDRegistration";
 import ProfileImageUpload from "./ProfileImageUpload";
 import ProfileUpdateForm from "./ProfileUpdateForm";
+import ProfileChangePassword from "./ProfileChangePassword";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -165,8 +166,9 @@ const DashAdminProfile = () => {
               </TabPanel>
               <TabPanel value="2">
                 <div className="font-nunito text-[#2A3547] ">
-                  <div className="p-[3rem] rounded-[1.4rem] shadow-custom2 ">
+                  <div className="p-[3rem] rounded-[1.4rem] shadow-custom2 flex justify-between items-start gap-[2rem] ">
                     <FaceIDRegistration />
+                    <ProfileChangePassword />
                   </div>
                 </div>
               </TabPanel>

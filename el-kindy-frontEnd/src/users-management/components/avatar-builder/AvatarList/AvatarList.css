@@ -1,10 +1,9 @@
-:root {
-  /* --avatarWidth: 4.5rem; */
+/* :root {
   --avatarWidth: 7rem;
   --laptopWidth: calc(var(--avatarWidth) - 0.8rem);
   --displayCount: 10;
   --sectionWidth: calc(var(--avatarWidth) * var(--displayCount));
-}
+} */
 
 @keyframes test {
   to {
@@ -42,7 +41,7 @@
 }
 
 .AvatarList .AvatarItemWrapper:hover > .AvatarItem {
-  transform: scale(1.45);
+  transform: scale(1.3);
 }
 
 .AvatarList .AvatarItemWrapper > .AvatarItem {

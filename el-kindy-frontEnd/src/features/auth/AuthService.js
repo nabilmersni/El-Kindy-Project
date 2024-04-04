@@ -92,6 +92,14 @@ const forgotPasswordChange = async (data, token) => {
   }
 };
 
+const changePassword = async (userData) => {
+  const response = await instance.patch(
+    `${API_URL}/user/changePassword`,
+    userData
+  );
+  return response.data.message;
+};
+
 const authService = {
   register,
   login,
@@ -103,6 +111,7 @@ const authService = {
   verifyEmail,
   forgotPasswordRequest,
   forgotPasswordChange,
+  changePassword,
 };
 
 export default authService;

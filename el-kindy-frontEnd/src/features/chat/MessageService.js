@@ -17,9 +17,15 @@ const sendMessage = async (data) => {
   return response.data.data.message;
 };
 
+const getLastMessage = async (chatID) => {
+  const response = await instance.get(`${API_URL}/${chatID}/lastOne`);
+  return response.data.data.messages;
+};
+
 const messageService = {
   getMessages,
   sendMessage,
+  getLastMessage,
 };
 
 export default messageService;

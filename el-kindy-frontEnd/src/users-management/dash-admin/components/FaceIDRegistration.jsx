@@ -3,7 +3,7 @@ import { Button } from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
 import { faceIDRegistration } from "../../../features/auth/AuthSlice";
 
-function FaceIDRegistration() {
+function FaceIDRegistration({ small }) {
   const dispatch = useDispatch();
 
   let faceioInstance = null;
@@ -150,18 +150,32 @@ function FaceIDRegistration() {
   };
 
   return (
-    <div className="flex justify-between items-center">
+    <div
+      className={`flex flex-1 justify-between items-center p-[2rem] rounded-[2rem] shadow-custom2  border-[#006cbe16] ${
+        small ? "border-[.2rem]" : "border-[.5rem]"
+      }`}
+    >
       <div className="flex flex-col justify-center items-start">
-        <p className="text-[2.8rem] font-bold ">Face ID</p>
-        <p className="text-[1.8rem]  ">Facial recognition authentication.</p>
+        <p className={`font-bold ${small ? "text-[1.5rem]" : "text-[2.8rem]"}`}>
+          Face ID
+        </p>
+        <p
+          className={`${
+            small ? "text-[.8rem] md:text-[.95rem]" : "text-[1.8rem]"
+          }`}
+        >
+          Facial recognition authentication.
+        </p>
       </div>
 
       <Button
         variant="text"
         disabled={user.faceIDState}
-        size="lg"
+        size="md"
         onClick={faceRegistration}
-        className={`bg-[#6aadff] text-white text-[1.8rem] font-bold font-nunito rounded-[.8rem] hover:bg-[#5aa7e5] capitalize `}
+        className={`bg-[#6aadff] text-white text-[1.8rem] font-bold font-nunito rounded-[.8rem] hover:bg-[#5aa7e5] capitalize ${
+          small ? "text-[1rem] ml-[4rem] " : "text-[1.8rem] ml-[4rem] "
+        }`}
       >
         {!user.faceIDState ? "Setup" : "Active"}
       </Button>

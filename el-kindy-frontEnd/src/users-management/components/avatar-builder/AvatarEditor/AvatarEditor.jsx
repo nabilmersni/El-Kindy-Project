@@ -20,6 +20,7 @@ const AvatarEditor = ({
   updateConfig,
   updateShape,
   download,
+  small,
 }) => {
   // const [isCodeShow, setIsCodeShow] = useState(false);
   const myDefaultOptions = genDefaultOptions(defaultOptions);
@@ -59,11 +60,18 @@ const AvatarEditor = ({
   // }
 
   return (
-    <div className="AvatarEditor rounded-full px-6 py-4 flex items-center">
+    <div
+      className={`AvatarEditor rounded-full flex items-center ${
+        small
+          ? "px-2 py-2 flex-wrap gap-2 lg:gap-0 rounded-[0.4rem] lg:rounded-full mx-4 lg:mx-0"
+          : "px-6 py-4"
+      }`}
+    >
       {/* Face */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
+        small={small}
         tip="Face"
         switchConfig={switchConfig.bind(this, "faceColor", config.faceColor)}
       >
@@ -72,7 +80,8 @@ const AvatarEditor = ({
       {/* Hair style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
+        small={small}
         tip="Hair"
         switchConfig={switchConfig.bind(this, "hairStyle", config.hairStyle)}
       >
@@ -81,7 +90,8 @@ const AvatarEditor = ({
       {/* Hat style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
+        small={small}
         tip="Hat"
         switchConfig={switchConfig.bind(this, "hatStyle", config.hatStyle)}
       >
@@ -90,7 +100,8 @@ const AvatarEditor = ({
       {/* Eyes style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
+        small={small}
         tip="Eyes"
         switchConfig={switchConfig.bind(this, "eyeStyle", config.eyeStyle)}
       >
@@ -99,7 +110,8 @@ const AvatarEditor = ({
       {/* Glasses style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
+        small={small}
         tip="Glasses"
         switchConfig={switchConfig.bind(
           this,
@@ -112,36 +124,45 @@ const AvatarEditor = ({
       {/* Ear style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-4 mx-2"
+        // className="w-16 h-16 rounded-full p-4 mx-2"
+        className={`${
+          small
+            ? "w-10 h-10 rounded-full p-[0.6rem] mx-2"
+            : "w-16 h-16 rounded-full p-4 mx-2"
+        }`}
         tip="Ear"
         switchConfig={switchConfig.bind(this, "earSize", config.earSize)}
+        small={small}
       >
         <Ear size={config.earSize} color="#fff" />
       </SectionWrapper>
       {/* Nose style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
         tip="Nose"
         switchConfig={switchConfig.bind(this, "noseStyle", config.noseStyle)}
+        small={small}
       >
         <Nose style={config.noseStyle} color="#fff" />
       </SectionWrapper>
       {/* Mouth style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
         tip="Mouth"
         switchConfig={switchConfig.bind(this, "mouthStyle", config.mouthStyle)}
+        small={small}
       >
         <Mouth style={config.mouthStyle} color="#fff" />
       </SectionWrapper>
       {/* Shirt style */}
       <SectionWrapper
         // className="w-8 h-8 rounded-full p-2 mx-2"
-        className="w-16 h-16 rounded-full p-2 mx-2"
+        className={`${small ? "w-10 h-10" : "w-16 h-16"} rounded-full p-2 mx-2`}
         tip="Shirt"
         switchConfig={switchConfig.bind(this, "shirtStyle", config.shirtStyle)}
+        small={small}
       >
         <Shirt style={config.shirtStyle} color="#fff" />
       </SectionWrapper>

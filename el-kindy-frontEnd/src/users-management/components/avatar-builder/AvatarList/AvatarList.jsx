@@ -5,12 +5,45 @@ import { genConfig } from "react-nice-avatar";
 import ReactNiceAvatar from "react-nice-avatar";
 import "./AvatarList.css";
 
-const AvatarList = ({ selectConfig }) => {
-  const displayCount = 10;
-  const [current, setCurrent] = useState(0);
+const AvatarList = ({ selectConfig, small }) => {
+  // const displayCount = 10;
+
+  const getDisplayCount = () => {
+    if (window.innerWidth < 450) {
+      return 2;
+    } else if (window.innerWidth < 700) {
+      return 3;
+    } else if (window.innerWidth < 1100) {
+      return 6;
+    } else {
+      return 10;
+    }
+  };
+
+  const [displayCount, setDisplayCount] = useState(getDisplayCount());
   const [avatarConfigList, setAvatarConfigList] = useState(
-    genConfigList(displayCount)
+    genConfigList(getDisplayCount())
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDisplayCount(getDisplayCount());
+      fetchListWidth();
+      setAvatarConfigList((prevList) => [
+        ...prevList,
+        ...genConfigList(getDisplayCount()),
+      ]);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup function to remove event listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const [current, setCurrent] = useState(0);
   const listId = "avatarList";
   const listWidthRef = useRef(0);
 
@@ -43,18 +76,49 @@ const AvatarList = ({ selectConfig }) => {
   function changeCurrent(deg) {
     const newCurrent = Math.max(current + deg, 0);
     setCurrent(newCurrent);
-
-    if (newCurrent * displayCount > avatarConfigList.length - 1) {
-      const newConfigList = genConfigList(displayCount);
-      setAvatarConfigList((prevList) => [...prevList, ...newConfigList]);
-    }
+    setAvatarConfigList((prevList) => [
+      ...prevList,
+      ...genConfigList(displayCount),
+    ]);
   }
 
   const displayMax = (current + 2) * displayCount;
   const displayMin = (current - 1) * displayCount;
 
+  const avatarWidth = small ? "5rem" : "8rem";
+
+  const inlineStyle = {
+    "--avatarWidth": avatarWidth,
+    "--laptopWidth": `calc(${avatarWidth} - 0.8rem)`,
+    "--displayCount": `${displayCount}`,
+    "--sectionWidth": `calc(${avatarWidth} * var(--displayCount))`,
+    ".AvatarList": {
+      width: `calc(var(--laptopWidth) * var(--displayCount))`,
+    },
+    "@media (minWidth: 1280px)": {
+      ".AvatarList": {
+        width: `calc(var(--avatarWidth) * var(--displayCount))`,
+      },
+      ".AvatarList .AvatarItemWrapper": {
+        flex: `0 0 ${avatarWidth}`,
+        height: avatarWidth,
+      },
+      ".AvatarList .AvatarItemWrapper:hover > .AvatarItem": {
+        transform: "scale(1.3)",
+      },
+      ".AvatarList .AvatarItemWrapper > .AvatarItem": {
+        "--avatarLaptopInnerWidth": `calc(${avatarWidth} - 1.2rem)`,
+        "--avatarInnerWidth": `calc(${avatarWidth} - 1.5rem)`,
+        width: "var(--avatarLaptopInnerWidth)",
+        height: "var(--avatarLaptopInnerWidth)",
+        transition: "all 0.25s ease-out",
+        cursor: "pointer",
+      },
+    },
+  };
+
   return (
-    <div className="flex items-center justify-center mb-4">
+    <div style={inlineStyle} className="flex items-center justify-center mb-4">
       {/* Arrow left */}
       {current !== 0 && (
         <i
