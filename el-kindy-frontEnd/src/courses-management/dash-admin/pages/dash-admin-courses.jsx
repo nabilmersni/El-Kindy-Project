@@ -28,15 +28,6 @@ const DashAdminCourses = () => {
     );
   };
 
-  // const courses = [
-  //   {
-  //     id: 1,
-  //     title: "Introduction to Sketching and Shading",
-  //     type: "In Groupe",
-  //     price: 60,
-  //     category: "Drawing",
-  //   },
-  // ];
   return (
     <DashLayout>
       <DashAdminCoursesHeader />

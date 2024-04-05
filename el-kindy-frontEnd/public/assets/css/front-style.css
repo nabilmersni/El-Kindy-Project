@@ -1,0 +1,593 @@
+@font-face {
+  font-family: "nunito";
+  src: url("../fonts/Nunito-VariableFont_wght.ttf");
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 0.8rem;
+  border-radius: 8rem;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #006bbe;
+  border-radius: 8rem;
+}
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 108, 190, 0.18);
+  border-radius: 8rem;
+}
+
+html {
+  /* font-size: 1.1235vw; */
+  scroll-behavior: smooth;
+}
+
+@media screen and (min-width: 1280px) {
+  html {
+    font-size: 1.05vw;
+  }
+}
+
+.content-container {
+  margin-top: 5rem;
+  padding-top: 1rem;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 74rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.guitar-animation {
+  width: 15rem;
+  height: 15rem;
+}
+
+.search-input-container {
+  width: 42.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.search-input {
+  line-height: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  background-color: #fff;
+  border-width: 0;
+  border-radius: 5rem;
+  height: 3.8rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.8rem;
+  padding-right: 4rem;
+  color: #3231309d;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgb(85, 85, 85, 0.7);
+}
+
+.search-btn {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 100%;
+  background-color: #006bbe;
+  background-color: #7586ff;
+  background-color: #627bbc;
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-svg-container {
+  width: 1.4rem;
+  height: 1.2rem;
+}
+.search-svg {
+  width: 100%;
+  height: 100%;
+  fill: #fff;
+}
+
+.categories-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0rem;
+  padding-bottom: 0.5rem;
+  /* padding-left: 3rem;
+  padding-right: 3rem; */
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.category-item {
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  color: #7586ff;
+  color: #006bbe;
+  cursor: pointer;
+}
+.category-item:hover {
+  color: #ff7244;
+}
+
+.bg-border-divider-light {
+  background-color: #eaeaea;
+  width: 100%;
+  height: 0.08rem;
+}
+
+.category-container {
+  padding-top: 3rem;
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  /* **************** */
+  padding-bottom: 5rem;
+}
+
+.category__title {
+  font-size: 1.45rem;
+  line-height: 1.75rem;
+  color: #111;
+  font-weight: 700;
+}
+
+.category__discription {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.subcategories-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  max-height: 30rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-decoration: none;
+  position: relative;
+  /* background-color: red; */
+  overflow: hidden;
+}
+
+.subcategories-cards-container.isOpened {
+  max-height: none;
+}
+
+.subcategory-card-container {
+  width: 17.2rem;
+  height: 18.25rem;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.subcategory-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.subcategory-card__overlay {
+  position: absolute;
+  top: 50%;
+  height: 50%;
+  width: 100%;
+  z-index: 10;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+}
+
+.subcategory-card__title {
+  color: #fff;
+  font-weight: 700;
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 20;
+}
+
+.bg-linear-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(247, 253, 253, 0) 0%,
+    #e9f6ff 78.41%
+  );
+  width: 100%;
+  height: 10rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.bg-linear-gradient.hide {
+  display: none;
+}
+
+.show-more-btn-container {
+  display: flex;
+  width: 100%;
+  margin-top: -1.5rem;
+  position: relative;
+  z-index: 30;
+  align-items: center;
+  justify-content: center;
+}
+
+.show-more-btn-container.hide {
+  display: none;
+}
+
+.show-more-btn {
+  color: #006bbe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  fill: #006bbe;
+}
+
+.show-more-btn__text {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.show-more-btn__svg {
+  width: 1.3rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  color: #ff7244;
+  fill: #ff7244;
+}
+
+.see-all-lessons-btn-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.see-all-lessons-btn-container.hide {
+  display: none;
+}
+
+.see-all-lessons-btn {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  border: 1px solid #006bbe;
+  border-radius: 10rem;
+  padding: 1rem 2rem;
+  color: #006bbe;
+  cursor: pointer;
+}
+
+.see-all-lessons-btn:hover {
+  background-color: #006bbe;
+  color: #fff;
+}
+
+/***********************************************************/
+.fixedHeight {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.front-dash-container {
+  height: 81vh;
+  width: 95%;
+  margin-top: 7rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+
+.front-dash__sidBar {
+  height: 100%;
+  width: 20%;
+  background-color: #fff;
+  /* background-color: #dbdffd; */
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+}
+
+.front-dash__content {
+  background-color: #fff;
+  overflow-y: auto;
+  height: 100%;
+  flex: auto;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+}
+
+.front-dash__sidBar-item {
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  padding-left: 2rem;
+  gap: 1rem;
+  fill: #627bbc;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #006bbe;
+  fill: #02241a;
+  color: #02241a;
+}
+
+.front-dash__sidBar-item.active {
+  background-color: #eceff1;
+}
+
+.front-dash__sidBar-item-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.subcategoriesLessonsContainer {
+  background-color: #e9f6ff;
+  /* background-color: #dbdffd; */
+  width: 100%;
+}
+
+.subcategoriesLessons_header {
+  padding-top: 8rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: linear-gradient(180deg, #dbdffd 8%, #e9f6ff 120%),
+    linear-gradient(
+      126.84deg,
+      rgb(219, 223, 253, 0.7) 11.58%,
+      rgb(219, 223, 253, 0.9) 91.17%
+    );
+}
+/* #e9f6ff 8.63%, */
+
+.subcategoriesLessons_header-video-container {
+  position: relative;
+  width: 32.125rem;
+  height: 19.125rem;
+}
+
+.subcategoriesLessons_header-video {
+  width: 100%;
+  height: 100%;
+}
+
+.bg-overlays-60-light {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.full-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.z-0 {
+  z-index: 0;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.h-\[16\.375rem\] {
+  width: 38rem;
+  /* width: auto; */
+  /* height: 19.125rem; */
+  height: 21.375rem !important;
+}
+.ml-6 {
+  margin-left: 1.5rem;
+}
+.-mt-1\.5 {
+  margin-top: -0.375rem;
+}
+.z-10 {
+  z-index: 10;
+}
+.relative {
+  position: relative;
+}
+
+.subcategoriesLessons_header-title {
+  font-size: 2rem;
+  width: 30rem;
+  color: rgb(0 107 190);
+  font-weight: 700;
+  text-align: center;
+  margin-left: 4rem;
+}
+
+.subcategoriesLessons__title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  padding-left: 4rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.subcategoriesLessons__list {
+  padding: 0 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 2rem;
+  padding-bottom: 3rem;
+}
+
+.subcategoriesLessons__card {
+  border: 4px solid #7586ff;
+  width: 20rem;
+  height: 27rem;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subcategoriesLessons__card-img-container {
+  width: 100%;
+  height: 15rem;
+  border-radius: 2rem;
+  background-color: red;
+  margin-bottom: 1rem;
+}
+
+.subcategoriesLessons__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2rem;
+}
+
+.subcategoriesLessons__card-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 0rem;
+}
+
+.subcategoriesLessons__card-level {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.subcategoriesLessons__card-inscriBtn {
+  color: rgb(98 123 188);
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: nunito, sans-serif;
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(174 210 255);
+  border-radius: 0.8rem;
+  width: max-content;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.userLesson-details__container {
+  width: 100%;
+  display: flex;
+  padding: 0 4rem;
+  margin-top: 7rem;
+  display: flex;
+}
+
+/***************************/
+.dash-calendar-container.userSide {
+  overflow: hidden;
+  /* width: 68%; */
+  width: 57rem;
+  /* background-color: red; */
+  margin-right: 2rem;
+  overflow-y: auto;
+  overflow-x: scroll;
+}
+
+.addAvailabilityModal.userSide {
+  /* font-size: 1rem; */
+}
+
+.addAvailabilityModal-container.userSide {
+  width: 30rem;
+  padding: 2rem;
+}
+
+.addAvailabilityModal__title.userSide {
+  font-size: 2rem;
+}
+.addAvailabilityModal__time.userSide {
+  font-size: 1.4rem;
+}
+
+.addAvailabilityModal__day.userSide {
+  font-size: 1.4rem;
+}
+
+.addAvailabilityModal__addBtn.userSide {
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+}
+
+.addAvailabilityModal__cancelBtn.userSide {
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+}
+
+.model-hr.userSide {
+  /* margin: 2rem 0; */
+}
+
+.fc table {
+  font-size: 1.1em;
+}
+
+.fc .fc-button {
+  padding: 0.4rem 0.5rem;
+  font-size: 1.1em;
+  font-weight: 700;
+  font-family: "nunito";
+}
+
+.userLesson-detils__card {
+  background-color: #fff;
+  width: 30%;
+}

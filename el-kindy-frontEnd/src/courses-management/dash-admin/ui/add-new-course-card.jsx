@@ -2,8 +2,11 @@ import "../../../../public/assets/css/style.css";
 import React, { useRef, useState } from "react";
 import courseService from "../../services/courseService";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../../ui/Spinner";
 
 const AddNewCourseCard = () => {
+  const [isAdding, setIsAdding] = useState(false);
+
   const navigate = useNavigate();
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -60,6 +63,7 @@ const AddNewCourseCard = () => {
 
     try {
       // Set loading state or show a loading spinner here if needed
+      setIsAdding(true);
 
       // Make the API call
       const response = await courseService.addCourse(courseData);
@@ -84,12 +88,13 @@ const AddNewCourseCard = () => {
           "Course and image added successfully:",
           uploadResponse.data
         );
-
+        setIsAdding(false);
         navigate("/dash-admin-courses");
 
         // Effacer le formulaire ou gérer le succès comme nécessaire
       } else {
         console.error("Error adding course:", response.data.error);
+        setIsAdding(false);
       }
 
       // Clear the form or handle success as needed
@@ -100,6 +105,7 @@ const AddNewCourseCard = () => {
 
   return (
     <div className="dash-card__container">
+      {isAdding && <Spinner />}
       <form onSubmit={submitHandler} className="dash-card">
         <div className="dash-card__header">
           <div className="dash-card__header-title">Course details</div>

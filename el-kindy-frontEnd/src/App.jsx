@@ -54,6 +54,11 @@ import ViewAllEvents from "./ui/ViewAllEvents";
 import TicketItems from "./ui/TicketItems";
 import DashAdminEvents from "./Event-Management/Dash-Admin/pages/dashAdminEvents";
 import FrontAllEvent from "./Event-Management/front_side/FrontAllEvent";
+import DashAdminSubCategories from "./courses-management/dash-admin/pages/dash-admin-subCategories";
+import UserCategories from "./courses-management/front-user/pages/user-categories";
+import UserSubCategoryLessons from "./courses-management/front-user/pages/user-subcategory-lessons";
+import DashTeacherAvailabilities from "./courses-management/dash-teacher/pages/dash-teacher-availabilities";
+import UserLessonDetails from "./courses-management/front-user/pages/user-lessonDetails";
 
 function App() {
   // const { user } = useSelector((state) => state.auth);
@@ -115,6 +120,14 @@ function App() {
             element={<ForgotPasswordRequest />}
           />
           <Route path="/forgotPassword/:token" element={<ForgotPassword />} />
+
+          {/* public course */}
+          <Route path="/categories" element={<UserCategories />} />
+          <Route
+            path="/subcategory/lessons/:id"
+            element={<UserSubCategoryLessons />}
+          />
+          {/* end public courses */}
         </Route>
         {/*  */}
         <Route element={<PrivateRoute />}>
@@ -141,7 +154,10 @@ function App() {
             {/* ---------------Event -------------- */}
             {/* <Route path="/AllEvents" element={<ViewAllEvents />} /> */}
             <Route path="/user-side/AllEvents" element={<FrontAllEvent />} />
-          <Route path="/tickets/:eventId" element={<TicketItems />} />
+            <Route path="/tickets/:eventId" element={<TicketItems />} />
+
+            {/*---------------------courses user routes */}
+            <Route path="/lesson/:id" element={<UserLessonDetails />} />
           </Route>
 
           {/*  */}
@@ -164,23 +180,30 @@ function App() {
               path="/dash-admin-update-course/:id"
               element={<DashAdminUpdateCourse />}
             />
-             {/*---------------- admin dash Events  ---------------*/}
+            <Route
+              path="/dash-admin-subcategories"
+              element={<DashAdminSubCategories />}
+            />
+            {/* ---------------teacher dash courses  -----------------*/}
+            <Route
+              path="/dash-teacher-availabilities"
+              element={<DashTeacherAvailabilities />}
+            />
+            {/*----------------teacher dash courses  ---------------*/}
+            {/*---------------- admin dash Events  ---------------*/}
 
-        <Route
-          path="/dash-admin-add-new-event"
-          element={<DashAdminAddNewEvent />}
-        />
+            <Route
+              path="/dash-admin-add-new-event"
+              element={<DashAdminAddNewEvent />}
+            />
 
-        <Route
-          path="/event-details/:id"
-          element={<EventDetailsCard />}
-        />
-        <Route
-          path="/dash-admin-Update-new-event/:id"
-          element={<DashAdminUpdateEvent />}
-        />
+            <Route path="/event-details/:id" element={<EventDetailsCard />} />
+            <Route
+              path="/dash-admin-Update-new-event/:id"
+              element={<DashAdminUpdateEvent />}
+            />
 
-        <Route path="/dash-admin-events" element={<DashAdminEvents />} />
+            <Route path="/dash-admin-events" element={<DashAdminEvents />} />
 
             {/* ---------------admin dash Quizes  -----------------*/}
             <Route path="/dash-admin-quizes" element={<DashQuizesList />} />
