@@ -354,20 +354,20 @@ const UserAvailabilitie = () => {
       )}
 
       {showDeleteModal && (
-        <div className="addAvailabilityModal delete">
-          <div className="addAvailabilityModal-container delete">
-            <div className="deleteAvailabilityModal__title">
+        <div className="addAvailabilityModal delete userSide">
+          <div className="addAvailabilityModal-container userSide delete ">
+            <div className="deleteAvailabilityModal__title userSide">
               Are you sure you want to delete this availability?
             </div>
-            <div className="addAvailabilityModal__btns">
+            <div className="addAvailabilityModal__btns userSide">
               <div
-                className="addAvailabilityModal__addBtn delete"
+                className="addAvailabilityModal__addBtn delete userSide"
                 onClick={handleCancelDelete}
               >
                 No, cancel
               </div>
               <div
-                className="addAvailabilityModal__cancelBtn delete"
+                className="addAvailabilityModal__cancelBtn delete userSide"
                 onClick={deleteAvailability}
               >
                 Yes, delete

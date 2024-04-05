@@ -122,16 +122,24 @@ function App() {
           <Route path="/forgotPassword/:token" element={<ForgotPassword />} />
 
           {/* public course */}
-          <Route path="/categories" element={<UserCategories />} />
+          {/* <Route path="/categories" element={<UserCategories />} />
           <Route
             path="/subcategory/lessons/:id"
             element={<UserSubCategoryLessons />}
-          />
+          /> */}
           {/* end public courses */}
         </Route>
         {/*  */}
         <Route element={<PrivateRoute />}>
           <Route element={<UserSideRoutes />}>
+            {/* public course */}
+            <Route path="/categories" element={<UserCategories />} />
+            <Route
+              path="/subcategory/lessons/:id"
+              element={<UserSubCategoryLessons />}
+            />
+            {/* end public courses */}
+
             <Route path="/user-side" element={<UserDashboard />} />
 
             {/* ---------------START user routes-----------------*/}
@@ -158,6 +166,13 @@ function App() {
 
             {/*---------------------courses user routes */}
             <Route path="/lesson/:id" element={<UserLessonDetails />} />
+
+            {/* ---------------teacher dash courses  -----------------*/}
+            <Route
+              path="/dash-teacher-availabilities"
+              element={<DashTeacherAvailabilities />}
+            />
+            {/*----------------teacher dash courses  ---------------*/}
           </Route>
 
           {/*  */}
@@ -184,12 +199,6 @@ function App() {
               path="/dash-admin-subcategories"
               element={<DashAdminSubCategories />}
             />
-            {/* ---------------teacher dash courses  -----------------*/}
-            <Route
-              path="/dash-teacher-availabilities"
-              element={<DashTeacherAvailabilities />}
-            />
-            {/*----------------teacher dash courses  ---------------*/}
             {/*---------------- admin dash Events  ---------------*/}
 
             <Route

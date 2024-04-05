@@ -42,7 +42,7 @@ function NavList() {
           Home
         </ListItem>
       </Link>
-      <Link to={"/user-side/courses"}>
+      <Link to={"/categories"}>
         <ListItem className="flex items-center gap-2 font-nunito py-2 pr-4 hover:text-nav hover:bg-[#e8f6ff]">
           Courses
         </ListItem>
@@ -52,6 +52,15 @@ function NavList() {
           Quizs
         </ListItem>
       </Link>
+      {user.role === "teacher" ? (
+        <Link to={"/dash-teacher-availabilities"}>
+          <ListItem className="flex items-center gap-2 font-nunito py-2 pr-4 hover:text-nav hover:bg-[#e8f6ff]">
+            Availabilty
+          </ListItem>
+        </Link>
+      ) : (
+        ""
+      )}
 
       <Link to={"/user-side/AllEvents"}>
         <ListItem className="flex items-center gap-2 font-nunito py-2 pr-4 hover:text-nav hover:bg-[#e8f6ff]">

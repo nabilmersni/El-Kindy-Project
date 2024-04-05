@@ -562,6 +562,10 @@ html {
   font-size: 1.4rem;
 }
 
+.deleteAvailabilityModal__title.userSide {
+  font-size: 1.4rem;
+}
+
 .addAvailabilityModal__addBtn.userSide {
   font-size: 1.2rem;
   padding: 0.5rem 1rem;

@@ -3,23 +3,34 @@ import React, { useRef, useState } from "react";
 import courseService from "../../services/courseService";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../../ui/Spinner";
+import { useEffect } from "react";
+import categoriesService from "../../services/categoriesService";
+
+import subCategoryService from "../../services/subCategoriesService";
 
 const AddNewCourseCard = () => {
   const [isAdding, setIsAdding] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const navigate = useNavigate();
 
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+
   const [selectedType, setSelectedType] = useState("");
   const [image, setImage] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredDescription, setEnteredDescription] = useState("");
   const [enteredPrice, setEnteredPrice] = useState("");
 
+  const [errors, setErrors] = useState("");
+  const [errors2, setErrors2] = useState("");
+
   const inputRef = useRef(null);
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
+    setSelectedCategoryId(event.target.value);
   };
 
   const handleTypeChange = (event) => {
@@ -38,6 +49,7 @@ const AddNewCourseCard = () => {
 
   const titleChangeHandle = (event) => {
     setEnteredTitle(event.target.value);
+    setErrors("");
   };
 
   const descriptionChangeHandle = (event) => {
@@ -46,6 +58,7 @@ const AddNewCourseCard = () => {
 
   const priceChangeHandle = (event) => {
     setEnteredPrice(event.target.value);
+    setErrors2("");
   };
 
   // -------------
@@ -53,12 +66,23 @@ const AddNewCourseCard = () => {
   const submitHandler = async (event) => {
     event.preventDefault();
 
+    if (!enteredTitle.trim()) {
+      // Vérifier si le champ est vide ou contient uniquement des espaces
+      setErrors("Please enter a course title."); // Définir un message d'erreur approprié
+      return; // Empêcher la soumission du formulaire
+    }
+
+    if (enteredPrice <= 0 || isNaN(enteredPrice)) {
+      setErrors2("Please enter a valid positive price."); // Définir un message d'erreur approprié
+      return; // Empêcher la soumission du formulaire
+    }
     const courseData = {
       courseTitle: enteredTitle,
       courseDescription: enteredDescription,
       courseCategory: selectedCategory,
       coursePrice: enteredPrice,
       courseType: selectedType,
+      subCategoryId: selectedCategoryId,
     };
 
     try {
@@ -103,6 +127,20 @@ const AddNewCourseCard = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        // Récupérer les catégories depuis le service
+        const response = await subCategoryService.getAllSubCategories();
+        // Stocker les catégories dans l'état
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    // Appeler la fonction pour récupérer les catégories
+    fetchCategories();
+  }, []);
   return (
     <div className="dash-card__container">
       {isAdding && <Spinner />}
@@ -145,6 +183,7 @@ const AddNewCourseCard = () => {
             placeholder="Title"
             onChange={titleChangeHandle}
           />
+          {errors && <p className="error-message text-red">{errors}</p>}
         </div>
 
         <div className="course-add-form__input__group">
@@ -171,15 +210,16 @@ const AddNewCourseCard = () => {
           <select
             id="categorySelect"
             className="course-add-form__input"
-            value={selectedCategory}
             onChange={handleCategoryChange}
           >
-            <option value="" disabled hidden>
-              Category
-            </option>
-            <option value="individual">Danse</option>
-            <option value="inGroup">Music</option>
-            <option value="inGroup">Arduino</option>
+            {/* Option par défaut */}
+            <option value="">Category</option>
+            {/* Mapper les catégories dans des options */}
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.subCategoryTitle}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -197,6 +237,7 @@ const AddNewCourseCard = () => {
               placeholder="Price"
               onChange={priceChangeHandle}
             />
+            {errors2 && <p className="error-message text-red">{errors2}</p>}
           </div>
 
           <div className="course-add-form__input__group">

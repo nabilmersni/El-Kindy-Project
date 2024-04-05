@@ -167,7 +167,7 @@ export const AdminDashSideBarMenuItems = [
   },
 
   {
-    path: "/",
+    path: "/dash-admin-events",
     name: "Events",
     icon: (
       <svg

@@ -10,6 +10,7 @@ const AddNewCategoryCard = () => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const inputRef = useRef(null);
   const [image, setImage] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,6 +21,7 @@ const AddNewCategoryCard = () => {
   //--------------------------------
   const titleChangeHandle = (event) => {
     setEnteredTitle(event.target.value);
+    setError("");
   };
 
   //------------------------------
@@ -36,6 +38,12 @@ const AddNewCategoryCard = () => {
   //----------------------------
   const submitHandler = async (event) => {
     event.preventDefault();
+
+    if (!enteredTitle.trim()) {
+      // Vérifier si le champ est vide ou contient uniquement des espaces
+      setError("Please enter a category name."); // Définir un message d'erreur approprié
+      return; // Empêcher la soumission du formulaire
+    }
 
     const categData = {
       categoryTitle: enteredTitle,
@@ -69,7 +77,7 @@ const AddNewCategoryCard = () => {
           uploadResponse.data
         );
         setIsAdding(false);
-        navigate("/dash-admin-categories");
+        navigate("/dash-admin-subcategories");
         // onClose;
 
         // Effacer le formulaire ou gérer le succès comme nécessaire
@@ -109,6 +117,7 @@ const AddNewCategoryCard = () => {
             placeholder="Name"
             onChange={titleChangeHandle}
           />
+          {error && <p className="error-message text-red">{error}</p>}
         </div>
 
         <div className="course-add-form__input__group">

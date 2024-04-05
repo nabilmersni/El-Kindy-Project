@@ -66,7 +66,7 @@ const UserSubCategoryLessons = () => {
           <div className="subcategoriesLessons__title">Private lessons</div>
           <div className="subcategoriesLessons__list">
             {courses.map((course, index) => (
-              <div className="subcategoriesLessons__card">
+              <div className="subcategoriesLessons__card" key={index}>
                 <div className="subcategoriesLessons__card-img-container">
                   <img
                     src={`http://localhost:3000/${course.imageUrl}`}
