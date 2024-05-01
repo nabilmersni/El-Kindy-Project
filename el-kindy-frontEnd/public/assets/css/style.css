@@ -2233,6 +2233,10 @@ input:checked + .slider:before {
   float: right;
   padding-left: 13rem;
 }
+.button-pagination:hover {
+  background-color: #e8f6ff;
+  border-radius: 10px;
+}
 .manage-participants-model__card2 {
   width: 110rem;
   height: 80rem;
@@ -2270,14 +2274,36 @@ input:checked + .slider:before {
   height: 2rem;
   padding: 0.5rem;
   border-radius: 100%;
+  margin-top: 10px;
   fill: #fff;
   cursor: pointer;
   transition: all ease-out 0.1s;
-  float: right;
 }
-/* sarra */
 
-/* ********nawres********** */
+.ticket-card {
+  display: flex;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 10px 20px 0;
+  width: calc(100% - 20px); /* Adjust the width as needed */
+}
+
+.logoImage-Ticket {
+  margin-top: auto;
+}
+.QrCode-Ticket {
+  margin: auto;
+}
+.ticket-details {
+  flex: 1;
+
+  text-align: left;
+  margin-left: 20px;
+}
+
+/* sarra */
+/* *********nawres*********** */
 .error-message {
   color: red;
   font-size: 2em;
@@ -2404,10 +2430,11 @@ input:checked + .slider:before {
   color: #000;
   font-weight: 700;
   padding: 15px;
-  text-align: center;
+  text-align: left;
 }
 .quiz-item-details {
   color: #ff7244;
+  font-size: 20px;
 }
 
 .manage-participants-model__card--header--result {
@@ -2468,4 +2495,50 @@ input:checked + .slider:before {
 }
 .input-small {
   width: 150px;
+}
+/* ****attestation***** */
+
+.container-attestation {
+  font-family: Arial, sans-serif;
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title-attestation {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.listItem-attestation {
+  margin-bottom: 20px;
+}
+
+.button-attestation {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.buttonWrapper-attestation {
+  margin-top: 20px;
+}
+.bg-customColor {
+  background-color: #c9c1be;
+}
+/* .button-pagination:hover {
+  background-color: #e8f6ff;
+  border-radius: 10px;
+} */
+
+.add-new-course__submit-btn {
+  background-color: #003366 !important ;
+  color: #fff !important;
 }

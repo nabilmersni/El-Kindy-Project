@@ -142,13 +142,13 @@ const AddNewQuizCard = (props) => {
                 value={quizItem.quizDuration}
                 onChange={(e) => onValueChange(e)}
               />
-              {errors.quizDuration && (
-                <span className="error-message">{errors.quizDuration}</span>
-              )}
               <span className="course-add-form__input__label unit">
                 minutes
               </span>
             </div>
+            {errors.quizDuration && (
+              <span className="error-message">{errors.quizDuration}</span>
+            )}
           </div>
         </div>
 

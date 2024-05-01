@@ -7,6 +7,10 @@ const groupAvailabilitiesService = {
     return axios.get(API_BASE_URL);
   },
 
+  getAllGroupAvailabilitiesFilter: () => {
+    return axios.get(`${API_BASE_URL}/filter/groupAvailabilities`);
+  },
+
   createGroupAvailabilities: (groupAvailabilityData) => {
     return axios.post(API_BASE_URL, groupAvailabilityData);
   },

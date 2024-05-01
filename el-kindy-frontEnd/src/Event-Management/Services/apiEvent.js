@@ -18,6 +18,7 @@ const apiEvent = async (method, endpoint, data = null) => {
   }
 };
 
+
 export const getallEvents = async () => {
   return await apiEvent("get", "getall");
 };
@@ -144,11 +145,28 @@ export const sendNotification = async (email) => {
   }
 };
 //-----Ticket-----
+// export const createTicketAndAssociateWithEvent = async (eventId, userId) => {
+//   try {
+//     const existingTicket = await getTicketsByEventId(eventId);
+//     if (existingTicket.some(ticket => ticket.user === userId)) {
+//       throw new Error('User already has a ticket for this event');
+//     }
+
+//     const response = await axios.post(`${baseURL}/${eventId}/tickets`, { userId });
+//     return response.data;
+//   } catch (error) {
+//     console.error(`Error creating ticket and associating with event:`, error);
+//     throw error;
+//   }
+// };
+
+
+
 export const createTicketAndAssociateWithEvent = async (eventId, userId) => {
   try {
-    const existingTicket = await getTicketsByEventId(eventId);
-    if (existingTicket.some(ticket => ticket.user === userId)) {
-      throw new Error('User already has a ticket for this event');
+    const event = await getEventById(eventId);
+    if (!event) {
+      throw new Error('Event not found');
     }
 
     const response = await axios.post(`${baseURL}/${eventId}/tickets`, { userId });
@@ -158,16 +176,19 @@ export const createTicketAndAssociateWithEvent = async (eventId, userId) => {
     throw error;
   }
 };
+
+
+
 export const getTicketsByEventId = async (eventId) => {
   try {
-    const response = await axios.get(`${baseURL}/tickets/${eventId}`);
+    const response = await axios.get(`${baseURL}/tickets/${eventId}`, {
+    });
     return response.data;
   } catch (error) {
     console.error(`Error fetching tickets by event ID:`, error);
     throw error;
   }
 };
-
 export const getJoinedEvents = async () => {
   try {
     const response = await apiEvent("get", "eventsjoined"); // Assuming "eventsjoined" is the correct endpoint
@@ -177,5 +198,59 @@ export const getJoinedEvents = async () => {
     throw error;
   }
 };
+
+
+export const getTicketByIdAndEventId = async (eventId, ticketId) => {
+  try {
+    const response = await axios.get(`${baseURL}/${eventId}/${ticketId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ticket by ID and event ID:`, error);
+    throw error;
+  }
+};
+
+
+//------------------Payementevent
+export const payement = async (data, eventId) => {
+  console.log('Event ID:', eventId); 
+  try {
+    const response = await axios.post(`${baseURL}/payement/${eventId}`, data);
+    const { result } = response.data; 
+    if (result && result.link) {
+      // Redirect to the payment link
+      window.location.href = result.link;
+    } else {
+      console.error("No payment link found in the response");
+    }
+  } catch (error) {
+    console.error("Error in payement request:", error);
+    throw error;
+  }
+};
+
+export const verifyPayment = async (paymentId) => {
+  console.log(paymentId)
+  try {
+    const response = await axios.get(`http://localhost:3000/user-side/AllEvents/${paymentId}`);
+    // Handle the response data here
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    throw error;
+  }
+};
+
+export const checkPaymentStatus = async (eventId, userId) => {
+  try {
+    const response = await axios.get(`${baseURL}/payement/status/${eventId}/${userId}`);
+    return response.data; // Return the payment status data
+  } catch (error) {
+    console.error("Error checking payment status:", error);
+    throw error;
+  }
+};
+
 
 export default apiEvent;

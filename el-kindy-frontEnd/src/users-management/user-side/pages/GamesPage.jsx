@@ -107,7 +107,7 @@ const GamesPage = () => {
               <iframe
                 title="gameFrame"
                 className="w-full h-full rounded-[2rem] scale-[.9] "
-                src="https://darkreaper231.github.io/Incredibox/"
+                src="https://incredibox-elkendy.netlify.app/"
               ></iframe>
             </Box>
           </Modal>

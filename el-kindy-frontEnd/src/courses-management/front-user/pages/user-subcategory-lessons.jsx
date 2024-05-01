@@ -79,8 +79,13 @@ const UserSubCategoryLessons = () => {
                 <div className="subcategoriesLessons__card-level">
                   All levels
                 </div>
+
                 <Link
-                  to={`/lesson/${course._id}`}
+                  to={
+                    course.courseType === "Individual"
+                      ? `/lesson/indiv/${course._id}`
+                      : `/lesson/${course._id}`
+                  }
                   className="subcategoriesLessons__card-inscriBtn"
                 >
                   Register

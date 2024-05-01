@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fullcalendar/daygrid": "^6.1.11",
@@ -29,10 +30,13 @@
     "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.5",
     "firebase": "^10.8.1",
+    "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.1",
     "leaflet": "^1.9.4",
     "mdi-material-ui": "^7.8.0",
     "nanoid": "^5.0.6",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-audio-voice-recorder": "^2.2.0",

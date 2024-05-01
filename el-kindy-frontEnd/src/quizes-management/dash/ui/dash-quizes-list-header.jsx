@@ -1,21 +1,24 @@
 import { Link } from "react-router-dom";
 import "../../../../public/assets/css/style.css";
 import DashAnimation from "../../../dashboard-layout/dash-animation";
+import { MenuItem, Select } from "@mui/material";
 
 const DashQuizesListHeader = ({ onSearchLevelChange }) => {
   const handleSearchChange = (e) => {
     onSearchLevelChange(e.target.value);
   };
+
   return (
     <div className="dash__content__container__firstRow quiz">
       <div className="dash__content__container__firstRow__leftSide">
         <h1 className="dash__content__container__title quiz">Quizes List</h1>
         <div className="dash__content__container__input">
           <input
-            className="dash__content__container__search"
+            className="dash__content__container__search font-nunito text-[2rem] font-semibold min-w-[35rem] pl-[2rem] placeholder:font-normal placeholder:text-[#a9a9a9] placeholder:text-[1.8rem]"
             type="search"
-            placeholder="Search by level"
+            placeholder="Search by quiz name"
             onChange={handleSearchChange}
+            // style={{ fontSize: "1.9rem" }}
           />
           <div className="dash__content__container__search-icon">
             <svg
@@ -42,6 +45,7 @@ const DashQuizesListHeader = ({ onSearchLevelChange }) => {
           </div>
         </div>
       </div>
+
       <div className="dash__content__container__firstRow__RightSide">
         <Link to={"/dash-admin-add-new-quiz"} className="add-new-quiz--btn">
           Add New Quiz

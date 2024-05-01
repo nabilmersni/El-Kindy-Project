@@ -4,6 +4,9 @@ import TicketItems from '../ui/TicketItems';
 function Ticket() {
   return (
     <div >
+   
+   
+          
         <TicketItems></TicketItems>
     </div>
   );

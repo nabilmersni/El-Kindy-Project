@@ -4,6 +4,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import availabilitiesService from "../../services/availabilitiesService";
+import algoService from "../../services/algoService";
+import reservationIndivService from "../../services/reservationIndivService";
 import { useSelector } from "react-redux";
 import Spinner from "../../../ui/Spinner";
 import { toast } from "react-toastify";
@@ -18,6 +20,7 @@ const DashTeacherCalendar = () => {
   const [recizedAvailability, setRecizedAvailability] = useState(null);
   const [availabilityId, setAvailabilityId] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [teacherReservations, setTeacherReservations] = useState([]);
 
   // const initialEvents = [
   //   {
@@ -52,51 +55,55 @@ const DashTeacherCalendar = () => {
       try {
         const response = await availabilitiesService.getTeacherAvailabilities(
           user._id
-        ); // Remplacez teacherId par l'ID de l'enseignant
-        const filterdAvailabilities = removeOverlappingRanges(response.data, [
-          {
-            _id: "4",
-            userID: 1,
-            startTime: "10:30",
-            endTime: "11:30",
-            day: 0,
-          },
-          {
-            _id: "5",
-            userID: 1,
-            startTime: "14:00",
-            endTime: "16:00",
-            day: 3,
-          },
-          {
-            _id: "6",
-            userID: 1,
-            startTime: "10:30",
-            endTime: "11:30",
-            day: 5,
-          },
-        ]);
-        setTeacherAvailabilities(filterdAvailabilities);
-        console.log(teacherAvailabilities);
+        );
+
+        setTeacherAvailabilities(
+          algoService.fusionnerPlagesHoraires(response.data)
+        );
+
+        // console.log(teacherAvailabilities);
       } catch (error) {
         console.error("Error fetching teacher availabilities:", error);
       }
     };
 
+    const fetchTeacherReservations = async () => {
+      try {
+        const response =
+          await availabilitiesService.getTeacherAvailabilitiesReserved(
+            user._id
+          );
+        setTeacherReservations(response.data);
+      } catch (error) {
+        console.error("Error fetching teacher reservations:", error);
+      }
+    };
+
     fetchTeacherAvailabilities();
+    fetchTeacherReservations();
   }, [showModal, showDeleteModal]);
 
   // Transformer les disponibilités de l'enseignant en un format compatible avec FullCalendar
-  const formattedEvents = teacherAvailabilities.map((availability) => {
-    return {
+  const formattedEvents = [
+    ...teacherAvailabilities.map((availability) => ({
       id: availability._id,
       title: "Available",
       startTime: availability.startTime,
       endTime: availability.endTime,
       recurring: true,
       daysOfWeek: [availability.day],
-    };
-  });
+      // backgroundColor: "#3a87ad",
+    })),
+    ...teacherReservations.map((reservation) => ({
+      id: reservation._id,
+      title: "Reserved",
+      startTime: reservation.startTime,
+      endTime: reservation.endTime,
+      recurring: true,
+      daysOfWeek: [reservation.day],
+      backgroundColor: "#555",
+    })),
+  ];
   //-----------------------------
   const [eventDetails, setEventDetails] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -193,22 +200,49 @@ const DashTeacherCalendar = () => {
   };
 
   const addAvailability = async () => {
-    const availabilityData = {
-      startTime:
-        selectedSlot.start.getHours().toString().padStart(2, "0") +
-        ":" +
-        selectedSlot.start.getMinutes().toString().padStart(2, "0"),
-      endTime:
-        selectedSlot.end.getHours().toString().padStart(2, "0") +
-        ":" +
-        selectedSlot.end.getMinutes().toString().padStart(2, "0"),
-      day: selectedSlot.start.getDay(), // 0 pour dimanche, 1 pour lundi, ...
-      userId: user._id,
+    const startTime = selectedSlot.start;
+    const endTime = selectedSlot.end;
+    const day = selectedSlot.start.getDay();
+
+    // Fonction pour diviser une plage horaire en intervalles de 30 minutes
+    const divideTimeRange = (start, end) => {
+      const intervals = [];
+      let current = new Date(start);
+
+      while (current < end) {
+        const next = new Date(current);
+        next.setMinutes(current.getMinutes() + 30);
+        intervals.push({ startTime: current, endTime: next });
+        current = next;
+      }
+
+      return intervals;
     };
+
+    const dividedIntervals = divideTimeRange(startTime, endTime);
+
     try {
       setIsAdding(true);
-      // Appel à la fonction pour ajouter la disponibilité avec les détails requis
-      await availabilitiesService.addAvailability(availabilityData);
+
+      // Ajouter chaque intervalle de 30 minutes dans la base de données
+      for (const interval of dividedIntervals) {
+        const availabilityData = {
+          startTime:
+            interval.startTime.getHours().toString().padStart(2, "0") +
+            ":" +
+            interval.startTime.getMinutes().toString().padStart(2, "0"),
+          endTime:
+            interval.endTime.getHours().toString().padStart(2, "0") +
+            ":" +
+            interval.endTime.getMinutes().toString().padStart(2, "0"),
+          day: day,
+          userId: user._id,
+        };
+
+        // Appel à la fonction pour ajouter la disponibilité avec les détails requis
+        await availabilitiesService.addAvailability(availabilityData);
+      }
+
       setIsAdding(false);
       setShowModal(false);
       toast.success("Availability added successfully", {

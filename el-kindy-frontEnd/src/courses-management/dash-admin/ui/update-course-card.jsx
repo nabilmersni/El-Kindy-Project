@@ -89,10 +89,7 @@ const UpdateCourseCard = () => {
       // Ajouter l'image au cours nouvellement ajouté
       const formData = new FormData();
       formData.append("image", image);
-      const uploadResponse = await courseService.addImageToCourse(
-        id,
-        formData
-      );
+      const uploadResponse = await courseService.addImageToCourse(id, formData);
 
       // Handle the response (success or error)
       console.log("Course updated successfully:", response.data);
@@ -181,9 +178,9 @@ const UpdateCourseCard = () => {
             <option value="" disabled hidden>
               Category
             </option>
-            <option value="individual">Danse</option>
-            <option value="inGroup">Music</option>
-            <option value="inGroup">Arduino</option>
+            <option value="Danse">Danse</option>
+            <option value="Music">Music</option>
+            <option value="Arduino">Arduino</option>
           </select>
         </div>
 

@@ -32,7 +32,7 @@ html {
 
 @media screen and (min-width: 1280px) {
   html {
-    font-size: 1.05vw;
+    /* font-size: 1.05vw; */
   }
 }
 
@@ -580,18 +580,139 @@ html {
   /* margin: 2rem 0; */
 }
 
-.fc table {
-  font-size: 1.1em;
-}
-
-.fc .fc-button {
-  padding: 0.4rem 0.5rem;
-  font-size: 1.1em;
-  font-weight: 700;
-  font-family: "nunito";
-}
-
 .userLesson-detils__card {
   background-color: #fff;
   width: 30%;
+  height: 34rem;
+  position: sticky;
+  top: 6rem;
+  box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 5%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.8rem;
+}
+.userLesson-detils__card-image {
+  width: 100%;
+  height: 10rem;
+  background-color: red;
+  margin-bottom: 1rem;
+  border-radius: 0.8rem;
+}
+
+.userLesson-detils__card-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.8rem;
+  object-fit: cover;
+}
+
+.userLesson-detils__card-name {
+  font-weight: 800;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.divLine {
+  width: 100%;
+  height: 0.1rem;
+  background-color: rgb(0, 107, 190, 0.1);
+}
+
+.userLesson-detils__card-subcategory,
+.userLesson-detils__card-type,
+.userLesson-detils__card-level,
+.userLesson-detils__card-prices {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.submitGroupLessonBtn {
+  background-color: #e8f6ff;
+  color: #006bbe;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 700;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 1rem;
+  transition: all 0.3s;
+}
+
+.submitGroupLessonBtn:hover {
+  background-color: #006bbe;
+  color: #fff;
+}
+
+.resIndivContainer {
+  background-color: #fff;
+  width: 65%;
+  margin-right: 1rem;
+  box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 5%);
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+.days {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.day {
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #e8f6ff;
+  cursor: pointer;
+}
+
+.day:hover {
+  background-color: #dbeffc;
+  /* background-color: #ff7244;
+  color: #fff; */
+}
+
+.day.active {
+  color: #006bbe;
+  font-weight: 700;
+  background-color: #ff7244;
+  color: #fff;
+}
+.day-availabilities {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.plage {
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  box-shadow: 0 0.1rem 0.3rem rgb(0 0 0 / 15%);
+  cursor: pointer;
+  border-radius: 0.2rem;
+}
+
+.plage:hover {
+  background-color: #006bbe;
+  color: #fff;
+}
+
+.plage.disabled {
+  cursor: not-allowed;
+  background-color: #444;
+  color: #888;
 }

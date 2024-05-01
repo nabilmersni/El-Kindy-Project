@@ -222,7 +222,7 @@ export const AdminDashSideBarMenuItems = [
     ),
   },
   {
-    path: "/",
+    path: "/dash-admin-schedules",
     name: "Schedules",
     icon: (
       <svg

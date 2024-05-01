@@ -147,7 +147,7 @@ const QuizDetailsFront = ({}) => {
       {/* <h4>Bienvenue, {quiz && quiz.users && quiz.users.fullname}!</h4> */}
       <h1>
         <strong className="quiz-item-details">
-          Temps restant: {Math.floor(timeRemaining / 60)}:
+          Time remaining: {Math.floor(timeRemaining / 60)}:
           {timeRemaining % 60 < 10 ? "0" : ""}
           {timeRemaining % 60}
         </strong>

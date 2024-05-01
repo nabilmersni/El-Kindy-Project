@@ -59,6 +59,11 @@ import UserCategories from "./courses-management/front-user/pages/user-categorie
 import UserSubCategoryLessons from "./courses-management/front-user/pages/user-subcategory-lessons";
 import DashTeacherAvailabilities from "./courses-management/dash-teacher/pages/dash-teacher-availabilities";
 import UserLessonDetails from "./courses-management/front-user/pages/user-lessonDetails";
+import Success from "./Event-Management/front_side/EventSuccessPayement";
+import Payement from "./Event-Management/front_side/Payement";
+import Attestation from "./users-management/dash-admin/ui/attestation";
+import UserLessonIndivDetails from "./courses-management/front-user/pages/user-lessonIndivDetails";
+import DashAdminSchedules from "./courses-management/dash-admin/pages/dash-admin-schedules";
 
 function App() {
   // const { user } = useSelector((state) => state.auth);
@@ -132,13 +137,18 @@ function App() {
         {/*  */}
         <Route element={<PrivateRoute />}>
           <Route element={<UserSideRoutes />}>
-            {/* public course */}
+            {/*---------------------courses user routes */}
             <Route path="/categories" element={<UserCategories />} />
             <Route
               path="/subcategory/lessons/:id"
               element={<UserSubCategoryLessons />}
             />
-            {/* end public courses */}
+            <Route path="/lesson/:id" element={<UserLessonDetails />} />
+            <Route
+              path="/lesson/indiv/:id"
+              element={<UserLessonIndivDetails />}
+            />
+            {/* end courses user routes */}
 
             <Route path="/user-side" element={<UserDashboard />} />
 
@@ -162,8 +172,13 @@ function App() {
             {/* ---------------Event -------------- */}
             {/* <Route path="/AllEvents" element={<ViewAllEvents />} /> */}
             <Route path="/user-side/AllEvents" element={<FrontAllEvent />} />
-            <Route path="/tickets/:eventId" element={<TicketItems />} />
-
+            <Route
+              path="/events/:eventId/:ticketId"
+              element={<TicketItems />}
+            />
+            {/* ---------------PayementEvent -------------- */}
+            <Route path="/events/payement/:eventId" element={<Payement />} />
+            <Route path="/success" element={<Success />} />
             {/*---------------------courses user routes */}
             <Route path="/lesson/:id" element={<UserLessonDetails />} />
 
@@ -198,6 +213,11 @@ function App() {
             <Route
               path="/dash-admin-subcategories"
               element={<DashAdminSubCategories />}
+            />
+
+            <Route
+              path="/dash-admin-schedules"
+              element={<DashAdminSchedules />}
             />
             {/*---------------- admin dash Events  ---------------*/}
 
@@ -239,6 +259,7 @@ function App() {
               path="/dash-admin-questions/:quizId/questions"
               element={<UpdateQuestion />}
             />
+            <Route path="/attestation/:userId/" element={<Attestation />} />
 
             {/*----------------End admin dash Quizes  ---------------*/}
           </Route>

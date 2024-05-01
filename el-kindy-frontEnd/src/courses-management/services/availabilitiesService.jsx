@@ -11,6 +11,14 @@ const availabilitiesService = {
     return axios.get(`${API_BASE_URL}/teacher/${teacherId}`);
   },
 
+  getTeacherAvailabilitiesReserved: (teacherId) => {
+    return axios.get(`${API_BASE_URL}/teacher/${teacherId}/reserved`);
+  },
+
+  getAllAvailabilitiesByDay: (day) => {
+    return axios.get(`${API_BASE_URL}/day/${day}`);
+  },
+
   addAvailability: (availabilityData) => {
     return axios.post(API_BASE_URL, availabilityData);
   },

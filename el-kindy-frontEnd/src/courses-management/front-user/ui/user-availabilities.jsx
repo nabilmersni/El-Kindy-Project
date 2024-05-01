@@ -160,7 +160,7 @@ const UserAvailabilitie = () => {
       );
       setIsAdding(false);
       toast.success("Availability updated successfully", {
-        style: { fontSize: "2rem" },
+        style: { fontSize: "1rem" },
       });
       console.log("Availability added successfully");
     } catch (error) {
@@ -199,6 +199,7 @@ const UserAvailabilitie = () => {
         await userAvailabilitiesService.getAllUserAvailabilities();
 
       console.log("lkooooooooool");
+      console.log(response2.data);
 
       // console.log(response2.data);
       const preparedDate = algoService.regrouperParUserID(response2.data);
@@ -206,9 +207,12 @@ const UserAvailabilitie = () => {
       //step 2 : found best common group
       const bestCommonTimeSlots =
         algoService.findBestCommonTimeSlots(preparedDate);
+      console.log("avant fusionner");
+      console.log(bestCommonTimeSlots);
       //fusionner maintenant les heures du mm jour
       const plagesFusionnees =
         algoService.fusionnerPlagesHoraires(bestCommonTimeSlots);
+      console.log("fusionnerPlagesHoraires :");
       console.log(plagesFusionnees);
 
       //step 3 maintenant on va tester si le nombre du group = 5
@@ -241,6 +245,7 @@ const UserAvailabilitie = () => {
             await groupAvailabilitiesService.createGroupAvailabilities(
               groupAvailabilityData
             );
+
           console.log(responseGA.status);
         }
       }
@@ -248,7 +253,7 @@ const UserAvailabilitie = () => {
       setIsAdding(false);
       setShowModal(false);
       toast.success("Availability added successfully", {
-        style: { fontSize: "2rem" },
+        style: { fontSize: "1rem" },
       });
     } catch (error) {
       console.error("Error adding availability:", error);
@@ -265,7 +270,7 @@ const UserAvailabilitie = () => {
       setIsAdding(false);
       setShowDeleteModal(false);
       toast.success("Availability deleted successfully", {
-        style: { fontSize: "2rem" },
+        style: { fontSize: "1rem" },
       });
     } catch (error) {
       console.error("Error adding availability:", error);

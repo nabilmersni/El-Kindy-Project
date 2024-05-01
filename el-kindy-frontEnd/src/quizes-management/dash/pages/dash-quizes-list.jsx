@@ -33,8 +33,9 @@ const DashQuizesList = () => {
   };
 
   const filteredQuizzes = quizList.filter((quiz) =>
-    quiz.level.toLowerCase().includes(searchLevel.toLowerCase())
+    quiz.quizName.toLowerCase().includes(searchLevel.toLowerCase())
   );
+
   return (
     <DashLayout>
       <DashQuizesListHeader onSearchLevelChange={setSearchLevel} />

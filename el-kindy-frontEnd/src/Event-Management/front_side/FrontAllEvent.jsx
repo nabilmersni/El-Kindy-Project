@@ -5,7 +5,7 @@ import ViewAllEvents from '../../ui/ViewAllEvents';
 export default function FrontAllEvent() {
   return (
     <UserSideLayout>
-        <ViewAllEvents></ViewAllEvents>
+        <ViewAllEvents ></ViewAllEvents>
     </UserSideLayout>
   )
 }

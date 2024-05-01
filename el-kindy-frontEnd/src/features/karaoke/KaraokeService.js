@@ -1,8 +1,13 @@
 import axios from "axios";
 
 const API_URL = "https://shazam.p.rapidapi.com";
+const API_URL2 = "https://shazam-api7.p.rapidapi.com";
 
 const instance = axios.create({
+  baseURL: API_URL,
+});
+
+const instance2 = axios.create({
   baseURL: API_URL,
 });
 
@@ -12,13 +17,31 @@ instance.defaults.headers.common["X-RapidAPI-Key"] =
   "4b066acb03msh7deea4abd1a5280p1a9200jsn271842d73317";
 instance.defaults.headers.common["X-RapidAPI-Host"] = "shazam.p.rapidapi.com";
 
+instance2.defaults.headers.common["X-RapidAPI-Key"] =
+  "4b066acb03msh7deea4abd1a5280p1a9200jsn271842d73317";
+instance2.defaults.headers.common["X-RapidAPI-Host"] =
+  "shazam-api7.p.rapidapi.com";
+
+// const getTopSongs = async () => {
+//   const params = {
+//     locale: "en-US",
+//     pageSize: "20",
+//     startFrom: "0",
+//   };
+//   const response = await instance.get(`${API_URL}/charts/list`, { params });
+//   return response.data.tracks;
+// };
+
 const getTopSongs = async () => {
   const params = {
-    locale: "en-US",
-    pageSize: "20",
-    startFrom: "0",
+    country_code: "US",
+    genre: "POP",
+    limit: "10",
   };
-  const response = await instance.get(`${API_URL}/charts/track`, { params });
+  const response = await instance2.get(
+    `${API_URL}/charts/get-top-songs-in_country_by_genre`,
+    { params }
+  );
   return response.data.tracks;
 };
 

@@ -31,7 +31,7 @@ const ManageParticipantsModal = ({ isOpen, onClose, quiz }) => {
     const isUserExist = users.some((user) => user.email === email);
     console.log("Is user exist:", isUserExist);
     if (isUserExist) {
-      setError("Cet utilisateur existe déjà dans la liste.");
+      setError("This user already exists in the list.");
       return;
     }
 

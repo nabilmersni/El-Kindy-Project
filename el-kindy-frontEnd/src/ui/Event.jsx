@@ -5,7 +5,7 @@ import speakerAnimation from "../../public/lottieAnimations/speaker.json";
 import ButtonPrimary from "./ButtonPrimary";
 import Title1 from "./Title1";
 import { useState } from "react";
-import { createTicketAndAssociateWithEvent, getTicketsByEventId, getallEvents } from "../Event-Management/Services/apiEvent";
+import { createTicketAndAssociateWithEvent, getallEvents } from "../Event-Management/Services/apiEvent";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 

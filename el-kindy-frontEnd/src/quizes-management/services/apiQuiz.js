@@ -198,6 +198,31 @@ export const getStartedUsersPercentage = async (quizId) => {
     return 0;
   }
 };
+
+export const getQuizzesAndScoresByUserId = async (userId) => {
+  try {
+    const response = await fetch(`${baseURL}/${userId}/attestation`);
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des quizs et des scores");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error("Erreur lors de la requête vers le serveur");
+  }
+};
+export const checkUserQuizzes = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/users/${userId}/quizzes/check`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      "Erreur lors de la vérification des quizs de l'utilisateur:",
+      error
+    );
+  }
+};
 //*********************************Crud_Question***********************************
 
 export const getQuestionsForQuiz = async (id) => {

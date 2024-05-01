@@ -256,8 +256,8 @@ const AddNewCourseCard = () => {
               <option value="" disabled hidden>
                 Type
               </option>
-              <option value="individual">Individual</option>
-              <option value="inGroup">In Group</option>
+              <option value="Individual">Individual</option>
+              <option value="In Group">In Group</option>
             </select>
           </div>
         </div>

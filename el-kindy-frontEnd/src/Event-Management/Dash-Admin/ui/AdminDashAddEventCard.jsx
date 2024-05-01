@@ -3,7 +3,7 @@ import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
 import { addEvent } from "../../Services/apiEvent";
 import { useNavigate } from "react-router-dom";
-import LeafletMapComponent from "./MapContainer";
+
 const AdminDashAddEvent = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const handleCategoryChange = (event) => {
@@ -111,6 +111,9 @@ const AdminDashAddEvent = () => {
     if (!enteredPrice || isNaN(enteredPrice) || enteredPrice <= 0) {
       newErrors.PriceTicket = "Price Ticket must be a positive number";
       isValid = false;
+    } else if (enteredPrice < 1000 || enteredPrice > 99999) {
+      newErrors.PriceTicket = "Price Ticket must be between 1000 and 99999";
+      isValid = false;
     } else {
       newErrors.PriceTicket = "";
     }
@@ -141,10 +144,7 @@ const AdminDashAddEvent = () => {
     return isValid;
   };
   /////************************* */
-  const [selectedPlace, setSelectedPlace] = useState(null); // State to hold selected place
-  const handlePlaceSelect = (place) => {
-    setSelectedPlace(place); // Update selected place
-  };
+
 
   const [enteredTitle, setEnteredTitle] = useState("");
   const titleChangeHandle = (event) => {
@@ -258,13 +258,12 @@ const AdminDashAddEvent = () => {
               placeholder="Event Place"
               onChange={eventPlaceStringChangeHandle}
             />
-            {/* Error message handling */}
+                {errors.EventPlace && (
+                <span className="error-message">{errors.EventPlace}</span>
+              )}
           </div>
 
-          {/* LeafletMapComponent with selectedPlace prop */}
-          <div className="course-add-form__input__group">
-            <LeafletMapComponent selectedPlace={handlePlaceSelect} />
-          </div>
+      
        
           <div className="course-add-form__input__group">
             <label

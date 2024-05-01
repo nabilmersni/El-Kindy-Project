@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import UserAvailabilitie from "../ui/user-availabilities";
 import UserSideLayout from "../../../dashboard-layout/UserSideLayout";
+import ReservationIndivCard from "../ui/user-reservationIndiv";
 
-const UserLessonDetails = () => {
+const UserLessonIndivDetails = () => {
   const customStyle = `
   html {
      font-size: 100%;
@@ -53,7 +54,7 @@ const UserLessonDetails = () => {
 
       <UserSideLayout>
         <div className="userLesson-details__container">
-          <UserAvailabilitie />
+          <ReservationIndivCard />
 
           <div className="userLesson-detils__card">
             <div className="userLesson-detils__card-image">
@@ -105,4 +106,4 @@ const UserLessonDetails = () => {
     </div>
   );
 };
-export default UserLessonDetails;
+export default UserLessonIndivDetails;

@@ -1,4 +1,4 @@
-import { useContext, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -10,6 +10,11 @@ import UserUpdateFormAdminDash from "../pages/dash-admin-users/UserUpdateFormAdm
 import UserUpdateImageAdminDash from "../pages/dash-admin-users/UserUpdateImageAdminDash";
 import SocketContext from "../../../features/context/SocketContext";
 import Spinner from "../../../ui/Spinner";
+import { Link } from "react-router-dom";
+import Attestation from "./attestation";
+
+import { FaceSmileIcon } from "@heroicons/react/24/outline";
+import { checkUserQuizzes } from "../../../quizes-management/services/apiQuiz";
 
 const style = {
   position: "absolute",
@@ -195,6 +200,20 @@ const UserItem = ({ user, updateLocalUser }) => {
     }
   };
 
+  /////////****nawres****/////// */
+  const [hasPassedQuiz, setHasPassedQuiz] = useState(false);
+  useEffect(() => {
+    // Appeler la fonction pour vérifier les quiz de l'utilisateur
+    checkUserQuizzes(user._id)
+      .then((quizzes) => {
+        // Mettre à jour le state en fonction du nombre de quiz
+        setHasPassedQuiz(quizzes.length > 0);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [user._id]);
+
   return (
     <>
       {isLoading ? <Spinner /> : ""}
@@ -297,6 +316,25 @@ const UserItem = ({ user, updateLocalUser }) => {
               </g>
             </svg>
           </button>
+          {/* ********quiz-attestation *************/}
+
+          <div>
+            <Link to={`/attestation/${user._id}`}>
+              <button
+                disabled={!hasPassedQuiz}
+                //onClick={handleAttestationClick}
+                className={`p-[1.75rem] w-[5.8rem] h-[5.8rem] rounded-full ${
+                  hasPassedQuiz
+                    ? "hover:bg-[#bed9f4] bg-[#F3F8FC]"
+                    : "bg-[#F3F8FC]"
+                }  transition-all ease-in duration-75`}
+              >
+                <img src="img/attestation.svg" alt="" className="w-[2.7rem]" />
+              </button>
+            </Link>
+          </div>
+
+          {/* ********quiz-attestation *************/}
         </td>
       </tr>
 
