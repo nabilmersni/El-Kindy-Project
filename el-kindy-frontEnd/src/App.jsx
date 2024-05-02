@@ -64,6 +64,7 @@ import Payement from "./Event-Management/front_side/Payement";
 import Attestation from "./users-management/dash-admin/ui/attestation";
 import UserLessonIndivDetails from "./courses-management/front-user/pages/user-lessonIndivDetails";
 import DashAdminSchedules from "./courses-management/dash-admin/pages/dash-admin-schedules";
+import ChatComponent from "./quizes-management/dash/ui/ChatComponent";
 
 function App() {
   // const { user } = useSelector((state) => state.auth);
@@ -260,7 +261,7 @@ function App() {
               element={<UpdateQuestion />}
             />
             <Route path="/attestation/:userId/" element={<Attestation />} />
-
+            <Route path="/chatgpt" element={<ChatComponent />} />
             {/*----------------End admin dash Quizes  ---------------*/}
           </Route>
         </Route>

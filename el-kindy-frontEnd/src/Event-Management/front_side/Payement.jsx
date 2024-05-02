@@ -45,7 +45,7 @@ const Payement = ({ eventId }) => {
           <div className="text-center">
             <p className="mb-4">
               Confirm your Ticket payment of{" "}
-              <span className="underline">{eventData.PriceTicket} Tnd</span>
+              <span className="underline">{eventData.PriceTicket} Cent</span>
             </p>
           </div>
         )}

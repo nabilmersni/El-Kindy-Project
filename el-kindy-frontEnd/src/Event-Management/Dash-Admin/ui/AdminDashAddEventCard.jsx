@@ -3,6 +3,7 @@ import "../../../../public/assets/css/style.css";
 import DashLayout from "../../../dashboard-layout/dash-layout";
 import { addEvent } from "../../Services/apiEvent";
 import { useNavigate } from "react-router-dom";
+import LeafletMapComponent from "./MapContainer";
 
 const AdminDashAddEvent = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -15,18 +16,7 @@ const AdminDashAddEvent = () => {
     setSelectedType(event.target.value);
   };
 
-  const inputRef = useRef(null);
-  const [image, setImage] = useState(null);
-  const handleImageClick = () => {
-    inputRef.current.click();
-  };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
-  };
-
-  
 
   const [enteredDescription, setEnteredDescription] = useState("");
   const descriptionChangeHandle = (event) => {
@@ -81,7 +71,7 @@ const AdminDashAddEvent = () => {
     }
   };
 
-  //nawres//////
+
   const [errors, setErrors] = useState({
     EventName: "",
     EventDescription: "",
@@ -145,7 +135,19 @@ const AdminDashAddEvent = () => {
   };
   /////************************* */
 
+  const handlePlaceSelection = (place) => {
+    setEventPlaceString(place);
+  };
 
+  const inputRef = useRef(null);
+  const [image, setImage] = useState(null);
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+  };
   const [enteredTitle, setEnteredTitle] = useState("");
   const titleChangeHandle = (event) => {
     setEnteredTitle(event.target.value);
@@ -246,7 +248,7 @@ const AdminDashAddEvent = () => {
           </div>
 
           <div className="course-add-form__input__group">
-          <label
+            <label
               htmlFor="EventPlace"
               className="course-add-form__input__label"
             >
@@ -256,15 +258,17 @@ const AdminDashAddEvent = () => {
               type="text"
               className="course-add-form__input"
               placeholder="Event Place"
-              onChange={eventPlaceStringChangeHandle}
+              value={eventPlaceString}
+              onChange={(e) => handlePlaceSelection(e.target.value)}
             />
-                {errors.EventPlace && (
-                <span className="error-message">{errors.EventPlace}</span>
-              )}
+            {errors.EventPlace && (
+              <span className="error-message">{errors.EventPlace}</span>
+            )}
           </div>
+          <LeafletMapComponent handlePlaceSelect={handlePlaceSelection} />
 
-      
-       
+
+
           <div className="course-add-form__input__group">
             <label
               htmlFor="EventImage"

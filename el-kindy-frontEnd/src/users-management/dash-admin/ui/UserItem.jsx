@@ -322,11 +322,10 @@ const UserItem = ({ user, updateLocalUser }) => {
             <Link to={`/attestation/${user._id}`}>
               <button
                 disabled={!hasPassedQuiz}
-                //onClick={handleAttestationClick}
                 className={`p-[1.75rem] w-[5.8rem] h-[5.8rem] rounded-full ${
                   hasPassedQuiz
                     ? "hover:bg-[#bed9f4] bg-[#F3F8FC]"
-                    : "bg-[#F3F8FC]"
+                    : "bg-[#F3F8FC] cursor-not-allowed opacity-50"
                 }  transition-all ease-in duration-75`}
               >
                 <img src="img/attestation.svg" alt="" className="w-[2.7rem]" />

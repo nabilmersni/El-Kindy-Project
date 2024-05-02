@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import logoImage from "../../../../public/assets/img/logo.png";
 import { getQuizzesAndScoresByUserId } from "../../../quizes-management/services/apiQuiz";
 import axios from "axios";
+import DashLayout from "../../../dashboard-layout/dash-layout";
 
 const getCurrentDate = () => {
   const date = new Date();
@@ -114,6 +115,9 @@ const Attestation = ({}) => {
       alignSelf: "center",
       marginBottom: 20,
     },
+    levelDate: {
+      fontSize: 15,
+    },
   });
 
   const levelsAndScores =
@@ -147,8 +151,8 @@ const Attestation = ({}) => {
       <br />
       <br />
       <Text style={styles.text}>
-        The El Kindy Music Conservatory, represented by [Director's Name],
-        hereby certifies that{" "}
+        The El Kindy Music Conservatory, represented by Mr Lotfi Erraies , here
+        by certifies that{" "}
         <Text style={styles.boldText}> {quizDetails.fullName} </Text> has
         successfully traversed a remarkable path through various musical levels,
         demonstrating unwavering commitment and exceptional talent in their
@@ -168,7 +172,7 @@ const Attestation = ({}) => {
 
       {/* <Text style={styles.text}>{listItems}</Text> */}
 
-      <Text>{levelsAndScores}</Text>
+      <Text style={styles.levelDate}>{levelsAndScores}</Text>
       <br />
       <br />
 
@@ -179,10 +183,11 @@ const Attestation = ({}) => {
       </Text>
       <br />
       <br />
-      <Text>
+      <Text style={styles.levelDate}>
         <br />
         <br />
-        Fait à City olympique,Tunisia, <Text>{currentDate}</Text>
+        Fait à City olympique,Tunisia,{" "}
+        <Text style={styles.levelDate}>{currentDate}</Text>
       </Text>
       <br />
       <br />
@@ -190,30 +195,32 @@ const Attestation = ({}) => {
   );
 
   return (
-    <div className="container-attestation">
-      <div className="pdf-content">
-        {/* <h2>Contenu PDF :</h2> */}
-        {pdfContent}
+    <DashLayout>
+      <div className="container-attestation">
+        <div className="pdf-content">
+          {/* <h2>Contenu PDF :</h2> */}
+          {pdfContent}
+        </div>
+        <div className="buttonWrapper-attestation">
+          <PDFDownloadLink
+            document={
+              <Document>
+                <Page size="A3" style={styles.page}>
+                  {pdfContent}
+                </Page>
+              </Document>
+            }
+            fileName="attestation.pdf"
+          >
+            {({ blob, url, loading, error }) => (
+              <button className="button-attestation" style={styles.levelDate}>
+                {loading ? "Chargement du PDF..." : "Télécharger en PDF"}
+              </button>
+            )}
+          </PDFDownloadLink>
+        </div>
       </div>
-      <div className="buttonWrapper-attestation">
-        <PDFDownloadLink
-          document={
-            <Document>
-              <Page size="A3" style={styles.page}>
-                {pdfContent}
-              </Page>
-            </Document>
-          }
-          fileName="attestation.pdf"
-        >
-          {({ blob, url, loading, error }) => (
-            <button className="button-attestation">
-              {loading ? "Chargement du PDF..." : "Télécharger en PDF"}
-            </button>
-          )}
-        </PDFDownloadLink>
-      </div>
-    </div>
+    </DashLayout>
   );
 };
 

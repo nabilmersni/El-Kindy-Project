@@ -41,7 +41,7 @@ const ManageParticipantsItem = ({ data, quizId, fetchUsers }) => {
   const handleRemoveUser = async () => {
     try {
       await removeUserFromQuiz(data._id, quizId);
-      //alert("User deleted successfully from quiz!");
+      // alert("User deleted successfully from quiz!");
       fetchUsers(quizId);
     } catch (error) {
       console.error("Error removing user from quiz:", error);

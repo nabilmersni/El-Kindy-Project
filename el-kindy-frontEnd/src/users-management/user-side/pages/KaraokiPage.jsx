@@ -76,12 +76,12 @@ const KaraokiPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col mt-[3rem] ">
+        {/* <div className="flex flex-col mt-[3rem] ">
           <h1 className="text-[1.6rem] lg:text-[2rem] font-bold mb-[2rem] text-blackk ">
             Top Artist
           </h1>
           <TopArtistSwipper topSongs={topSongs} />
-        </div>
+        </div> */}
 
         <div className="flex justify-between items-stretch w-full my-[3rem] gap-[3rem] ">
           <div className="flex-[2] rounded-[1.5rem] border-[.2rem] border-[#006cbe1e] p-[2rem] shadow-custom2">
@@ -91,7 +91,7 @@ const KaraokiPage = () => {
             />
           </div>
           {/*  */}
-          <div className="hidden lg:flex flex-col items-center flex-[1] rounded-[1.5rem] bg-blue-50 p-[2rem] px-[1rem] shadow-custom2 border-[.2rem] border-[#006cbe0e]">
+          {/* <div className="hidden lg:flex flex-col items-center flex-[1] rounded-[1.5rem] bg-blue-50 p-[2rem] px-[1rem] shadow-custom2 border-[.2rem] border-[#006cbe0e]">
             <h1 className="text-[1.6rem] font-bold mb-[1.5rem] text-blackk ">
               Top Songs
             </h1>
@@ -110,7 +110,7 @@ const KaraokiPage = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <Modal

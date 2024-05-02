@@ -13,6 +13,7 @@ const QuizListFront = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [quizzesPerPage] = useState(6);
   const userId = user._id;
+
   useEffect(() => {
     fetchQuizzesByUser(userId, setQuizzes);
   }, [userId]);
@@ -20,14 +21,17 @@ const QuizListFront = () => {
   const startQuizUpdatee = async (userId, quizId) => {
     try {
       const updatedQuizUser = startQuizUpdate(userId, quizId);
-      setQuizUser(updatedQuizUser);
+      setQuizzes(updatedQuizUser);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Inverser l'ordre des quiz
+  const reversedQuizzes = [...quizzes].reverse();
+
   // Filtrer les quiz qui ont isStarted à true
-  const startedQuizzes = quizzes.filter((quiz) => quiz.isStarted);
+  const startedQuizzes = reversedQuizzes.filter((quiz) => quiz.isStarted);
 
   // Calculer l'index de début et de fin des quizzes pour la page actuelle
   const indexOfLastQuiz = currentPage * quizzesPerPage;
@@ -155,7 +159,7 @@ const QuizListFront = () => {
             )}
             <button
               onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={indexOfLastQuiz >= startedQuizzes.length}
+              disabled={indexOfFirstQuiz <= 0}
               className="px-3 py-1 mx-1 text-[#223698] rounded"
             >
               Next

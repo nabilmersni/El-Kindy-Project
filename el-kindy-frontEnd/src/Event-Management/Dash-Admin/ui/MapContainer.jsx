@@ -1,12 +1,17 @@
 // LeafletMapComponent.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
 import axios from 'axios'; // Import Axios for making HTTP requests
 
 function LeafletMapComponent({ handlePlaceSelect }) {
+  const [mapState, setMapState] = useState({
+    zoom: 6,
+    center: [33.8869, 9.5375]
+  });
+
   useEffect(() => {
-    const map = L.map('map-container').setView([33.8869, 9.5375], 6);
+    const map = L.map('map-container').setView(mapState.center, mapState.zoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -36,7 +41,7 @@ function LeafletMapComponent({ handlePlaceSelect }) {
       map.off('click', handleMapClick);
       map.remove();
     };
-  }, [handlePlaceSelect]);
+  }, [handlePlaceSelect, mapState]);
 
   return <div id="map-container" style={{ height: '400px' }}></div>;
 }

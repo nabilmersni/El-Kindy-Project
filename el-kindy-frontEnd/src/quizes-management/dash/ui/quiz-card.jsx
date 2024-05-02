@@ -47,7 +47,7 @@ const QuizCard = ({ data, onDelete }) => {
   const handleDeleteQuiz = async () => {
     try {
       await deleteQuiz(data._id);
-      alert("Quiz deleted successfully!");
+      //alert("Quiz deleted successfully!");
       onDelete(data._id);
       console.log("Quiz deleted successfully");
     } catch (error) {

@@ -160,7 +160,11 @@ const QuizDetailsFront = ({}) => {
                 Question {currentQuestionIndex + 1}:{" "}
                 {quiz.questions[currentQuestionIndex].questionText} (
                 {quiz.questions[currentQuestionIndex].nbPoint} points)
-                <button onClick={speakQuestion} className="microphone-button">
+                <button
+                  onClick={speakQuestion}
+                  className="microphone-button"
+                  style={{ fontSize: "1.5rem" }}
+                >
                   <span role="img" aria-label="microphone">
                     🎤
                   </span>

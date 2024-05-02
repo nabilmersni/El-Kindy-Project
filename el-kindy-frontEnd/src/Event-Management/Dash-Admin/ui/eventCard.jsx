@@ -32,7 +32,7 @@ const EventCard = ({ data, onDeleteEvent }) => {
     try {
       const deletedEvent = await deleteEvent(eventId);
       console.log("Deleted Event:", deletedEvent);
-      alert("Event deleted successfully!");
+      // alert("Event deleted successfully!");
       onDeleteEvent(eventId);
 
       // setTimeout(() => {

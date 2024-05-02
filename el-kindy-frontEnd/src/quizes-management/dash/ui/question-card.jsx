@@ -61,7 +61,7 @@ const QuestionCard = ({ data, quizId, setQuestions, deleteanswer, index }) => {
       await deleteQuestionFromQuiz(quizId, data._id);
       // Mettre à jour les questions après suppression
       const fetchedQuestions = await getQuestionsForQuiz(quizId);
-      alert("Question deleted successfully!");
+      //  alert("Question deleted successfully!");
       setQuestions(fetchedQuestions);
     } catch (error) {
       console.log(error);

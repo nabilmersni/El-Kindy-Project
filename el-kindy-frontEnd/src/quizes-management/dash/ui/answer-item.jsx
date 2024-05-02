@@ -41,7 +41,7 @@ const AnswerItem = ({ data, questionId, quizId, answers, setAnswers }) => {
   const answerId = data._id;
   const handleDeleteAnswer = async (quizId, questionId, answerId) => {
     try {
-      alert("Answer deleted successfully!");
+      // alert("Answer deleted successfully!");
       await deleteAnswer(quizId, questionId, answerId);
       console.log("answer deleted.");
       await fetchAnswers();

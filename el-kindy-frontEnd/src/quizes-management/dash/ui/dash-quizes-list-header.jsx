@@ -2,12 +2,23 @@ import { Link } from "react-router-dom";
 import "../../../../public/assets/css/style.css";
 import DashAnimation from "../../../dashboard-layout/dash-animation";
 import { MenuItem, Select } from "@mui/material";
+import QuizDetails from "./quiz-details";
+import { useState } from "react";
+import ChatComponent from "./ChatComponent";
 
 const DashQuizesListHeader = ({ onSearchLevelChange }) => {
   const handleSearchChange = (e) => {
     onSearchLevelChange(e.target.value);
   };
+  const [showDetails, setShowDetails] = useState(false);
 
+  const openDetails = () => {
+    setShowDetails(true);
+  };
+
+  const closeDetails = () => {
+    setShowDetails(false);
+  };
   return (
     <div className="dash__content__container__firstRow quiz">
       <div className="dash__content__container__firstRow__leftSide">
@@ -46,6 +57,16 @@ const DashQuizesListHeader = ({ onSearchLevelChange }) => {
         </div>
       </div>
 
+      <div className="quit-item__manage-participants-btn" onClick={openDetails}>
+        Chatgpt
+        {showDetails && (
+          <ChatComponent
+
+          // onClose={() => setIsModalOpen(false)}
+          />
+        )}
+      </div>
+
       <div className="dash__content__container__firstRow__RightSide">
         <Link to={"/dash-admin-add-new-quiz"} className="add-new-quiz--btn">
           Add New Quiz
@@ -57,6 +78,7 @@ const DashQuizesListHeader = ({ onSearchLevelChange }) => {
           path="../../../../public/assets/json/dancing_note.json"
         />
       </div>
+      <ChatComponent isOpen={showDetails} isCloseQuiz={closeDetails} />
     </div>
   );
 };
