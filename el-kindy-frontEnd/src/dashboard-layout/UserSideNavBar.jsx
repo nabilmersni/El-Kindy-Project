@@ -28,6 +28,7 @@ import {
   InboxArrowDownIcon,
   PowerIcon,
   Cog8ToothIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/solid";
 
 import SocketContext from "../features/context/SocketContext";
@@ -184,6 +185,23 @@ function ProfileMenu() {
             </span>
           </div>
         </MenuItem>
+
+        <Link to={"/user-side"}>
+          <MenuItem
+            onClick={closeMenu}
+            className={`flex items-center gap-2 rounded `}
+          >
+            <div className="flex items-center gap-[.5rem] ">
+              {React.createElement(CalendarIcon, {
+                className: "h-[1.05rem] w-[1.05rem]",
+                strokeWidth: 2,
+              })}
+              <span className="py-[0.1rem] text-[1rem] font-semibold">
+                Schedules
+              </span>
+            </div>
+          </MenuItem>
+        </Link>
 
         <Link to={"/user-side/account"}>
           <MenuItem

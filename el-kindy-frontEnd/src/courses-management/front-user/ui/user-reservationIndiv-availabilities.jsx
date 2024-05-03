@@ -7,6 +7,7 @@ import reservationIndivService from "../../services/reservationIndivService";
 import { useNavigate } from "react-router-dom";
 
 const ReservationIndivAvailabilitiesCard = ({ availabilities }) => {
+  console.log(availabilities);
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
@@ -17,21 +18,29 @@ const ReservationIndivAvailabilitiesCard = ({ availabilities }) => {
     const availability = availabilities.find(
       (availability) => availability.startTime === startTime
     );
-    return availability ? availability._id : null;
+    return availability ? availability : null;
   };
 
-  const handleReservation = async (availabilityId) => {
+  const handleReservation = async (availability) => {
     const resData = {
       userId: user._id,
       courseId: id,
-      availabilityId: availabilityId,
+      availabilityId: availability._id,
+      teacherId: availability.userId,
     };
     try {
       const response = await reservationIndivService.addReservationIndiv(
         resData
       );
 
-      navigate("/user-side");
+      const checkoutData = {
+        amout: 5000,
+      };
+      const checkoutResponse =
+        await reservationIndivService.checkoutReservationIndiv(checkoutData);
+      // console.log(checkoutResponse.data.result.link);
+      window.location.href = checkoutResponse.data.result.link;
+      // navigate("/user-side");
     } catch (error) {
       console.error("Erreur lors de la réservation :", error);
     }

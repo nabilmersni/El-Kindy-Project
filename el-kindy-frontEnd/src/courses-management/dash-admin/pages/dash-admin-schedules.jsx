@@ -7,7 +7,7 @@ import DashAdminCalendar from "../ui/dash-admin-calendar";
 const DashAdminSchedules = () => {
   return (
     <DashLayout>
-      <DashAdminSchedulesHeader />
+      {/* <DashAdminSchedulesHeader /> */}
       <DashAdminCalendar />
     </DashLayout>
   );

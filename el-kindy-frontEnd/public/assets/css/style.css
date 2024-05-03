@@ -2580,3 +2580,115 @@ input:checked + .slider:before {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+.reserved-slot {
+  background-color: #555;
+  color: #fff;
+}
+
+.custom-slot {
+  background-color: #555;
+  padding: 1rem;
+}
+
+.monday-morning {
+  background-color: yellow; /* ou toute autre couleur de votre choix */
+}
+
+.paginationSchedules {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+  margin-left: 45rem;
+}
+.pageBtn {
+  background-color: #006bbe;
+  color: #fff;
+  /* width: 5rem; */
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.pageBtn:hover {
+  background-color: #ff7244;
+}
+
+.pageNumber {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.pageBtn.disabled {
+  background-color: #55555586;
+  cursor: not-allowed;
+}
+
+.teacherTrackingSheetList__header {
+  background-color: #f5f9fd;
+  color: #02241a;
+  font-size: 1.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  width: 95%;
+  padding: 2rem;
+  border-top-left-radius: 4rem;
+  border-top-right-radius: 4rem;
+  margin-bottom: 2rem;
+}
+
+.teacherTrackingSheetList__header-date {
+  padding-right: 13rem;
+}
+
+.teacherTrackingSheetList__header-duration {
+  padding-right: 6rem;
+}
+
+.teacherTrackingSheetList__header-lessonContent {
+  padding-right: 30rem;
+}
+
+.teacherTrackingSheetList__header-observation {
+  padding-right: 27rem;
+}
+.teacherTrackingSheetList__header-sentiment {
+  padding-right: 3rem;
+}
+
+.studentTrackingSheet__card {
+  background-color: #fff;
+  box-shadow: 0 0.2rem 2rem rgb(0 0 0 / 9%);
+  border-radius: 5rem;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  width: 98%;
+  font-size: 1.7rem;
+  color: #02241a;
+  font-weight: 700;
+}
+
+.studentTrackingSheet__card-date {
+  width: 18rem;
+}
+
+.studentTrackingSheet__card-duration {
+  width: 13rem;
+}
+
+.studentTrackingSheet__card-lessonContent {
+  width: 44rem;
+}
+.studentTrackingSheet__card-observatin {
+  width: 38rem;
+}
+
+.studentTrackingSheet__card-sentiment {
+  width: 19rem;
+}

@@ -44,7 +44,7 @@ function Login() {
         naviagte("/user-side");
         break;
       case "teacher":
-        naviagte("/user-side");
+        naviagte("/dash-teacher-availabilities");
         break;
       default:
         break;

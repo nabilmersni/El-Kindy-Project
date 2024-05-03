@@ -22,32 +22,18 @@ const DashTeacherCalendar = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [teacherReservations, setTeacherReservations] = useState([]);
 
-  // const initialEvents = [
-  //   {
-  //     id: "1",
-  //     title: "Event 1",
-  //     startTime: "10:00",
-  //     endTime: "12:00",
-  //     recurring: true,
-  //     daysOfWeek: [1], // Lundi
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Event 2",
-  //     startTime: "14:00",
-  //     endTime: "16:00",
-  //     recurring: true,
-  //     daysOfWeek: [2], // Mardi
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Event 3",
-  //     startTime: "08:00",
-  //     endTime: "10:00",
-  //     recurring: true,
-  //     daysOfWeek: [6], // Dimanche et Samedi
-  //   },
-  // ];
+  const disabledTimes = [
+    {
+      id: "1",
+      title: "Closed",
+      startTime: "08:00",
+      endTime: "14:00",
+      recurring: true,
+      daysOfWeek: [1, 2, 3, 4], // 1:Lundi
+      display: "background",
+      backgroundColor: "#000",
+    },
+  ];
 
   useEffect(() => {
     // Charger les disponibilités de l'enseignant au montage du composant
@@ -102,6 +88,17 @@ const DashTeacherCalendar = () => {
       recurring: true,
       daysOfWeek: [reservation.day],
       backgroundColor: "#555",
+      borderColor: "#555",
+    })),
+    ...disabledTimes.map((disabledTime) => ({
+      id: disabledTime.id,
+      title: disabledTime.title,
+      startTime: disabledTime.startTime,
+      endTime: disabledTime.endTime,
+      recurring: disabledTime.recurring,
+      daysOfWeek: disabledTime.daysOfWeek,
+      display: disabledTime.display,
+      backgroundColor: disabledTime.backgroundColor,
     })),
   ];
   //-----------------------------
@@ -115,6 +112,9 @@ const DashTeacherCalendar = () => {
     // Obtenir l'heure et les minutes de la date de début
     const startHour = dateInfo.start.getHours();
     const startMinutes = dateInfo.start.getMinutes();
+    if (startHour < 14) {
+      return;
+    }
 
     // Afficher les détails de la date de début dans la console
     console.log(
@@ -150,9 +150,15 @@ const DashTeacherCalendar = () => {
   };
 
   const handleEventClick = (eventInfo) => {
+    if (eventInfo.event.title === "Reserved") {
+      return;
+    }
+    if (eventInfo.event.title === "Closed") {
+      return;
+    }
     setSelectedEvent(eventInfo);
     // console.log("selected event details:", eventInfo);
-    console.log("clicked event id:", eventInfo.event.id);
+    console.log("clicked event id:", eventInfo.event);
     setShowDeleteModal(true);
     setAvailabilityId(eventInfo.event.id);
   };

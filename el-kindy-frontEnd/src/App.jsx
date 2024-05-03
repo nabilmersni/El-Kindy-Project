@@ -23,6 +23,7 @@ import SignUp from "./users-management/auth/SignUp";
 import Login from "./users-management/auth/Login";
 import {
   OnlyAdminRoute,
+  OnlyTeacherRoute,
   PrivateRoute,
   PublicRoute,
   UserSideRoutes,
@@ -65,6 +66,8 @@ import Attestation from "./users-management/dash-admin/ui/attestation";
 import UserLessonIndivDetails from "./courses-management/front-user/pages/user-lessonIndivDetails";
 import DashAdminSchedules from "./courses-management/dash-admin/pages/dash-admin-schedules";
 import ChatComponent from "./quizes-management/dash/ui/ChatComponent";
+import DashTeacherSchedules from "./courses-management/dash-teacher/pages/dash-teacher-schedules";
+import DashTeacherTrackingList from "./courses-management/dash-teacher/pages/dash-teacher-student-tracking-sheet";
 
 function App() {
   // const { user } = useSelector((state) => state.auth);
@@ -182,13 +185,6 @@ function App() {
             <Route path="/success" element={<Success />} />
             {/*---------------------courses user routes */}
             <Route path="/lesson/:id" element={<UserLessonDetails />} />
-
-            {/* ---------------teacher dash courses  -----------------*/}
-            <Route
-              path="/dash-teacher-availabilities"
-              element={<DashTeacherAvailabilities />}
-            />
-            {/*----------------teacher dash courses  ---------------*/}
           </Route>
 
           {/*  */}
@@ -263,6 +259,22 @@ function App() {
             <Route path="/attestation/:userId/" element={<Attestation />} />
             <Route path="/chatgpt" element={<ChatComponent />} />
             {/*----------------End admin dash Quizes  ---------------*/}
+          </Route>
+
+          <Route element={<OnlyTeacherRoute />}>
+            <Route
+              path="/dash-teacher-availabilities"
+              element={<DashTeacherAvailabilities />}
+            />
+            <Route
+              path="/dash-teacher-schedules"
+              element={<DashTeacherSchedules />}
+            />
+            <Route
+              path="/dash-teacher-tracking-sheet"
+              element={<DashTeacherTrackingList />}
+            />
+            DashTeacherTrackingList
           </Route>
         </Route>
 

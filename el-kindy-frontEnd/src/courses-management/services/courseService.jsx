@@ -30,6 +30,10 @@ const courseService = {
   updateCourse: (courseId, courseData) => {
     return axios.put(`${API_BASE_URL}/${courseId}`, courseData);
   },
+
+  getSentiment: (trData) => {
+    return axios.post(`${API_BASE_URL}/sentiment/ai`, trData);
+  },
 };
 
 export default courseService;

@@ -2,9 +2,11 @@ import "../../../../public/assets/css/front-style.css";
 import { Nav } from "../../../ui/Nav";
 import { useParams } from "react-router-dom";
 import subCategoriesService from "../../services/subCategoriesService";
+import reservationIndivService from "../../services/reservationIndivService";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import UserSideLayout from "../../../dashboard-layout/UserSideLayout";
+import UserLessonCard from "../ui/user-lesson-card";
 
 const UserSubCategoryLessons = () => {
   const { id } = useParams();
@@ -65,32 +67,8 @@ const UserSubCategoryLessons = () => {
 
           <div className="subcategoriesLessons__title">Private lessons</div>
           <div className="subcategoriesLessons__list">
-            {courses.map((course, index) => (
-              <div className="subcategoriesLessons__card" key={index}>
-                <div className="subcategoriesLessons__card-img-container">
-                  <img
-                    src={`http://localhost:3000/${course.imageUrl}`}
-                    className="subcategoriesLessons__card-img"
-                  />
-                </div>
-                <div className="subcategoriesLessons__card-title">
-                  {course.courseTitle}
-                </div>
-                <div className="subcategoriesLessons__card-level">
-                  All levels
-                </div>
-
-                <Link
-                  to={
-                    course.courseType === "Individual"
-                      ? `/lesson/indiv/${course._id}`
-                      : `/lesson/${course._id}`
-                  }
-                  className="subcategoriesLessons__card-inscriBtn"
-                >
-                  Register
-                </Link>
-              </div>
+            {courses.map((item, index) => (
+              <UserLessonCard key={index} course={item} />
             ))}
           </div>
         </div>

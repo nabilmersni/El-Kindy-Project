@@ -52,6 +52,23 @@ export function OnlyAdminRoute() {
   return <Outlet />;
 }
 
+export function OnlyTeacherRoute() {
+  // const { user, isError, message } = useSelector((state) => state.auth);
+  // const dispatch = useDispatch();
+
+  const loggedUser = secureLocalStorage.getItem("user");
+
+  if (loggedUser.role !== "teacher") {
+    toast.error("You are not authenticated as teacher!", {
+      // style: { fontSize: "2rem" },
+      toastId: "not authenticated as teacher",
+    });
+    return <Navigate to="/login" />;
+  }
+
+  return <Outlet />;
+}
+
 export function UserSideRoutes() {
   const loggedUser = secureLocalStorage.getItem("user");
 
@@ -79,7 +96,7 @@ export function PublicRoute() {
     case "user":
       return <Navigate to="/user-side" />;
     case "teacher":
-      return <Navigate to="/user-side" />;
+      return <Navigate to="/dash-teacher-availabilities" />;
     default:
       break;
   }

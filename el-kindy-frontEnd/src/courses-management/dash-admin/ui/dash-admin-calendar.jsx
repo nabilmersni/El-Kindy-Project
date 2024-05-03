@@ -10,6 +10,7 @@ import reservationIndivService from "../../services/reservationIndivService";
 import { useSelector } from "react-redux";
 import Spinner from "../../../ui/Spinner";
 import { toast } from "react-toastify";
+import DashAdminSchedulesHeader from "../ui/dash-admin-schedules__header";
 
 const DashAdminCalendar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -17,7 +18,8 @@ const DashAdminCalendar = () => {
   const [teacherAvailabilities, setTeacherAvailabilities] = useState([]);
   const [availabilityId, setAvailabilityId] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
-
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   // const initialEvents = [
   //   {
   //     id: "1",
@@ -66,10 +68,11 @@ const DashAdminCalendar = () => {
 
         // console.log("Meilleure affectation :", finalAssignments[0]);
 
-        setTeacherAvailabilities(finalAssignments[0]);
+        setTeacherAvailabilities(finalAssignments[currentPage]);
+        setTotalPages(finalAssignments.length);
         // console.log(finalAssignments[0]);
 
-        console.log(Object.keys(teacherAvailabilities).length);
+        // console.log(Object.keys(teacherAvailabilities).length);
 
         // console.log(teacherAvailabilities);
       } catch (error) {
@@ -78,7 +81,7 @@ const DashAdminCalendar = () => {
     };
 
     fetchTeacherAvailabilities();
-  }, []);
+  }, [currentPage]);
 
   // Transformer les disponibilités de l'enseignant en un format compatible avec FullCalendar
   const formattedEvents = Object.keys(teacherAvailabilities).map(
@@ -101,35 +104,42 @@ const DashAdminCalendar = () => {
   //-----------------------------
 
   return (
-    <div className="dash-calendar-container">
-      {isAdding && <Spinner />}
-
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="timeGridWeek"
-        height="auto"
-        editable={false}
-        events={formattedEvents.map((event) => ({
-          ...event,
-          start: `2024-04-01T${event.startTime}:00`,
-          end: `2024-04-01T${event.endTime}:00`,
-        }))}
-        // Affichage des jours de la semaine avec leur nom complet
-        dayHeaderContent={(arg) =>
-          arg.date.toLocaleDateString("en-US", { weekday: "long" })
-        }
-        // Affichage des heures de 8:00 à 21:00
-        slotMinTime="08:00:00"
-        slotMaxTime="21:00:00"
-        slotLabelFormat={{
-          hour: "numeric",
-          minute: "2-digit",
-          omitZeroMinute: false,
-          hour12: false,
-        }}
-
-        // events={formattedEvents}
+    <div>
+      <DashAdminSchedulesHeader
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
       />
+      <div className="dash-calendar-container">
+        {isAdding && <Spinner />}
+
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="timeGridWeek"
+          height="auto"
+          editable={false}
+          events={formattedEvents.map((event) => ({
+            ...event,
+            start: `2024-04-01T${event.startTime}:00`,
+            end: `2024-04-01T${event.endTime}:00`,
+          }))}
+          // Affichage des jours de la semaine avec leur nom complet
+          dayHeaderContent={(arg) =>
+            arg.date.toLocaleDateString("en-US", { weekday: "long" })
+          }
+          // Affichage des heures de 8:00 à 21:00
+          slotMinTime="08:00:00"
+          slotMaxTime="21:00:00"
+          slotLabelFormat={{
+            hour: "numeric",
+            minute: "2-digit",
+            omitZeroMinute: false,
+            hour12: false,
+          }}
+
+          // events={formattedEvents}
+        />
+      </div>
     </div>
   );
 };

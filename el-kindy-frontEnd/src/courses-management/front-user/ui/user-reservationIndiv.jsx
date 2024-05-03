@@ -19,48 +19,49 @@ const ReservationIndivCard = () => {
     }
   };
 
+  // 0 pour dimanche, 1 pour lundi, ...
   return (
     <div className="resIndivContainer">
       <div className="days">
         <div
-          className={`day ${activeDay === 0 ? "active" : ""}`}
-          onClick={() => fetchAvailabilitiesByDay(0)}
-        >
-          Monday
-        </div>
-        <div
           className={`day ${activeDay === 1 ? "active" : ""}`}
           onClick={() => fetchAvailabilitiesByDay(1)}
         >
-          Tuesday
+          Monday
         </div>
         <div
           className={`day ${activeDay === 2 ? "active" : ""}`}
           onClick={() => fetchAvailabilitiesByDay(2)}
         >
-          Wednesday
+          Tuesday
         </div>
         <div
           className={`day ${activeDay === 3 ? "active" : ""}`}
           onClick={() => fetchAvailabilitiesByDay(3)}
         >
-          Thursday
+          Wednesday
         </div>
         <div
           className={`day ${activeDay === 4 ? "active" : ""}`}
           onClick={() => fetchAvailabilitiesByDay(4)}
         >
-          Friday
+          Thursday
         </div>
         <div
           className={`day ${activeDay === 5 ? "active" : ""}`}
           onClick={() => fetchAvailabilitiesByDay(5)}
         >
-          Saturday
+          Friday
         </div>
         <div
           className={`day ${activeDay === 6 ? "active" : ""}`}
           onClick={() => fetchAvailabilitiesByDay(6)}
+        >
+          Saturday
+        </div>
+        <div
+          className={`day ${activeDay === 0 ? "active" : ""}`}
+          onClick={() => fetchAvailabilitiesByDay(0)}
         >
           Sunday
         </div>

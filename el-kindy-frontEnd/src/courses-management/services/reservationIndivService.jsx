@@ -15,28 +15,17 @@ const reservationIndivService = {
     return axios.get(`${API_BASE_URL}/user/${userId}`);
   },
 
+  getUserReservationById: (reservationId) => {
+    return axios.get(`${API_BASE_URL}/${reservationId}`);
+  },
+
   addReservationIndiv: (reservationIndivData) => {
     return axios.post(API_BASE_URL, reservationIndivData);
   },
 
-  // checkout: () => {
-  //   // console.log("Event ID:", eventId);
-  //   try {
-  //     const response = axios.post(`${API_BASE_URL}/checkout`);
-  //     const { result } = response.data;
-  //     console.log(response.data);
-
-  //     if (result && result.link) {
-  //       // Redirect to the payment link
-  //       window.location.href = result.link;
-  //     } else {
-  //       console.error("No payment link found in the response");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error in payement request:", error);
-  //     throw error;
-  //   }
-  // },
+  checkoutReservationIndiv: (checkoutReservationIndivData) => {
+    return axios.post(`${API_BASE_URL}/checkout`, checkoutReservationIndivData);
+  },
 
   deleteReservationIndiv: (reservationIndivId) => {
     return axios.delete(`${API_BASE_URL}/${reservationIndivId}`);
@@ -51,6 +40,10 @@ const reservationIndivService = {
       `${API_BASE_URL}/${reservationIndivId}`,
       reservationIndivData
     );
+  },
+
+  getReservationsByUserIdAndCourseId: (userId, courseId) => {
+    return axios.get(`${API_BASE_URL}/user/${userId}/course/${courseId}`);
   },
 };
 
